@@ -24,3 +24,18 @@ form.addEventListener("submit", function (e) {
 
   alert("Login valid! Siap connect ke backend.");
 });
+
+const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+
+const eyeOpen = document.getElementById("eyeOpen");
+const eyeClosed = document.getElementById("eyeClosed");
+
+togglePassword.addEventListener("click", () => {
+  const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+  passwordInput.setAttribute("type", type);
+
+  // Toggle icon
+  eyeOpen.classList.toggle("hidden");
+  eyeClosed.classList.toggle("hidden");
+});
