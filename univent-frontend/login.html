@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Univent</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom CSS optional -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="bg-white text-gray-800 antialiased">
+
+  <div class="min-h-screen flex items-center justify-center px-6 py-12">
+
+    <div class="w-full max-w-sm">
+      <div class="rounded-3xl p-10 bg-white border border-gray-200 shadow-lg">
+
+        <!-- Logo Icon -->
+        <div class="flex justify-center mb-2 mt-2">
+          <img src="assets/img/logo.png" class="w-16 h-16">
+        </div>
+
+        <!-- Title + Logo Text -->
+        <div class="flex items-center justify-center gap-1 mb-6">
+            <span class="text-xl font-semibold">Login</span>
+            <img src="assets/img/univent.png" class="h-6 object-contain" alt="UniVent Logo">
+          </div>
+
+
+        <!-- FORM -->
+        <form id="loginForm" class="space-y-4" novalidate>
+
+          <!-- Email -->
+          <div>
+            <input id="email"
+              type="email"
+              placeholder="Email"
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition">
+            <p id="emailError" class="text-sm text-red-500 mt-1 hidden">
+              Please enter valid email !
+            </p>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <input id="password" 
+              type="password"
+              placeholder="Password"
+              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition">
+          </div>
+
+          <!-- Forgot password -->
+          <div class="text-right -mt-2">
+            <a href="#" class="text-sm text-blue-500 hover:underline">
+              Forgot Password ?
+            </a>
+          </div>
+
+          <!-- Login Button -->
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl py-3 shadow-sm transition">
+            Login
+          </button>
+
+          <!-- Register link -->
+          <p class="text-center mt-2">
+            <a href="register.html" class="text-sm text-blue-300 hover:underline">Belum punya akun? Daftar</a>
+          </p>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
