@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Password - Univent</title>
+  <title>Lupa Password - Univent</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body class="bg-white text-gray-800">
@@ -17,43 +17,32 @@
 
         <!-- Logo -->
         <div class="flex justify-center mb-2 mt-2">
-          <img src="assets/img/logo.png" class="w-16 h-16">
+          <img src="../assets/img/logo.png" class="w-16 h-16">
         </div>
 
         <!-- Title -->
         <h2 class="text-center text-xl font-semibold mb-6">
-          Reset Password
+          Lupa Password
         </h2>
 
         <!-- FORM -->
-        <form id="resetForm" class="space-y-4" novalidate>
+        <form id="forgotForm" action="reset_pw.html" class="space-y-4">
 
-          <!-- Password Baru -->
           <div>
-            <input id="pw1"
-              type="password"
-              placeholder="Password baru"
+            <input id="forgot_email"
+              type="email"
+              placeholder="Masukkan email Anda"
               class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700
                      focus:outline-none focus:ring-2 focus:ring-blue-300 transition">
-          </div>
-
-          <!-- Konfirmasi Password -->
-          <div>
-            <input id="pw2"
-              type="password"
-              placeholder="Konfirmasi password"
-              class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700
-                     focus:outline-none focus:ring-2 focus:ring-blue-300 transition">
-            <p id="pw_error" class="text-sm text-red-500 mt-1 hidden">
-              Password tidak sama!
+            <p id="forgot_error" class="text-sm text-red-500 mt-1 hidden">
+              Email tidak valid!
             </p>
           </div>
 
-          <!-- Button -->
           <button type="submit"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold 
                    rounded-xl py-3 shadow-sm transition">
-            Simpan Password
+            Lanjutkan
           </button>
 
           <p class="text-center mt-2">
@@ -68,6 +57,7 @@
     </div>
   </div>
 
-  <script src="assets/js/reset_pw.js"></script>
+  <script src="../assets/js/auth/lupa_pw.js"></script>
+
 </body>
 </html>
