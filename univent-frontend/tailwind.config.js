@@ -1,3 +1,8 @@
 module.exports = {
-  content: ["./*.html", "./**/*.html"],
+  content: [
+  "./autentikasi/**/*.html",
+  "./peserta/**/*.html",
+  "./panitia/**/*.html",
+  "./*.html"
+]
 };

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Acara - Panitia</title>
+
+  <!-- Tailwind Build -->
+  <link rel="stylesheet" href="../assets/css/output.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<div class="flex h-screen">
+
+  <!-- SIDEBAR BIRU (FINAL) -->
+  <aside class="w-64 bg-blue-600 text-white flex flex-col">
+    <div class="p-6 text-2xl font-semibold">UniVENT</div>
+
+    <nav id="panitiaNav" class="flex-1 px-4 space-y-2 text-blue-100">
+
+      <a href="dashboard.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
+        <span>🏠</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="acara-saya.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
+        <span>📅</span>
+        <span>Acara Saya</span>
+      </a>
+
+      <a href="status-acara.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
+        <span>📊</span>
+        <span>Status Acara</span>
+      </a>
+
+      <a href="buat-acara.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
+        <span>➕</span>
+        <span>Buat Acara</span>
+      </a>
+
+    </nav>
+
+    <div class="p-4">
+      <a href="../autentikasi/login.html"
+        class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-white/10 text-red-200">
+        <span>🚪</span>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+
+  <!-- MAIN -->
+  <main class="flex-1 overflow-y-auto">
+
+    <!-- NAVBAR -->
+    <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-semibold">Edit Acara</h1>
+
+      <div class="flex items-center space-x-4">
+        <button class="text-xl text-gray-600 hover:text-gray-800">🔔</button>
+        <div class="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center text-purple-700">👤</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="p-6 max-w-3xl mx-auto">
+
+      <div class="bg-white shadow rounded-xl p-6 space-y-6">
+
+        <!-- UPLOAD POSTER (optional replace) -->
+        <div>
+          <label class="block font-medium mb-2">Poster Acara</label>
+          <input type="file"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white
+                        file:bg-blue-600 file:text-white file:px-4 file:py-2 file:rounded-lg">
+          <p class="text-sm text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengganti poster.</p>
+        </div>
+
+        <!-- NAMA ACARA -->
+        <div>
+          <label class="block font-medium mb-2">Nama Acara</label>
+          <input type="text"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-400"
+                 value="Tech Conference 2024">
+        </div>
+
+        <!-- DESKRIPSI -->
+        <div>
+          <label class="block font-medium mb-2">Deskripsi Acara</label>
+          <textarea 
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 h-32 focus:ring-2 focus:ring-blue-400"
+          >Acara tahunan yang membahas perkembangan teknologi terkini termasuk AI, cybersecurity, dan software engineering.</textarea>
+        </div>
+
+        <!-- GRID TANGGAL & WAKTU -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+          <div>
+            <label class="block font-medium mb-2">Tanggal</label>
+            <input type="date"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-400"
+                   value="2024-03-15">
+          </div>
+
+          <div>
+            <label class="block font-medium mb-2">Waktu Mulai</label>
+            <input type="time"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-400"
+                   value="09:00">
+          </div>
+
+        </div>
+
+        <!-- LOKASI -->
+        <div>
+          <label class="block font-medium mb-2">Lokasi Acara</label>
+          <input type="text"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-400"
+                 value="Aula FTI Universitas">
+        </div>
+
+        <!-- KUOTA -->
+        <div>
+          <label class="block font-medium mb-2">Kuota Peserta</label>
+          <input type="number" min="1"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-400"
+                 value="150">
+        </div>
+
+        <!-- BUTTON -->
+        <button
+          class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold text-lg hover:bg-blue-700">
+          Simpan Perubahan
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../assets/js/panitia/panitia-sidebar.js"></script>
+
+</body>
+</html>
