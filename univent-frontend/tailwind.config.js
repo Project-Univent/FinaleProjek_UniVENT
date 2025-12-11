@@ -3,6 +3,7 @@ module.exports = {
   "./autentikasi/**/*.html",
   "./peserta/**/*.html",
   "./panitia/**/*.html",
+  "./admin/**/*.html",
   "./*.html"
 ]
 };

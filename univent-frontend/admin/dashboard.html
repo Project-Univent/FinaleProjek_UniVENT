@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Admin — Univent</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Material Icons (standalone) -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Admin Shell + Dashboard Logic -->
+  <script src="../assets/js/admin/admin-shell.js" defer></script>
+  <script src="../assets/js/admin/admin-dashboard.js" defer></script>
+
+  <style>
+    .card-radius { border-radius: .75rem; }
+    .slide-enter { opacity: 0; transform: translateX(10px); }
+    .slide-active { opacity: 1; transform: none; transition: all .5s ease; }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- injected by JS -->
+  <div id="sidebar-container"></div>
+  <header id="admin-topbar"></header>
+
+  <!-- MAIN CONTENT (NO ml-64 / pt-20 manual) -->
+  <main id="admin-main" class="p-6 transition-all duration-300">
+
+    <!-- SUMMARY CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div class="bg-white card-radius shadow p-5">
+        <div class="text-sm text-gray-500">Total Event</div>
+        <div class="text-2xl font-bold" id="stat-total-event">—</div>
+      </div>
+      <div class="bg-white card-radius shadow p-5">
+        <div class="text-sm text-gray-500">Total Peserta</div>
+        <div class="text-2xl font-bold" id="stat-total-peserta">—</div>
+      </div>
+      <div class="bg-white card-radius shadow p-5">
+        <div class="text-sm text-gray-500">Event Terverifikasi</div>
+        <div class="text-2xl font-bold" id="stat-total-verified">—</div>
+      </div>
+    </div>
+
+    <!-- CATEGORY LIST + HERO SLIDER -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+      <!-- Categories -->
+      <div class="bg-white card-radius shadow p-6">
+        <h3 class="font-semibold mb-4">Kategori Acara Yang Tersedia</h3>
+
+        <div id="kategori-list" class="space-y-3">
+
+          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                <span class="material-icons">school</span>
+              </div>
+              <div>
+                <div class="font-semibold">Seminar</div>
+                <div class="text-sm text-gray-500"><span id="sem-count">3</span> event</div>
+              </div>
+            </div>
+            <div class="text-gray-400 text-xl">›</div>
+          </div>
+
+          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
+                <span class="material-icons">handyman</span>
+              </div>
+              <div>
+                <div class="font-semibold">Workshop</div>
+                <div class="text-sm text-gray-500"><span id="ws-count">2</span> event</div>
+              </div>
+            </div>
+            <div class="text-gray-400 text-xl">›</div>
+          </div>
+
+          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center">
+                <span class="material-icons">videocam</span>
+              </div>
+              <div>
+                <div class="font-semibold">Webinar</div>
+                <div class="text-sm text-gray-500"><span id="wb-count">5</span> event</div>
+              </div>
+            </div>
+            <div class="text-gray-400 text-xl">›</div>
+          </div>
+
+          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center">
+                <span class="material-icons">emoji_events</span>
+              </div>
+              <div>
+                <div class="font-semibold">Kompetisi</div>
+                <div class="text-sm text-gray-500"><span id="cp-count">1</span> event</div>
+              </div>
+            </div>
+            <div class="text-gray-400 text-xl">›</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- HERO SLIDER -->
+      <div class="lg:col-span-2">
+        <div class="card-radius shadow overflow-hidden relative">
+          <div id="hero-slider"
+               class="relative bg-gradient-to-r from-blue-700 to-indigo-700 text-white p-6 flex items-center gap-6">
+          </div>
+
+          <button id="hero-prev"
+                  class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-2 rounded-full">
+            ◀
+          </button>
+
+          <button id="hero-next"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-2 rounded-full">
+            ▶
+          </button>
+
+          <div id="hero-indicators"
+               class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white card-radius shadow p-6">
+        <h3 class="font-semibold mb-4">Registrasi Peserta (Time-series)</h3>
+        <canvas id="chart-registrasi"></canvas>
+      </div>
+
+      <div class="bg-white card-radius shadow p-6">
+        <h3 class="font-semibold mb-4">Jumlah Peserta per Kategori</h3>
+        <canvas id="chart-kategori"></canvas>
+      </div>
+    </div>
+
+    <!-- FOOTER ACTIONS -->
+    <div class="bg-white card-radius shadow p-4 mt-6 flex items-center justify-between">
+      <div class="text-sm text-gray-600">Data saat ini: dummy. Nanti tinggal ganti fetch ke API.</div>
+
+      <div class="flex items-center gap-3">
+        <button id="refresh-dashboard"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Refresh</button>
+        <button id="download-csv"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Download CSV</button>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

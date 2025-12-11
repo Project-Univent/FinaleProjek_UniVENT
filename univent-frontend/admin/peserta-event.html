@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Peserta Event — Admin</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Shell + logic -->
+  <script src="../assets/js/admin/admin-shell.js" defer></script>
+  <script src="../assets/js/admin/admin-peserta.js" defer></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- SIDEBAR -->
+  <div id="sidebar-container"></div>
+
+  <!-- TOPBAR -->
+  <header id="admin-topbar"></header>
+
+  <!-- MAIN -->
+  <main id="admin-main" class="ml-64 pt-20 p-8 transition-all duration-300">
+
+    <a href="verifikasi-event.html" class="text-blue-600 underline text-sm">
+      ← Kembali
+    </a>
+
+    <h1 class="text-2xl font-semibold mt-3 mb-2">Daftar Peserta Event</h1>
+    <p class="text-gray-600 mb-6">Semua peserta yang terdaftar pada event ini.</p>
+
+    <!-- Card Event Title -->
+    <div class="bg-white p-4 rounded shadow mb-6">
+      <p class="font-medium text-gray-700">
+        Event: <span id="event-name">—</span>
+      </p>
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-white rounded shadow overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b bg-gray-100">
+            <th class="p-2 text-left">#</th>
+            <th class="p-2 text-left">Nama Peserta</th>
+            <th class="p-2 text-left">Email</th>
+            <th class="p-2 text-left">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="table-peserta">
+          <!-- JS inject -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+</body>
+</html>
