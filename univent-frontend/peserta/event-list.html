@@ -3,63 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Peserta - UniVENT</title>
+  <title>Browse Event - UniVENT</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- Sidebar + Shell -->
+  <script src="../assets/js/peserta/peserta-sidebar.js" defer></script>
+  <script src="../assets/js/peserta/peserta-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-<div class="flex h-screen">
-
-  <!-- SIDE BAR -->
+  <!-- Injected via JS -->
   <div id="sidebar-container"></div>
+  <header id="peserta-topbar"></header>
 
-  <!-- MAIN CONTENT AREA -->
-  <main class="flex-1 overflow-y-auto">
+  <!-- MAIN -->
+  <main id="peserta-main" class="p-6 space-y-10 transition-all duration-300">
 
-    <!-- NAVBAR ATAS -->
-    <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-      <div>
-        <span class="font-semibold">Selamat Datang USER123</span>
-        <p class="text-sm text-gray-500">Temukan dan daftarkan dirimu ke berbagai event kampus.</p>
-      </div>
+    <!-- HEADER -->
+    <section>
+      <h1 class="text-2xl font-bold">Browse Events</h1>
+      <p class="text-sm text-gray-500">Temukan berbagai event menarik</p>
+    </section>
 
-      <div class="flex items-center space-x-4">
-        <button class="text-gray-600 hover:text-gray-800 text-xl">🔔</button>
-
-        <div class="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center text-purple-700">
-          <span>👤</span>
+    <!-- HIGHLIGHT EVENT -->
+    <section>
+      <div class="relative w-full h-56 rounded-xl overflow-hidden shadow">
+        <img src="../assets/img/poster1.jpg"
+             class="w-full h-full object-cover">
+        <span class="absolute top-3 left-3 bg-blue-100 text-blue-700 px-3 py-1 text-sm rounded-full">
+          International
+        </span>
+        <div class="absolute bottom-4 left-4 text-white text-xl font-semibold drop-shadow-lg">
+          Tech Conference 2024
         </div>
       </div>
-    </header>
+    </section>
 
-    <!-- CONTENT WRAPPER -->
-    <div class="p-6">
-
-      <!-- HIGHLIGHT EVENT -->
-      <div class="mb-8">
-        <div class="relative w-full h-56 rounded-xl overflow-hidden shadow">
-          <img src="../assets/img/poster1.jpg"
-               class="w-full h-full object-cover">
-          <span class="absolute top-3 left-3 bg-blue-100 text-blue-700 px-3 py-1 text-sm rounded-full">International</span>
-          <div class="absolute bottom-4 left-4 text-white text-xl font-semibold drop-shadow-lg">
-            Tech Conference 2024
-          </div>
-        </div>
-      </div>
-
-      <!-- BROWSE EVENTS -->
-      <div class="mb-4">
-        <h2 class="text-xl font-semibold">Browse Events</h2>
-        <p class="text-gray-500 text-sm">Discover your events</p>
-      </div>
-
-      <!-- SEARCH + FILTER -->
+    <!-- SEARCH + FILTER -->
+    <section>
       <div class="flex items-center justify-between mb-6">
         <input type="text" placeholder="Search events..."
                class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
@@ -69,11 +56,13 @@
           <span>Filters</span>
         </button>
       </div>
+    </section>
 
-      <!-- EVENT CARDS GRID -->
+    <!-- EVENT GRID -->
+    <section>
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
-        <!-- EVENT CARD TEMPLATE -->
+        <!-- CARD 1 -->
         <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
           <div class="h-40 overflow-hidden">
             <img src="../assets/img/poster1.jpg" class="w-full h-full object-cover">
@@ -98,44 +87,86 @@
                class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Lihat Detail
             </a>
+
+            <a href="event-diikuti.html"
+              class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+              Daftar Acara
+            </a>
+
           </div>
         </div>
 
-        <!-- COPY CARD 5X UNTUK DEMO -->
+        <!-- CARD 2 -->
         <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
           <div class="h-40 overflow-hidden">
             <img src="../assets/img/poster2.jpg" class="w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <div class="text-gray-800 font-semibold text-lg">Summer Music Festival</div>
-            <div class="flex items-center text-gray-600 text-sm">📅 <span class="ml-2">2024-06-20</span></div>
-            <div class="flex items-center text-gray-600 text-sm">📍 <span class="ml-2">Austin, TX</span></div>
-            <div class="flex items-center text-gray-600 text-sm">👥 <span class="ml-2">2800 / 3000 attendees</span></div>
-            <a href="event-detail.html" class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg">Lihat Detail</a>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              📅 <span class="ml-2">2024-06-20</span>
+            </div>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              📍 <span class="ml-2">Austin, TX</span>
+            </div>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              👥 <span class="ml-2">2800 / 3000 attendees</span>
+            </div>
+
+            <a href="event-detail.html"
+               class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+              Lihat Detail
+            </a>
+
+            <a href="event-diikuti.html"
+              class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+              Daftar Acara
+            </a>
+
           </div>
         </div>
 
+        <!-- CARD 3 -->
         <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
           <div class="h-40 overflow-hidden">
             <img src="../assets/img/poster3.jpg" class="w-full h-full object-cover">
           </div>
+
           <div class="p-4 space-y-2">
             <div class="text-gray-800 font-semibold text-lg">Marketing Workshop</div>
-            <div class="flex items-center text-gray-600 text-sm">📅 <span class="ml-2">2024-02-10</span></div>
-            <div class="flex items-center text-gray-600 text-sm">📍 <span class="ml-2">New York, NY</span></div>
-            <div class="flex items-center text-gray-600 text-sm">👥 <span class="ml-2">120 / 150 attendees</span></div>
-            <a href="event-detail.html" class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg">Lihat Detail</a>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              📅 <span class="ml-2">2024-02-10</span>
+            </div>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              📍 <span class="ml-2">New York, NY</span>
+            </div>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              👥 <span class="ml-2">120 / 150 attendees</span>
+            </div>
+
+            <a href="event-detail.html"
+               class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+              Lihat Detail
+            </a>
+
+            <a href="event-diikuti.html"
+              class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+              Daftar Acara
+            </a>
+
           </div>
         </div>
 
       </div>
+    </section>
 
-    </div>
   </main>
-
-</div>
-
-<script src="../assets/js/peserta/peserta-sidebar.js"></script>
 
 </body>
 </html>

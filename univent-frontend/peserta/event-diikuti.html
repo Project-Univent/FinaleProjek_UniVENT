@@ -7,46 +7,36 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <!-- Inject sidebar + topbar -->
+  <script src="../assets/js/peserta/peserta-sidebar.js" defer></script>
+  <script src="../assets/js/peserta/peserta-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-<div class="flex h-screen">
-
-  <!-- SIDE BAR -->
+  <!-- injected via JS -->
   <div id="sidebar-container"></div>
+  <header id="peserta-topbar"></header>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 overflow-y-auto">
+  <!-- MAIN -->
+  <main id="peserta-main" class="p-6 space-y-10 transition-all duration-300">
 
-    <!-- NAVBAR -->
-    <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-      <h1 class="text-xl font-semibold">Event yang Kamu Ikuti</h1>
+    <!-- HEADER -->
+    <section>
+      <h1 class="text-2xl font-bold">Event yang Kamu Ikuti</h1>
+      <p class="text-gray-500 text-sm">Event yang telah kamu daftar dan dapatkan tiketnya.</p>
+    </section>
 
-      <div class="flex items-center space-x-4">
-        <button class="text-xl text-gray-600 hover:text-gray-800">🔔</button>
-
-        <div class="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center text-purple-700">
-          👤
-        </div>
-      </div>
-    </header>
-
-    <!-- CONTENT -->
-    <div class="p-6">
-
-      <h2 class="text-lg font-semibold mb-4">Daftar Event Diikuti</h2>
-      <p class="text-gray-500 text-sm mb-6">Event yang telah kamu daftar dan dapatkan tiketnya.</p>
-
-      <!-- EVENT CARDS -->
+    <!-- EVENT GRID -->
+    <section>
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
-        <!-- CARD EVENT -->
+        <!-- CARD EVENT 1 -->
         <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
           <div class="h-40 overflow-hidden relative">
             <img src="../assets/img/poster1.jpg" class="w-full h-full object-cover">
 
-            <!-- ICON REMINDER -->
             <button class="absolute top-3 right-3 bg-white/80 p-2 rounded-full shadow text-yellow-500 hover:bg-white">
               🔔
             </button>
@@ -65,16 +55,13 @@
               📍 <span class="ml-2">Aula FTI</span>
             </div>
 
-            <!-- STATUS SUDAH DAFTAR -->
             <p class="text-green-600 font-semibold text-sm mt-1">Sudah Terdaftar ✔</p>
 
-            <!-- DOWNLOAD TIKET -->
             <a href="#" 
                class="block text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
               Download Tiket
             </a>
 
-            <!-- LIHAT DETAIL -->
             <a href="event-detail.html"
                class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 mt-2">
               Lihat Detail
@@ -82,39 +69,45 @@
           </div>
         </div>
 
-        <!-- COPY CARD -->
+        <!-- CARD EVENT 2 -->
         <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
           <div class="h-40 overflow-hidden relative">
             <img src="../assets/img/poster2.jpg" class="w-full h-full object-cover">
+
             <button class="absolute top-3 right-3 bg-white/80 p-2 rounded-full shadow text-yellow-500 hover:bg-white">
               🔔
             </button>
           </div>
+
           <div class="p-4 space-y-2">
             <div class="text-gray-800 font-semibold text-lg">Summer Music Festival</div>
-            <div class="text-sm text-gray-600">📅 2024-06-20</div>
-            <div class="text-sm text-gray-600">📍 Lapangan Utama</div>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              📅 <span class="ml-2">2024-06-20</span>
+            </div>
+
+            <div class="flex items-center text-gray-600 text-sm">
+              📍 <span class="ml-2">Lapangan Utama</span>
+            </div>
+
             <p class="text-green-600 font-semibold text-sm mt-1">Sudah Terdaftar ✔</p>
 
-            <a href="#" class="block text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+            <a href="#" 
+               class="block text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
               Download Tiket
             </a>
 
-            <a href="event-detail.html" class="block text-center bg-blue-600 text-white py-2 rounded-lg mt-2">
+            <a href="event-detail.html"
+               class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 mt-2">
               Lihat Detail
             </a>
           </div>
         </div>
 
       </div>
-
-    </div>
+    </section>
 
   </main>
-
-</div>
-
-<script src="../assets/js/peserta/peserta-sidebar.js"></script>
 
 </body>
 </html>

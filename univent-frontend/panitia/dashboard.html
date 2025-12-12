@@ -9,68 +9,19 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 
-<body class="bg-gray-50 text-gray-800">
+<body class="theme-panitia">
 
-<div class="flex h-screen">
-
-  <!-- SIDEBAR BIRU (FINAL) -->
-  <aside class="w-64 bg-blue-600 text-white flex flex-col">
-    <div class="p-6 text-2xl font-semibold">UniVENT</div>
-
-    <nav id="panitiaNav" class="flex-1 px-4 space-y-2 text-blue-100">
-
-      <a href="dashboard.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>🏠</span>
-        <span>Dashboard</span>
-      </a>
-
-      <a href="acara-saya.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>📅</span>
-        <span>Acara Saya</span>
-      </a>
-
-      <a href="status-acara.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>📊</span>
-        <span>Status Acara</span>
-      </a>
-
-      <a href="buat-acara.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>➕</span>
-        <span>Buat Acara</span>
-      </a>
-
-    </nav>
-
-    <div class="p-4">
-      <a href="../autentikasi/login.html"
-        class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-white/10 text-red-200">
-        <span>🚪</span>
-        <span>Logout</span>
-      </a>
-    </div>
-  </aside>
-
+  <!-- SHELL PANITIA INJECT -->
+  <div id="sidebar-container"></div>
+  <header id="panitia-topbar"></header>
 
   <!-- MAIN CONTENT -->
-  <main class="flex-1 overflow-y-auto">
-
-    <!-- NAVBAR -->
-    <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
-      <h1 class="text-xl font-semibold">Dashboard Panitia</h1>
-
-      <div class="flex items-center space-x-4">
-        <button class="text-xl text-gray-600 hover:text-gray-800">🔔</button>
-
-        <div class="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center text-purple-700">
-          👤
-        </div>
-      </div>
-    </header>
-
-    <!-- CONTENT -->
+  <main id="panitia-main" class="ml-64 pt-20">
     <div class="p-6 space-y-10">
 
-      <!-- STATISTIK -->
+      <!-- ====================================================== -->
+      <!--                     STATISTIK ACARA                    -->
+      <!-- ====================================================== -->
       <section>
         <h2 class="text-lg font-semibold mb-3">Statistik Acara</h2>
 
@@ -94,15 +45,19 @@
         </div>
       </section>
 
-      <!-- TOMBOL BUAT ACARA -->
+      <!-- ====================================================== -->
+      <!--                  TOMBOL BUAT ACARA                     -->
+      <!-- ====================================================== -->
       <section>
         <a href="buat-acara.html"
-           class="block w-full sm:w-64 text-center bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700">
+          class="block w-full sm:w-64 text-center bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700">
           + Buat Acara Baru
         </a>
       </section>
 
-      <!-- EVENT TERBARU -->
+      <!-- ====================================================== -->
+      <!--                      ACARA TERBARU                     -->
+      <!-- ====================================================== -->
       <section>
         <h2 class="text-lg font-semibold mb-3">Acara Terbaru</h2>
 
@@ -110,6 +65,8 @@
 
           <!-- CARD ACARA -->
           <div class="bg-white rounded-xl shadow border overflow-hidden">
+
+            <!-- Gambar poster -->
             <img src="../assets/img/poster1.jpg" class="h-40 w-full object-cover">
 
             <div class="p-4 space-y-2">
@@ -118,7 +75,7 @@
               <p class="text-sm text-gray-600">📍 Aula FTI</p>
 
               <a href="acara-saya.html"
-                 class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
                 Kelola Acara
               </a>
             </div>
@@ -128,12 +85,9 @@
       </section>
 
     </div>
-
   </main>
 
-</div>
-
-<script src="../assets/js/panitia/panitia-sidebar.js"></script>
-
+  <!-- SHELL -->
+  <script src="../assets/js/panitia/panitia-shell.js"></script>
 </body>
 </html>
