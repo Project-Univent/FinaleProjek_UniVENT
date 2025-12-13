@@ -5,89 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Panitia - Univent</title>
 
-  <link rel="stylesheet" href="../assets/css/output.css" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <!-- Inject shell + sidebar -->
+  <script src="../assets/js/panitia/panitia-sidebar.js" defer></script>
+  <script src="../assets/js/panitia/panitia-shell.js" defer></script>
 </head>
 
-<body class="theme-panitia">
+<body class="bg-gray-50 text-gray-800">
 
-  <!-- SHELL PANITIA INJECT -->
+  <!-- INJECT OTOMATIS -->
   <div id="sidebar-container"></div>
   <header id="panitia-topbar"></header>
 
-  <!-- MAIN CONTENT -->
-  <main id="panitia-main" class="ml-64 pt-20">
-    <div class="p-6 space-y-10">
+  <!-- MAIN -->
+  <main id="panitia-main" class="p-6 space-y-10 transition-all duration-300">
 
-      <!-- ====================================================== -->
-      <!--                     STATISTIK ACARA                    -->
-      <!-- ====================================================== -->
-      <section>
-        <h2 class="text-lg font-semibold mb-3">Statistik Acara</h2>
+    <!-- STATISTIK -->
+    <section>
+      <h2 class="text-lg font-semibold mb-3">Statistik Acara</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-          <div class="bg-white shadow rounded-xl p-5">
-            <p class="text-gray-500 text-sm">Total Acara</p>
-            <p class="text-2xl font-bold">12</p>
-          </div>
-
-          <div class="bg-white shadow rounded-xl p-5">
-            <p class="text-gray-500 text-sm">Acara Berjalan</p>
-            <p class="text-2xl font-bold">3</p>
-          </div>
-
-          <div class="bg-white shadow rounded-xl p-5">
-            <p class="text-gray-500 text-sm">Peserta Terdaftar</p>
-            <p class="text-2xl font-bold">845</p>
-          </div>
-
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white shadow rounded-xl p-5">
+          <p class="text-gray-500 text-sm">Total Acara</p>
+          <p class="text-2xl font-bold">12</p>
         </div>
-      </section>
 
-      <!-- ====================================================== -->
-      <!--                  TOMBOL BUAT ACARA                     -->
-      <!-- ====================================================== -->
-      <section>
-        <a href="buat-acara.html"
-          class="block w-full sm:w-64 text-center bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700">
-          + Buat Acara Baru
-        </a>
-      </section>
-
-      <!-- ====================================================== -->
-      <!--                      ACARA TERBARU                     -->
-      <!-- ====================================================== -->
-      <section>
-        <h2 class="text-lg font-semibold mb-3">Acara Terbaru</h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-
-          <!-- CARD ACARA -->
-          <div class="bg-white rounded-xl shadow border overflow-hidden">
-
-            <!-- Gambar poster -->
-            <img src="../assets/img/poster1.jpg" class="h-40 w-full object-cover">
-
-            <div class="p-4 space-y-2">
-              <p class="text-lg font-semibold">Tech Conference 2024</p>
-              <p class="text-sm text-gray-600">📅 11 Maret 2024</p>
-              <p class="text-sm text-gray-600">📍 Aula FTI</p>
-
-              <a href="acara-saya.html"
-                class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-                Kelola Acara
-              </a>
-            </div>
-          </div>
-
+        <div class="bg-white shadow rounded-xl p-5">
+          <p class="text-gray-500 text-sm">Acara Berjalan</p>
+          <p class="text-2xl font-bold">3</p>
         </div>
-      </section>
 
-    </div>
+        <div class="bg-white shadow rounded-xl p-5">
+          <p class="text-gray-500 text-sm">Peserta Terdaftar</p>
+          <p class="text-2xl font-bold">845</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUTTON -->
+    <section>
+      <a href="buat-acara.html"
+        class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700">
+        + Buat Acara Baru
+      </a>
+    </section>
+
+    <!-- ACARA TERBARU -->
+    <section>
+      <h2 class="text-lg font-semibold mb-3">Acara Terbaru</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl shadow border overflow-hidden">
+          <img src="../assets/img/poster1.jpg" class="h-40 w-full object-cover">
+
+          <div class="p-4 space-y-2">
+            <p class="text-lg font-semibold">Tech Conference 2024</p>
+            <p class="text-sm text-gray-600">📅 11 Maret 2024</p>
+            <p class="text-sm text-gray-600">📍 Aula FTI</p>
+
+            <a href="acara-saya.html"
+              class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+              Kelola Acara
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- SHELL -->
-  <script src="../assets/js/panitia/panitia-shell.js"></script>
 </body>
 </html>

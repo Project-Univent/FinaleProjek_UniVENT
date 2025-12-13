@@ -2,6 +2,8 @@
 // expects: <div id="sidebar-container"></div>, <header id="admin-topbar"></header>, <main id="admin-main">
 
 document.addEventListener("DOMContentLoaded", () => {
+  const TOPBAR_COLOR = "#0F4A85";
+
   const SIDEBAR_W = "w-64";       // sidebar width tetap
   const MAIN_ML = "ml-64";        // main content margin
   const TOP_LEFT = "left-64";     // topbar posisi tetap
@@ -21,27 +23,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function activeClass(filename) {
     return currentFile === filename
-      ? "bg-blue-900 text-white font-semibold"
-      : "hover:bg-blue-800 text-white/90";
+      ? "bg-white/20 text-white font-semibold"
+      : "hover:bg-white/10 text-white/90";
   }
+
 
   // -----------------------
   // SIDEBAR FIXED TANPA COLLAPSE
   // -----------------------
   sidebarContainer.innerHTML = `
     <aside id="admin-sidebar"
-      class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#145AAD] text-white flex flex-col shadow-lg transition-all duration-300 z-50">
+      class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[${TOPBAR_COLOR}] text-white flex flex-col shadow-lg transition-all duration-300 z-50">
 
       <div class="px-5 py-4 border-b border-blue-400">
         <div class="flex items-center gap-3">
 
-          <div class="w-10 h-10 rounded bg-white/10 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white"
-              viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                d="M12 6v6l4 2"/>
-            </svg>
+          <div class="flex items-center gap-3">
+            <!-- LOGO ICON -->
+            <img
+              src="../assets/img/logo.png"
+              alt="UniVENT Icon"
+              class="w-10 h-10 object-contain"
+            />
           </div>
+
 
           <div>
             <div class="text-sm font-bold">UniVENT</div>
@@ -81,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------
   topbar.innerHTML = `
     <div id="topbar-inner"
-      class="fixed top-0 ${TOP_LEFT} right-0 h-16 bg-[#0F4A85] text-white shadow
+      class="fixed top-0 ${TOP_LEFT} right-0 h-16 bg-[${TOPBAR_COLOR}] text-white shadow
       flex items-center justify-between px-6 transition-all duration-300 z-40">
 
       <!-- LEFT -->

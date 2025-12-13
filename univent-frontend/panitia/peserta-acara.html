@@ -5,89 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Peserta Acara - Panitia</title>
 
-  <!-- Tailwind Build -->
-  <link rel="stylesheet" href="../assets/css/output.css">
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- Inject shell + sidebar -->
+  <script src="../assets/js/panitia/panitia-sidebar.js" defer></script>
+  <script src="../assets/js/panitia/panitia-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-<div class="flex h-screen">
+  <!-- INJECT -->
+  <div id="sidebar-container"></div>
+  <header id="panitia-topbar"></header>
 
-  <!-- SIDEBAR BIRU (FINAL) -->
-  <aside class="w-64 bg-blue-600 text-white flex flex-col">
-    <div class="p-6 text-2xl font-semibold">UniVENT</div>
+  <!-- MAIN -->
+  <main id="panitia-main" class="p-6 transition-all duration-300">
 
-    <nav id="panitiaNav" class="flex-1 px-4 space-y-2 text-blue-100">
+    <section class="max-w-4xl mx-auto space-y-6">
 
-      <a href="dashboard.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>🏠</span>
-        <span>Dashboard</span>
-      </a>
-
-      <a href="acara-saya.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>📅</span>
-        <span>Acara Saya</span>
-      </a>
-
-      <a href="status-acara.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>📊</span>
-        <span>Status Acara</span>
-      </a>
-
-      <a href="buat-acara.html" class="nav-link flex items-center space-x-3 px-3 py-2 hover:bg-white/10 rounded-lg">
-        <span>➕</span>
-        <span>Buat Acara</span>
-      </a>
-
-    </nav>
-
-    <div class="p-4">
-      <a href="../autentikasi/login.html"
-        class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-white/10 text-red-200">
-        <span>🚪</span>
-        <span>Logout</span>
-      </a>
-    </div>
-  </aside>
-
-
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 overflow-y-auto">
-
-    <!-- NAVBAR -->
-    <header class="bg-white border-b px-6 py-4 flex justify-between items-center">
-      <h1 class="text-xl font-semibold">Peserta Acara</h1>
-
-      <div class="flex items-center space-x-4">
-        <button class="text-xl text-gray-600 hover:text-gray-800">🔔</button>
-        <div class="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center text-purple-700">
-          👤
-        </div>
-      </div>
-    </header>
-
-    <!-- CONTENT -->
-    <div class="p-6 max-w-4xl mx-auto space-y-6">
-
-      <!-- INFO ACARA -->
       <div>
-        <h2 class="text-xl font-semibold">Tech Conference 2024</h2>
-        <p class="text-gray-600 text-sm mt-1">Total Peserta: 120</p>
+        <h1 class="text-2xl font-semibold">Peserta Acara</h1>
+        <p class="text-sm text-gray-500">Tech Conference 2024 · Total 120 peserta</p>
       </div>
 
-      <!-- SEARCH BAR -->
       <div>
-        <input 
+        <input
           type="text"
           placeholder="Cari peserta berdasarkan nama atau email..."
-          class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-400 outline-none"
-        >
+          class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-400 outline-none">
       </div>
 
-      <!-- TABLE PESERTA -->
       <div class="bg-white shadow rounded-xl overflow-hidden border">
-
         <table class="w-full text-left">
           <thead class="bg-gray-100 border-b">
             <tr>
@@ -95,39 +45,26 @@
               <th class="py-3 px-4 font-medium text-gray-700">Email</th>
             </tr>
           </thead>
-
           <tbody>
-
-            <!-- ROW 1 -->
             <tr class="border-b hover:bg-gray-50">
               <td class="py-3 px-4">Andi Pratama</td>
               <td class="py-3 px-4">andi@example.com</td>
             </tr>
-
-            <!-- ROW 2 -->
             <tr class="border-b hover:bg-gray-50">
               <td class="py-3 px-4">Bunga Sari</td>
               <td class="py-3 px-4">bunga@example.com</td>
             </tr>
-
-            <!-- ROW 3 -->
             <tr class="border-b hover:bg-gray-50">
               <td class="py-3 px-4">Dewi Lestari</td>
               <td class="py-3 px-4">dewi@example.com</td>
             </tr>
-
           </tbody>
         </table>
-
       </div>
 
-    </div>
+    </section>
 
   </main>
-
-</div>
-
-<script src="../assets/js/panitia/panitia-sidebar.js"></script>
 
 </body>
 </html>

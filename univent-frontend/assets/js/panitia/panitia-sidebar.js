@@ -1,18 +1,22 @@
+// panitia-sidebar.js
 document.addEventListener("DOMContentLoaded", () => {
-  const sidebar = document.getElementById("panitia-sidebar");
+  const sidebar = document.getElementById("sidebar-container");
   if (!sidebar) return;
 
-  const currentFile =
-    window.location.pathname.split("/").pop().split("?")[0] || "dashboard.html";
+  const currentPage = window.location.pathname
+    .split("/")
+    .pop()
+    .split("?")[0];
 
-  function activeClass(page) {
-    return currentFile === page
-      ? "bg-blue-900 text-white font-semibold border-l-4 border-white pl-6"
+  function isActive(page) {
+    return currentPage === page
+      ? "bg-blue-900 text-white font-semibold"
       : "hover:bg-blue-800 text-white/90";
   }
 
   sidebar.innerHTML = `
-    <div class="fixed top-0 left-0 h-screen w-64 bg-[#145AAD] text-white flex flex-col shadow-lg z-50">
+    <aside id="panitia-sidebar"
+      class="fixed top-0 left-0 h-screen w-64 bg-[#145AAD] text-white flex flex-col shadow-lg z-50">
 
       <div class="px-5 py-4 border-b border-blue-400">
         <div class="flex items-center gap-3">
@@ -20,42 +24,40 @@ document.addEventListener("DOMContentLoaded", () => {
           <div>
             <div class="text-sm font-bold">UniVENT</div>
             <div class="text-sm -mt-1 font-semibold">Panitia</div>
-            <div class="text-xs text-white/80 mt-1">Sistem Manajemen Event</div>
+            <div class="text-xs text-white/80 mt-1">Manajemen Event</div>
           </div>
         </div>
       </div>
 
       <nav class="flex-1 overflow-auto py-4">
         <ul class="px-2 space-y-1">
-
           <li>
             <a href="dashboard.html"
-              class="flex items-center gap-3 p-3 rounded ${activeClass("dashboard.html")}">
+              class="flex items-center gap-3 p-3 rounded ${isActive("dashboard.html")}">
               🏠 Dashboard
             </a>
           </li>
 
           <li>
             <a href="acara-saya.html"
-              class="flex items-center gap-3 p-3 rounded ${activeClass("acara-saya.html")}">
+              class="flex items-center gap-3 p-3 rounded ${isActive("acara-saya.html")}">
               📅 Acara Saya
             </a>
           </li>
 
           <li>
             <a href="status-acara.html"
-              class="flex items-center gap-3 p-3 rounded ${activeClass("status-acara.html")}">
+              class="flex items-center gap-3 p-3 rounded ${isActive("status-acara.html")}">
               📊 Status Acara
             </a>
           </li>
 
           <li>
             <a href="buat-acara.html"
-              class="flex items-center gap-3 p-3 rounded ${activeClass("buat-acara.html")}">
+              class="flex items-center gap-3 p-3 rounded ${isActive("buat-acara.html")}">
               ➕ Buat Acara
             </a>
           </li>
-
         </ul>
       </nav>
 
@@ -65,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
           Logout
         </a>
       </div>
-
-    </div>
+    </aside>
   `;
 });
