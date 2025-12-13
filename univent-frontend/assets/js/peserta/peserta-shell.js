@@ -1,5 +1,5 @@
 // peserta-shell.js
-// expects: <div id="sidebar-container"></div>, <header id="peserta-topbar"></header>, <main id="peserta-main"></main>
+// tugasnya: inject SIDEBAR + TOPBAR + offset layout peserta
 
 document.addEventListener("DOMContentLoaded", () => {
   const SIDEBAR_W = "w-64";
@@ -15,54 +15,95 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const currentFile =
-    window.location.pathname.split("/").pop().split("?")[0] || "dashboard.html";
+  // ambil nama file aktif
+  const currentPage = (() => {
+    let file = window.location.pathname.split("/").pop() || "";
+    return file.split("?")[0].split("#")[0];
+  })();
 
-  function activeClass(filename) {
-    return currentFile === filename
-      ? "bg-blue-900 text-white font-semibold"
-      : "hover:bg-blue-800 text-white/90";
+  function isActive(page) {
+    return currentPage === page
+      ? "bg-white/25 text-white font-semibold"
+      : "hover:bg-white/15 text-white/90";
   }
 
-  // inject sidebar (if peserta-sidebar.js not used separately, this is fallback)
-  // but keep sidebar-container empty if peserta-sidebar.js will populate it.
-  if (!document.getElementById("peserta-sidebar")) {
-    sidebarContainer.innerHTML = `
-      <aside id="peserta-sidebar"
-        class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#145AAD] text-white flex flex-col shadow-lg transition-all duration-300 z-50">
-        <div class="px-5 py-4 border-b border-blue-400">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded bg-white/10 flex items-center justify-center">P</div>
-            <div>
-              <div class="text-sm font-bold">UniVENT</div>
-              <div class="text-sm -mt-1 font-semibold">Peserta</div>
-            </div>
+  /* ======================
+     SIDEBAR
+  ====================== */
+  sidebarContainer.innerHTML = `
+    <aside id="peserta-sidebar"
+      class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#265DD5]
+             text-white flex flex-col shadow-lg z-50">
+
+      <!-- BRAND -->
+      <div class="px-5 py-4 border-b border-white/20">
+        <div class="flex items-center gap-3">
+
+          <img
+            src="../assets/img/logo.png"
+            alt="UniVENT Icon"
+            class="w-10 h-10 object-contain"
+          />
+
+          <div class="flex flex-col leading-snug">
+            <div class="text-sm font-bold tracking-wide">UniVENT</div>
+            <div class="text-sm font-semibold -mt-0.5">Peserta</div>
+            <div class="text-xs text-white/80">Portal Event Kampus</div>
           </div>
-        </div>
-        <nav class="flex-1 overflow-auto py-4">
-          <ul class="px-2 space-y-1">
-            <li><a href="dashboard.html" class="flex items-center gap-3 p-3 rounded ${activeClass("dashboard.html")}">🏠 Dashboard</a></li>
-            <li><a href="event-list.html" class="flex items-center gap-3 p-3 rounded ${activeClass("event-list.html")}">🎟️ Lihat Acara</a></li>
-            <li><a href="event-diikuti.html" class="flex items-center gap-3 p-3 rounded ${activeClass("event-diikuti.html")}">🎟️ Acara Diikuti</a></li>
-          </ul>
-        </nav>
-        <div class="p-4 border-t border-blue-400">
-          <a href="../logout.html" class="block text-center bg-red-600 hover:bg-red-700 p-2 rounded">Logout</a>
-        </div>
-      </aside>
-    `;
-  }
 
-  // TOPBAR
+        </div>
+      </div>
+
+      <!-- MENU -->
+      <nav class="flex-1 overflow-auto py-4">
+        <ul class="px-2 space-y-1">
+          <li>
+            <a href="dashboard.html"
+              class="flex items-center gap-3 p-3 rounded transition-colors duration-200 ${isActive("dashboard.html")}">
+              🏠 Dashboard
+            </a>
+          </li>
+
+          <li>
+            <a href="event-list.html"
+              class="flex items-center gap-3 p-3 rounded transition-colors duration-200 ${isActive("event-list.html")}">
+              📚 Lihat Acara
+            </a>
+          </li>
+
+          <li>
+            <a href="event-diikuti.html"
+              class="flex items-center gap-3 p-3 rounded transition-colors duration-200 ${isActive("event-diikuti.html")}">
+              🎟️ Acara Diikuti
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- LOGOUT -->
+      <div class="p-4 border-t border-white/20">
+        <a href="../logout.html"
+          class="block text-center bg-red-600 hover:bg-red-700 p-2 rounded">
+          Logout
+        </a>
+      </div>
+    </aside>
+  `;
+
+  /* ======================
+     TOPBAR
+  ====================== */
   topbar.innerHTML = `
     <div id="topbar-inner"
-      class="fixed top-0 ${TOP_LEFT} right-0 h-16 bg-[#0F4A85] text-white shadow
-      flex items-center justify-between px-6 transition-all duration-300 z-40">
+      class="fixed top-0 ${TOP_LEFT} right-0 h-16 bg-[#255FE0] text-white shadow
+             flex items-center justify-between px-6 z-40">
 
-      <div class="flex items-center gap-4">
-        <div>
-          <div id="page-title" class="text-lg font-semibold">Selamat Datang, USER123 👋</div>
-          <div id="page-sub" class="text-xs text-white/80">Temukan dan daftarkan dirimu ke berbagai event kampus.</div>
+      <div>
+        <div class="text-lg font-semibold">
+          Selamat Datang, USER123 👋
+        </div>
+        <div class="text-xs text-white/80">
+          Temukan dan daftarkan dirimu ke berbagai event kampus.
         </div>
       </div>
 
@@ -82,7 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `;
 
-  // apply main offsets
+  /* ======================
+     MAIN OFFSET
+  ====================== */
   main.classList.add(MAIN_ML);
   main.classList.add("pt-20");
 });
