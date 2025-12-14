@@ -1,6 +1,6 @@
 <?php
 $required_role = 'admin';
-require "../auth/cek_login.php";
+require "../autentikasi/cek_login.php";
 ?>
 
 <!doctype html>

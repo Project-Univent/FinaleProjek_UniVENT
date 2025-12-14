@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta';
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -7,6 +12,13 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
 
   <!-- Inject sidebar + topbar -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>
@@ -61,7 +73,7 @@
               Download Tiket
             </a>
 
-            <a href="event-detail.html"
+            <a href="event-detail.php"
                class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 mt-2">
               Lihat Detail
             </a>
@@ -96,7 +108,7 @@
               Download Tiket
             </a>
 
-            <a href="event-detail.html"
+            <a href="event-detail.php"
                class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 mt-2">
               Lihat Detail
             </a>

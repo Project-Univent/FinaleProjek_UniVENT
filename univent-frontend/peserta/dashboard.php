@@ -1,6 +1,6 @@
 <?php
 $required_role = 'peserta';
-require "../auth/cek_login.php";
+require "../autentikasi/cek_login.php";
 ?>
 
 <!doctype html>
@@ -72,7 +72,7 @@ require "../auth/cek_login.php";
             <div class="text-sm text-gray-600">📅 10 Februari 2024</div>
             <div class="text-sm text-gray-600">📍 Gedung FTI Lt. 3</div>
 
-            <a href="event-detail.html"
+            <a href="event-detail.php"
                class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Lihat Detail
             </a>
@@ -86,7 +86,7 @@ require "../auth/cek_login.php";
             <div class="font-semibold text-lg">UI/UX Seminar 2024</div>
             <div class="text-sm text-gray-600">📅 21 Mei 2024</div>
             <div class="text-sm text-gray-600">📍 Aula Perpustakaan</div>
-            <a href="event-detail.html"
+            <a href="event-detail.php"
                class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Lihat Detail
             </a>

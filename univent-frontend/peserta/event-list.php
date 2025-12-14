@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta';
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -10,6 +15,13 @@
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
 
   <!-- Sidebar + Shell -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>
@@ -82,12 +94,12 @@
               👥 <span class="ml-2">450 / 500 attendees</span>
             </div>
 
-            <a href="event-detail.html"
+            <a href="event-detail.php"
                class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Lihat Detail
             </a>
 
-            <a href="event-diikuti.html"
+            <a href="event-diikuti.php"
               class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
               Daftar Acara
             </a>
@@ -115,12 +127,12 @@
               👥 <span class="ml-2">2800 / 3000 attendees</span>
             </div>
 
-            <a href="event-detail.html"
+            <a href="event-detail.php"
                class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Lihat Detail
             </a>
 
-            <a href="event-diikuti.html"
+            <a href="event-diikuti.php"
               class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
               Daftar Acara
             </a>
@@ -149,12 +161,12 @@
               👥 <span class="ml-2">120 / 150 attendees</span>
             </div>
 
-            <a href="event-detail.html"
+            <a href="event-detail.php"
                class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Lihat Detail
             </a>
 
-            <a href="event-diikuti.html"
+            <a href="event-diikuti.php"
               class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
               Daftar Acara
             </a>

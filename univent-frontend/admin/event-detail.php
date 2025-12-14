@@ -13,6 +13,13 @@ require "../autentikasi/cek_login.php";
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
+
   <!-- Shell -->
   <script src="../assets/js/admin/admin-shell.js" defer></script>
   <script src="../assets/js/admin/admin-event-detail.js" defer></script>

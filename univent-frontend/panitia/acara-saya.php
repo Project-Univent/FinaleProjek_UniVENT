@@ -1,5 +1,5 @@
 <?php
-$required_role = 'peserta'; // sesuai folder
+$required_role = 'panitia'; // sesuai folder
 require "../autentikasi/cek_login.php";
 ?>
 
@@ -13,6 +13,14 @@ require "../autentikasi/cek_login.php";
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
+
 
   <!-- Inject sidebar + topbar -->
   <script src="../assets/js/panitia/panitia-shell.js" defer></script>

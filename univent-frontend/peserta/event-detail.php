@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta';
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -7,6 +12,13 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
 
   <!-- Inject sidebar + topbar + layout offset -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>
@@ -85,7 +97,7 @@
 
     <!-- TOMBOL DAFTAR -->
     <div>
-      <a href="event-diikuti.html"
+      <a href="event-diikuti.php"
          class="block text-center bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700">
         Daftar Event
       </a>
@@ -110,7 +122,7 @@
 
     <!-- LINK KEMBALI -->
     <div class="pt-4">
-      <a href="event-list.html" class="text-blue-600 hover:underline">
+      <a href="event-list.php" class="text-blue-600 hover:underline">
         ← Kembali ke Lihat Event
       </a>
     </div>
