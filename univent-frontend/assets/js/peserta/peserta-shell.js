@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
       </nav>
 
       <div class="p-4 border-t border-white/20">
-        <a href="../auth/logout.php"
+        <a href="../autentikasi/logout.php"
           class="block text-center bg-red-600 hover:bg-red-700 p-2 rounded">
           Logout
         </a>

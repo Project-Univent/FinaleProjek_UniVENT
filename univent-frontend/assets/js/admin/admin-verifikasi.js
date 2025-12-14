@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // EVENT HANDLERS
   window.lihatDetail = function(id) {
-    window.location.href = "event-detail.html?id=" + id;
+    window.location.href = "event-detail.php?id=" + id;
   };
 
   window.verifikasiEvent = function(id) {

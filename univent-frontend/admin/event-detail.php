@@ -1,3 +1,8 @@
+<?php
+$required_role = 'admin';
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -24,7 +29,7 @@
   <!-- MAIN WRAPPER HARUS ADA -->
   <main id="admin-main" class="ml-64 pt-20 p-8 transition-all duration-300">
 
-    <a href="verifikasi-event.html" class="text-blue-600 underline text-sm">
+    <a href="verifikasi-event.php" class="text-blue-600 underline text-sm">
       ← Kembali ke Verifikasi
     </a>
 

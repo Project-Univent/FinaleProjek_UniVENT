@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event Handlers
   window.lihatDetail = (id) =>
-    (location.href = "event-detail.html?id=" + id);
+    (location.href = "event-detail.php?id=" + id);
 
   window.hapusEvent = (id) => {
     if (confirm("Yakin ingin menghapus event ini?")) {

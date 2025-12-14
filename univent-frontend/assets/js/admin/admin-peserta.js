@@ -45,6 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handler klik detail
   window.lihatDetailPeserta = function(id) {
     alert("Detail peserta ID: " + id + " (dummy)");
-    // nanti redirect: window.location.href = "peserta-detail.html?id=" + id;
+
   };
 });

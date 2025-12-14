@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Tombol aksi
   document.getElementById("btn-lihat-peserta").onclick = () => {
-    window.location.href = "peserta-event.html?event=" + eventId;
+    window.location.href = "peserta-event.php?event=" + eventId;
   };
 
   document.getElementById("btn-verifikasi").onclick = () => {

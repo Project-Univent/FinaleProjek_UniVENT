@@ -121,9 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
     autoplay = setInterval(()=> showSlide((currentSlide+1)%slideEls.length),4000);
   }
 
-  // hero detail buttons open lihat-event.html (dummy)
   document.querySelectorAll('.hero-detail-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=> window.location.href='lihat-event.html');
+    btn.addEventListener('click', ()=> window.location.href='lihat-event.php');
   });
 
   // --- CHARTS (Chart.js) ---
