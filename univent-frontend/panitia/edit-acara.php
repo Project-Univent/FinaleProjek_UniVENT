@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta'; // sesuai folder
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -24,7 +29,7 @@
 
     <section class="max-w-3xl mx-auto space-y-6">
 
-      <a href="status-acara.html"
+      <a href="status-acara.php"
         class="inline-flex items-center gap-2 text-sm text-[#1B5FA7] hover:underline mb-4">
         ← Kembali ke Status Acara
       </a>

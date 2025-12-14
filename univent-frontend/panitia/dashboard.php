@@ -58,7 +58,7 @@ require "../auth/cek_login.php";
 
     <!-- BUTTON -->
     <section>
-      <a href="buat-acara.html"
+      <a href="buat-acara.php"
         class="inline-block bg-[#2B77D1] text-white px-6 py-3 rounded-xl font-semibold
               hover:bg-[#2566B8] transition-colors duration-200">
         + Buat Acara Baru
@@ -78,7 +78,7 @@ require "../auth/cek_login.php";
             <p class="text-sm text-gray-600">📅 11 Maret 2024</p>
             <p class="text-sm text-gray-600">📍 Aula FTI</p>
 
-            <a href="acara-saya.html"
+            <a href="acara-saya.php"
               class="block text-center bg-[#2B77D1] text-white py-2 rounded-lg
                     hover:bg-[#2566B8] transition-colors duration-200">
               Kelola Acara

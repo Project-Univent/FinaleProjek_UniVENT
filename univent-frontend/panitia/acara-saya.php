@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta'; // sesuai folder
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -39,12 +44,12 @@
           <p class="text-sm text-gray-600">📍 Aula FTI</p>
           <p class="text-sm font-semibold text-green-600">Status: Berjalan</p>
 
-          <a href="edit-acara.html"
+          <a href="edit-acara.php"
             class="block text-center bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-200">
             Edit Acara
           </a>
 
-          <a href="peserta-acara.html"
+          <a href="peserta-acara.php"
             class="block text-center bg-[#2B77D1] text-white py-2 rounded-lg hover:bg-[#2566B8] transition-colors duration-200">
             Lihat Peserta
           </a>

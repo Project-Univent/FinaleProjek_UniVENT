@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta'; // sesuai folder
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>

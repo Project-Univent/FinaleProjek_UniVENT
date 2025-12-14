@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta'; // sesuai folder
+require "../autentikasi/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -42,7 +47,7 @@
             </span>
             <p class="text-lg font-semibold">Workshop UI/UX 2024</p>
             <p class="text-sm text-gray-600">Menunggu verifikasi admin</p>
-            <a href="edit-acara.html"
+            <a href="edit-acara.php"
               class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Edit Acara
             </a>
@@ -58,7 +63,7 @@
             </span>
             <p class="text-lg font-semibold">Seminar Cybersecurity</p>
             <p class="text-sm text-gray-600">Poster tidak sesuai ketentuan</p>
-            <a href="edit-acara.html"
+            <a href="edit-acara.php"
               class="block text-center bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">
               Revisi Acara
             </a>
@@ -74,7 +79,7 @@
             </span>
             <p class="text-lg font-semibold">Tech Conference 2024</p>
             <p class="text-sm text-gray-600">Acara telah disetujui admin</p>
-            <a href="acara-saya.html"
+            <a href="acara-saya.php"
               class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
               Lihat di Acara Saya
             </a>
