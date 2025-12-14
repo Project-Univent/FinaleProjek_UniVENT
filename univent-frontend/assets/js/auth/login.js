@@ -1,56 +1,63 @@
-const form = document.getElementById("loginForm");
-const email = document.getElementById("email");
-const emailError = document.getElementById("emailError");
+document.addEventListener("DOMContentLoaded", () => {
 
-// define password vars BEFORE using them
-const password = document.getElementById("password");
-const passwordError = document.getElementById("password_error");
+  const form = document.getElementById("loginForm");
+  const email = document.getElementById("email");
+  const emailError = document.getElementById("emailError");
+  const password = document.getElementById("password");
+  const passwordError = document.getElementById("password_error");
 
-function validEmail(str) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
-}
+  const togglePassword = document.getElementById("togglePassword");
+  const eyeOpen = document.getElementById("eyeOpen");
+  const eyeClosed = document.getElementById("eyeClosed");
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+  // === STATE AWAL (WAJIB) ===
+  emailError.classList.add("hidden");
+  passwordError.classList.add("hidden");
+  password.type = "password";
+  eyeOpen.classList.add("hidden");
+  eyeClosed.classList.remove("hidden");
 
-  let valid = true;
-
-  // INVALID EMAIL
-  if (!validEmail(email.value.trim())) {
-    emailError.classList.remove("hidden");
-    email.classList.add("border-red-300");
-    valid = false;
-  } else {
-    emailError.classList.add("hidden");
-    email.classList.remove("border-red-300");
+  function validEmail(val) {
+    if (!val.includes("@") || !val.includes(".")) return false;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
   }
 
-  // PASSWORD EMPTY
-  if (password.value.trim() === "") {
-    passwordError.classList.remove("hidden");
-    password.classList.add("border-red-300");
-    valid = false;
-  } else {
-    passwordError.classList.add("hidden");
-    password.classList.remove("border-red-300");
-  }
+  // === SUBMIT ===
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let valid = true;
 
-  if (!valid) return;
+    // EMAIL
+    if (!validEmail(email.value.trim())) {
+      emailError.classList.remove("hidden");
+      email.classList.add("border-red-400");
+      valid = false;
+    } else {
+      emailError.classList.add("hidden");
+      email.classList.remove("border-red-400");
+    }
 
-  alert("Login valid! Siap connect ke backend.");
-});
+    // PASSWORD
+    if (password.value.trim() === "") {
+      passwordError.classList.remove("hidden");
+      password.classList.add("border-red-400");
+      valid = false;
+    } else {
+      passwordError.classList.add("hidden");
+      password.classList.remove("border-red-400");
+    }
 
+    if (!valid) return;
 
-// === PASSWORD TOGGLE ===
+    alert("Login valid. Tinggal connect backend.");
+  });
 
-const togglePassword = document.getElementById("togglePassword");
-const eyeOpen = document.getElementById("eyeOpen");
-const eyeClosed = document.getElementById("eyeClosed");
+  // === TOGGLE PASSWORD ===
+  togglePassword.addEventListener("click", () => {
+    const isHidden = password.type === "password";
+    password.type = isHidden ? "text" : "password";
+    eyeOpen.classList.toggle("hidden", !isHidden);
+    eyeClosed.classList.toggle("hidden", isHidden);
+  });
 
-togglePassword.addEventListener("click", () => {
-  const show = password.getAttribute("type") === "password";
-  password.setAttribute("type", show ? "text" : "password");
-
-  eyeOpen.classList.toggle("hidden", !show);
-  eyeClosed.classList.toggle("hidden", show);
 });

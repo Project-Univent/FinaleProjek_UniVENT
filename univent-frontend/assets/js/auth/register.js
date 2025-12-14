@@ -1,101 +1,79 @@
-// FORM ELEMENT
-const registerForm = document.getElementById("registerForm");
+document.addEventListener("DOMContentLoaded", () => {
 
-const fullname = document.getElementById("fullname");
-const fullnameError = document.getElementById("fullnameError");
+  const form = document.getElementById("registerForm");
 
-const email = document.getElementById("email");
-const emailError = document.getElementById("emailError");
+  const fullname = document.getElementById("fullname");
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  const confirmPassword = document.getElementById("confirmPassword");
 
-const password = document.getElementById("password");
-const passwordError = document.getElementById("passwordError");
+  const fullnameError = document.getElementById("fullnameError");
+  const emailError = document.getElementById("emailError");
+  const passwordError = document.getElementById("passwordError");
+  const confirmPasswordError = document.getElementById("confirmPasswordError");
 
-const confirmPassword = document.getElementById("confirmPassword");
-const confirmPasswordError = document.getElementById("confirmPasswordError");
+  const togglePassword = document.getElementById("togglePassword");
+  const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
 
-// EYE ICONS
-const togglePassword = document.getElementById("togglePassword");
-const eyeOpen = document.getElementById("eyeOpen");
-const eyeClosed = document.getElementById("eyeClosed");
+  const eyeOpen = document.getElementById("eyeOpen");
+  const eyeClosed = document.getElementById("eyeClosed");
+  const eyeOpen2 = document.getElementById("eyeOpen2");
+  const eyeClosed2 = document.getElementById("eyeClosed2");
 
-const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
-const eyeOpen2 = document.getElementById("eyeOpen2");
-const eyeClosed2 = document.getElementById("eyeClosed2");
-
-// EMAIL CHECK
-function validEmail(str) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
-}
-
-// RESET STYLE
-function resetError(input, errorText) {
-  input.classList.remove("border-red-300");
-  input.classList.add("border-gray-300");
-  errorText.classList.add("hidden");
-}
-
-// SET ERROR
-function setError(input, errorText) {
-  input.classList.remove("border-gray-300");
-  input.classList.add("border-red-300");
-  errorText.classList.remove("hidden");
-}
-
-// TOGGLE PASSWORD
-togglePassword.addEventListener("click", () => {
-  const type = password.type === "password" ? "text" : "password";
-  password.type = type;
-  eyeClosed.classList.toggle("hidden");
-  eyeOpen.classList.toggle("hidden");
-});
-
-// TOGGLE CONFIRM PASSWORD
-toggleConfirmPassword.addEventListener("click", () => {
-  const type = confirmPassword.type === "password" ? "text" : "password";
-  confirmPassword.type = type;
-  eyeClosed2.classList.toggle("hidden");
-  eyeOpen2.classList.toggle("hidden");
-});
-
-// SUBMIT CHECK
-registerForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  let valid = true;
-
-  // FULLNAME
-  if (fullname.value.trim() === "") {
-    setError(fullname, fullnameError);
-    valid = false;
-  } else {
-    resetError(fullname, fullnameError);
+  function validEmail(val) {
+    if (!val.includes("@") || !val.includes(".")) return false;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
   }
 
-  // EMAIL
-  if (!validEmail(email.value.trim())) {
-    setError(email, emailError);
-    valid = false;
-  } else {
-    resetError(email, emailError);
-  }
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let valid = true;
 
-  // PASSWORD
-  if (password.value.length < 6) {
-    setError(password, passwordError);
-    valid = false;
-  } else {
-    resetError(password, passwordError);
-  }
+    if (fullname.value.trim() === "") {
+      fullnameError.classList.remove("hidden");
+      valid = false;
+    } else {
+      fullnameError.classList.add("hidden");
+    }
 
-  // CONFIRM PASSWORD
-  if (confirmPassword.value !== password.value || confirmPassword.value === "") {
-    setError(confirmPassword, confirmPasswordError);
-    valid = false;
-  } else {
-    resetError(confirmPassword, confirmPasswordError);
-  }
+    if (!validEmail(email.value.trim())) {
+      emailError.classList.remove("hidden");
+      valid = false;
+    } else {
+      emailError.classList.add("hidden");
+    }
 
-  if (!valid) return;
+    if (password.value.length < 6) {
+      passwordError.classList.remove("hidden");
+      valid = false;
+    } else {
+      passwordError.classList.add("hidden");
+    }
 
-  alert("Registrasi valid! Siap connect ke backend.");
+    if (confirmPassword.value !== password.value) {
+      confirmPasswordError.classList.remove("hidden");
+      valid = false;
+    } else {
+      confirmPasswordError.classList.add("hidden");
+    }
+
+    if (!valid) return;
+
+    alert("Register valid. Tinggal connect backend.");
+  });
+
+  togglePassword.addEventListener("click", () => {
+    const hidden = password.type === "password";
+    password.type = hidden ? "text" : "password";
+    eyeOpen.classList.toggle("hidden", !hidden);
+    eyeClosed.classList.toggle("hidden", hidden);
+  });
+
+  toggleConfirmPassword.addEventListener("click", () => {
+    const hidden = confirmPassword.type === "password";
+    confirmPassword.type = hidden ? "text" : "password";
+    eyeOpen2.classList.toggle("hidden", !hidden);
+    eyeClosed2.classList.toggle("hidden", hidden);
+  });
+
 });
