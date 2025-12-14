@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="id">
 <head>
@@ -26,12 +29,22 @@
           <img src="../assets/img/univent.png" class="h-6 object-contain" alt="UniVent Logo">
         </div>
 
-        <!-- FORM -->
-        <form id="registerForm" class="space-y-4" novalidate>
+        <!-- ERROR BACKEND -->
+        <?php if (isset($_GET['error'])): ?>
+          <p class="text-sm text-red-500 text-center mb-4">
+            Email sudah terdaftar
+          </p>
+        <?php endif; ?>
+
+        <form id="registerForm"
+              method="post"
+              action="register_process.php"
+              class="space-y-4"
+              novalidate>
 
           <!-- Nama -->
           <div>
-            <input id="fullname" type="text" placeholder="Nama Lengkap"
+            <input id="fullname" name="fullname" type="text" placeholder="Nama Lengkap"
               class="w-full h-12 border border-gray-300 rounded-md px-4
                      focus:outline-none focus:ring-2 focus:ring-blue-300">
             <p id="fullnameError" class="text-sm text-red-500 mt-1 hidden">
@@ -41,7 +54,7 @@
 
           <!-- Email -->
           <div>
-            <input id="email" type="text" placeholder="Email"
+            <input id="email" name="email" type="text" placeholder="Email"
               class="w-full h-12 border border-gray-300 rounded-md px-4
                      focus:outline-none focus:ring-2 focus:ring-blue-300">
             <p id="emailError" class="text-sm text-red-500 mt-1 hidden">
@@ -52,44 +65,28 @@
           <!-- Password -->
           <div>
             <div class="relative">
-              <input id="password" type="password" placeholder="Password"
+              <input id="password" name="password" type="password" placeholder="Password"
                 class="w-full h-12 border border-gray-300 rounded-md
                        px-4 pr-12
                        focus:outline-none focus:ring-2 focus:ring-blue-300">
 
-              <!-- Eye Toggle Password (SVG ASLI) -->
               <button type="button" id="togglePassword"
                 class="absolute right-3 top-1/2 -translate-y-1/2
                        w-8 h-8 flex items-center justify-center text-gray-500">
 
-                <!-- eye closed -->
                 <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  fill="none" viewBox="0 0 24 24"
+                  class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477
-                       0-8.268-2.943-9.543-7a9.97 9.97 0 012.24-3.95
-                       m2.121-1.773A9.956 9.956 0 0112 5c4.477
-                       0 8.268 2.943 9.543 7a9.97 9.97 0 01-1.302 2.68
-                       M15 12a3 3 0 00-3-3m0 0a3 3 0 013 3
-                       m-3-3L3 3m9 9l9 9" />
+                    d="M3 3l18 18M10.58 10.58a2 2 0 002.83 2.83"/>
                 </svg>
 
-                <!-- eye open -->
                 <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 hidden"
-                  fill="none" viewBox="0 0 24 24"
+                  class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477
-                       0 8.268 2.943 9.542 7-1.274
-                       4.057-5.065 7-9.542 7-4.477
-                       0-8.268-2.943-9.542-7z" />
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-
               </button>
             </div>
 
@@ -101,45 +98,29 @@
           <!-- Confirm Password -->
           <div>
             <div class="relative">
-              <input id="confirmPassword" type="password"
+              <input id="confirmPassword" name="confirm_password" type="password"
                 placeholder="Konfirmasi Password"
                 class="w-full h-12 border border-gray-300 rounded-md
                        px-4 pr-12
                        focus:outline-none focus:ring-2 focus:ring-blue-300">
 
-              <!-- Eye Toggle Confirm (SVG ASLI) -->
               <button type="button" id="toggleConfirmPassword"
                 class="absolute right-3 top-1/2 -translate-y-1/2
                        w-8 h-8 flex items-center justify-center text-gray-500">
 
-                <!-- eye closed -->
                 <svg id="eyeClosed2" xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  fill="none" viewBox="0 0 24 24"
+                  class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477
-                       0-8.268-2.943-9.543-7a9.97 9.97 0 012.24-3.95
-                       m2.121-1.773A9.956 9.956 0 0112 5c4.477
-                       0 8.268 2.943 9.543 7a9.97 9.97 0 01-1.302 2.68
-                       M15 12a3 3 0 00-3-3m0 0a3 3 0 013 3
-                       m-3-3L3 3m9 9l9 9" />
+                    d="M3 3l18 18"/>
                 </svg>
 
-                <!-- eye open -->
                 <svg id="eyeOpen2" xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 hidden"
-                  fill="none" viewBox="0 0 24 24"
+                  class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477
-                       0 8.268 2.943 9.542 7-1.274
-                       4.057-5.065 7-9.542 7-4.477
-                       0-8.268-2.943-9.542-7z" />
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-
               </button>
             </div>
 
@@ -148,16 +129,14 @@
             </p>
           </div>
 
-          <!-- Button -->
           <button type="submit"
             class="w-full bg-blue-600 hover:bg-blue-700
-                   text-white font-semibold rounded-xl py-3 shadow-sm transition">
+                   text-white font-semibold rounded-xl py-3">
             Daftar
           </button>
 
-          <!-- Login -->
           <p class="text-center mt-2">
-            <a href="login.html" class="text-sm text-blue-500 hover:underline">
+            <a href="login.php" class="text-sm text-blue-500 hover:underline">
               Sudah punya akun? Login
             </a>
           </p>

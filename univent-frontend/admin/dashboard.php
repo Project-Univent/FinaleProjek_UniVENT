@@ -1,3 +1,8 @@
+<?php
+$required_role = 'admin';
+require "../auth/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -14,6 +19,13 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
+  
   <!-- Admin Shell + Dashboard Logic -->
   <script src="../assets/js/admin/admin-shell.js" defer></script>
   <script src="../assets/js/admin/admin-dashboard.js" defer></script>

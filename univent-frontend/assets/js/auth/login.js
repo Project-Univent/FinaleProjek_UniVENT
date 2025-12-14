@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const eyeOpen = document.getElementById("eyeOpen");
   const eyeClosed = document.getElementById("eyeClosed");
 
-  // === STATE AWAL (WAJIB) ===
   emailError.classList.add("hidden");
   passwordError.classList.add("hidden");
   password.type = "password";
@@ -22,12 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
   }
 
-  // === SUBMIT ===
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     let valid = true;
 
-    // EMAIL
     if (!validEmail(email.value.trim())) {
       emailError.classList.remove("hidden");
       email.classList.add("border-red-400");
@@ -37,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
       email.classList.remove("border-red-400");
     }
 
-    // PASSWORD
     if (password.value.trim() === "") {
       passwordError.classList.remove("hidden");
       password.classList.add("border-red-400");
@@ -49,10 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!valid) return;
 
-    alert("Login valid. Tinggal connect backend.");
+    form.submit();
   });
 
-  // === TOGGLE PASSWORD ===
   togglePassword.addEventListener("click", () => {
     const isHidden = password.type === "password";
     password.type = isHidden ? "text" : "password";

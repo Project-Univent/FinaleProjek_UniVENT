@@ -1,3 +1,8 @@
+<?php
+$required_role = 'peserta';
+require "../auth/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -7,6 +12,13 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
+  
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
 
   <!-- Inject sidebar + topbar + layout offset -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>

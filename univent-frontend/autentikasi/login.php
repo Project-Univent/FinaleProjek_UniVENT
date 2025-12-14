@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="id">
 <head>
@@ -20,18 +23,30 @@
           <img src="../assets/img/logo.png" class="w-16 h-16" alt="Logo UniVent">
         </div>
 
-        <!-- Title (DESIGN ASLI) -->
+        <!-- Title -->
         <div class="flex items-center justify-center gap-1 mb-6">
           <span class="text-xl font-semibold">Login</span>
           <img src="../assets/img/univent.png" class="h-6" alt="UniVent">
         </div>
 
-        <form id="loginForm" class="space-y-4" novalidate>
+        <!-- ERROR BACKEND -->
+        <?php if (isset($_GET['error'])): ?>
+          <p class="text-sm text-red-500 text-center mb-4">
+            Email atau password salah
+          </p>
+        <?php endif; ?>
+
+        <form id="loginForm"
+              method="post"
+              action="login_proses.php"
+              class="space-y-4"
+              novalidate>
 
           <!-- EMAIL -->
           <div>
             <input
               id="email"
+              name="email"
               type="text"
               placeholder="Email"
               class="w-full h-12 border border-gray-300 rounded-md px-4
@@ -45,17 +60,16 @@
 
           <!-- PASSWORD -->
           <div>
-            <!-- wrapper KHUSUS input + icon -->
             <div class="relative">
               <input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="Password"
                 class="w-full h-12 border border-gray-300 rounded-md
                        px-4 pr-12
                        focus:outline-none focus:ring-2 focus:ring-blue-400">
 
-              <!-- ICON MATA (FIX TENGAH) -->
               <button
                 type="button"
                 id="togglePassword"
@@ -63,7 +77,6 @@
                        w-8 h-8 flex items-center justify-center
                        text-gray-500">
 
-                <!-- eye closed -->
                 <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5"
                   fill="none" viewBox="0 0 24 24"
@@ -77,7 +90,6 @@
                        a9.96 9.96 0 003.94-.8"/>
                 </svg>
 
-                <!-- eye open -->
                 <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5 hidden"
                   fill="none" viewBox="0 0 24 24"
@@ -102,7 +114,7 @@
 
           <!-- FORGOT -->
           <div class="text-right -mt-2">
-            <a href="lupa_pw.html"
+            <a href="lupa_pw.php"
                class="text-sm text-blue-500 hover:underline">
               Lupa Password?
             </a>
@@ -117,7 +129,7 @@
 
           <!-- REGISTER -->
           <p class="text-center text-sm">
-            <a href="register.html"
+            <a href="register.php"
                class="text-blue-500 hover:underline">
               Belum punya akun? Daftar
             </a>

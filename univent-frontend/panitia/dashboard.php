@@ -1,3 +1,8 @@
+<?php
+$required_role = 'panitia';
+require "../auth/cek_login.php";
+?>
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -8,6 +13,13 @@
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <script>
+    window.AUTH_USER = {
+      nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
+      role: "<?= $_SESSION['role'] ?>"
+    };
+  </script>
 
   <!-- Inject shell + sidebar -->
   <script src="../assets/js/panitia/panitia-shell.js" defer></script>
