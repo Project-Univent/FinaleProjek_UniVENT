@@ -141,6 +141,6 @@ session_start();
     </div>
   </div>
 
-  <script src="../assets/js/auth/login.js"></script>
+  <script src="../assets/js/autentikasi/login.js"></script>
 </body>
 </html>

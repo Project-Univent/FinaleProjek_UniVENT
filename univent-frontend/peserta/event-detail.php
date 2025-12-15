@@ -1,6 +1,34 @@
 <?php
 $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
+
+/*
+  DUMMY DATA DETAIL EVENT
+  Backend nanti TINGGAL ganti query berdasarkan $_GET['id']
+*/
+$event = [
+  'id_event' => $_GET['id'] ?? 1,
+  'nama_event' => 'Tech Conference 2024',
+  'tanggal_event' => '2024-03-15',
+  'waktu_mulai' => '09:00',
+  'waktu_selesai' => '12:00',
+  'lokasi' => 'Aula FTI Universitas',
+  'kategori' => 'Seminar / Teknologi',
+  'kuota' => 500,
+  'terdaftar' => 450,
+  'poster' => 'poster1.jpg',
+  'deskripsi' => '
+    Tech Conference 2024 adalah acara tahunan yang menghadirkan para ahli industri
+    teknologi untuk membahas inovasi terbaru di bidang artificial intelligence,
+    cybersecurity, software development, dan berbagai topik teknologi lainnya.
+    <br><br>
+    Acara ini bertujuan memberikan wawasan mendalam kepada mahasiswa dan profesional
+    agar dapat meningkatkan pemahaman serta mengembangkan kemampuan di bidang teknologi.
+  '
+];
+
+// simulasi kuota penuh
+$isFull = $event['terdaftar'] >= $event['kuota'];
 ?>
 
 <!doctype html>
@@ -8,11 +36,12 @@ require "../autentikasi/cek_login.php";
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Detail Event - Univent</title>
+  <title>Detail Event - UniVENT</title>
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="../assets/css/style.css" />
 
+  <!-- AUTH USER -->
   <script>
     window.AUTH_USER = {
       nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
@@ -20,33 +49,37 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- Inject sidebar + topbar + layout offset -->
+  <!-- Shell Peserta -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- injected via JS -->
+  <!-- injected by shell -->
   <div id="sidebar-container"></div>
   <header id="peserta-topbar"></header>
 
-  <!-- MAIN (isi konten event) -->
-  <main id="peserta-main" class="p-6 max-w-4xl mx-auto space-y-10 transition-all duration-300">
+  <!-- MAIN -->
+  <main id="peserta-main"
+        class="p-6 max-w-4xl mx-auto space-y-10 transition-all duration-300">
 
-    <!-- HEADER TITLE -->
+    <!-- HEADER -->
     <section>
       <h1 class="text-2xl font-bold">Detail Event</h1>
     </section>
 
-    <!-- POSTER EVENT -->
+    <!-- POSTER -->
     <div class="w-full h-64 rounded-xl overflow-hidden shadow">
-      <img src="../assets/img/poster1.jpg" class="w-full h-full object-cover" />
+      <img src="../assets/img/<?= htmlspecialchars($event['poster']) ?>"
+           class="w-full h-full object-cover" />
     </div>
 
     <!-- TITLE + INFO -->
     <section class="space-y-4">
 
-      <h2 class="text-2xl font-bold">Tech Conference 2024</h2>
+      <h2 class="text-2xl font-bold">
+        <?= htmlspecialchars($event['nama_event']) ?>
+      </h2>
 
       <!-- INFO GRID -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -55,7 +88,7 @@ require "../autentikasi/cek_login.php";
           <span class="text-xl">📅</span>
           <div>
             <p class="font-medium">Tanggal</p>
-            <p class="text-gray-600">15 Maret 2024</p>
+            <p class="text-gray-600"><?= $event['tanggal_event'] ?></p>
           </div>
         </div>
 
@@ -63,7 +96,9 @@ require "../autentikasi/cek_login.php";
           <span class="text-xl">⏰</span>
           <div>
             <p class="font-medium">Waktu</p>
-            <p class="text-gray-600">09:00 - 12:00 WIB</p>
+            <p class="text-gray-600">
+              <?= $event['waktu_mulai'] ?> - <?= $event['waktu_selesai'] ?>
+            </p>
           </div>
         </div>
 
@@ -71,7 +106,7 @@ require "../autentikasi/cek_login.php";
           <span class="text-xl">📍</span>
           <div>
             <p class="font-medium">Lokasi</p>
-            <p class="text-gray-600">Aula FTI Universitas</p>
+            <p class="text-gray-600"><?= htmlspecialchars($event['lokasi']) ?></p>
           </div>
         </div>
 
@@ -79,7 +114,7 @@ require "../autentikasi/cek_login.php";
           <span class="text-xl">🏷</span>
           <div>
             <p class="font-medium">Kategori</p>
-            <p class="text-gray-600">Seminar / Teknologi</p>
+            <p class="text-gray-600"><?= htmlspecialchars($event['kategori']) ?></p>
           </div>
         </div>
 
@@ -87,7 +122,9 @@ require "../autentikasi/cek_login.php";
           <span class="text-xl">👥</span>
           <div>
             <p class="font-medium">Kuota</p>
-            <p class="text-gray-600">450 / 500 Peserta</p>
+            <p class="text-gray-600">
+              <?= $event['terdaftar'] ?> / <?= $event['kuota'] ?> Peserta
+            </p>
           </div>
         </div>
 
@@ -95,32 +132,40 @@ require "../autentikasi/cek_login.php";
 
     </section>
 
-    <!-- TOMBOL DAFTAR -->
-    <div>
-      <a href="event-diikuti.php"
-         class="block text-center bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700">
-        Daftar Event
+    <!-- ACTION -->
+    <section class="space-y-3">
+      <?php if ($isFull): ?>
+        <div class="text-center bg-gray-200 text-gray-600 py-3 rounded-xl">
+          Kuota sudah penuh
+        </div>
+      <?php else: ?>
+        <a href="event-diikuti.php?id=<?= $event['id_event'] ?>"
+           class="block text-center bg-blue-600 text-white py-3 rounded-xl
+                  text-lg font-semibold hover:bg-blue-700">
+          Daftar Event
+        </a>
+      <?php endif; ?>
+
+      <a
+        href="../api/google-calendar/create-event.php?id=<?= $event['id_event'] ?>"
+        class="block w-full border border-blue-600 text-blue-600
+              py-3 rounded-xl hover:bg-blue-50 text-center text-sm"
+      >
+        📅 Tambahkan ke Google Calendar
       </a>
-    </div>
+
+    </section>
 
     <!-- DESKRIPSI -->
     <section class="space-y-3">
       <h3 class="font-semibold text-lg">Deskripsi Event</h3>
 
       <p class="text-gray-700 leading-relaxed">
-        Tech Conference 2024 adalah acara tahunan yang menghadirkan para ahli industri 
-        teknologi untuk membahas inovasi terbaru di bidang artificial intelligence, 
-        cybersecurity, software development, dan banyak lagi.
-      </p>
-
-      <p class="text-gray-700 leading-relaxed">
-        Acara ini bertujuan memberikan wawasan mendalam kepada mahasiswa dan profesional 
-        dalam dunia teknologi untuk meningkatkan pemahaman dan mengembangkan kemampuan mereka 
-        di bidang terkait.
+        <?= $event['deskripsi'] ?>
       </p>
     </section>
 
-    <!-- LINK KEMBALI -->
+    <!-- BACK -->
     <div class="pt-4">
       <a href="event-list.php" class="text-blue-600 hover:underline">
         ← Kembali ke Lihat Event

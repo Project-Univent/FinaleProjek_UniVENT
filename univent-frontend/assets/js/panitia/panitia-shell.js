@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===== USER DARI PHP =====
   const user = window.AUTH_USER;
 
-  if (!user || user.role !== "panitia") {
-    document.body.innerHTML = "";
-    return;
-  }
+  // if (!user || user.role !== "panitia") {
+  //   document.body.innerHTML = "";
+  //   return;
+  // }
 
   const namaPanitia = user.nama || "Panitia";
 

@@ -1,6 +1,72 @@
 <?php
 $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
+
+/*
+  DUMMY DATA SEMENTARA
+  Backend nanti TINGGAL ganti $events dari query database
+*/
+$events = [
+  [
+    'id_event' => 1,
+    'nama_event' => 'Tech Conference 2024',
+    'tanggal_event' => '2024-03-15',
+    'lokasi' => 'San Francisco, CA',
+    'kuota' => 500,
+    'terdaftar' => 450,
+    'kategori' => 'Seminar',
+    'poster' => 'poster1.jpg',
+    'status' => 'verified'
+  ],
+  [
+    'id_event' => 2,
+    'nama_event' => 'Internal Panitia Meeting',
+    'tanggal_event' => '2024-02-01',
+    'lokasi' => 'Ruang Rapat',
+    'kuota' => 30,
+    'terdaftar' => 10,
+    'kategori' => 'Internal',
+    'poster' => 'poster2.jpg',
+    'status' => 'pending'
+  ],
+  [
+    'id_event' => 3,
+    'nama_event' => 'Marketing Workshop',
+    'tanggal_event' => '2024-02-10',
+    'lokasi' => 'New York, NY',
+    'kuota' => 150,
+    'terdaftar' => 120,
+    'kategori' => 'Workshop',
+    'poster' => 'poster3.jpg',
+    'status' => 'verified'
+  ]
+];
+
+/* =========================
+   SEARCH + FILTER
+========================= */
+$q = trim($_GET['q'] ?? '');
+$kategori = $_GET['kategori'] ?? '';
+
+$filteredEvents = array_filter($events, function ($e) use ($q, $kategori) {
+  if ($e['status'] !== 'verified') return false;
+
+  if ($q) {
+    $q = strtolower($q);
+    if (
+      strpos(strtolower($e['nama_event']), $q) === false &&
+      strpos(strtolower($e['lokasi']), $q) === false
+    ) return false;
+  }
+
+  if ($kategori && $e['kategori'] !== $kategori) return false;
+
+  return true;
+});
+
+// list kategori unik
+$kategoriList = array_unique(array_map(fn($e) => $e['kategori'], $events));
+sort($kategoriList);
 ?>
 
 <!doctype html>
@@ -10,11 +76,7 @@ require "../autentikasi/cek_login.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Browse Event - UniVENT</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="../assets/css/style.css">
 
   <script>
     window.AUTH_USER = {
@@ -23,17 +85,14 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- Sidebar + Shell -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- Injected via JS -->
   <div id="sidebar-container"></div>
   <header id="peserta-topbar"></header>
 
-  <!-- MAIN -->
   <main id="peserta-main" class="p-6 space-y-10 transition-all duration-300">
 
     <!-- HEADER -->
@@ -42,139 +101,86 @@ require "../autentikasi/cek_login.php";
       <p class="text-sm text-gray-500">Temukan berbagai event menarik</p>
     </section>
 
-    <!-- HIGHLIGHT EVENT -->
-    <section>
-      <div class="relative w-full h-56 rounded-xl overflow-hidden shadow">
-        <img src="../assets/img/poster1.jpg"
-             class="w-full h-full object-cover">
-        <span class="absolute top-3 left-3 bg-blue-100 text-blue-700 px-3 py-1 text-sm rounded-full">
-          International
-        </span>
-        <div class="absolute bottom-4 left-4 text-white text-xl font-semibold drop-shadow-lg">
-          Tech Conference 2024
-        </div>
-      </div>
-    </section>
-
     <!-- SEARCH + FILTER -->
+    <form method="GET" class="flex flex-wrap gap-4 items-center">
+
+      <input
+        type="text"
+        name="q"
+        value="<?= htmlspecialchars($q) ?>"
+        placeholder="Cari nama event / lokasi..."
+        class="w-full sm:w-64 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+      >
+
+      <select
+        name="kategori"
+        class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+      >
+        <option value="">Semua Kategori</option>
+        <?php foreach ($kategoriList as $k): ?>
+          <option value="<?= $k ?>" <?= $kategori === $k ? 'selected' : '' ?>>
+            <?= $k ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+
+      <button
+        class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+        Cari
+      </button>
+
+      <?php if ($q || $kategori): ?>
+        <a href="event-list.php" class="text-sm text-gray-500 underline">
+          Reset
+        </a>
+      <?php endif; ?>
+
+    </form>
+
+    <!-- EVENT LIST -->
     <section>
-      <div class="flex items-center justify-between mb-6">
-        <input type="text" placeholder="Search events..."
-               class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none">
-
-        <button class="flex items-center ml-4 space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
-          <span>⚙️</span>
-          <span>Filters</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- EVENT GRID -->
-    <section>
-      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-
-        <!-- CARD 1 -->
-        <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
-          <div class="h-40 overflow-hidden">
-            <img src="../assets/img/poster1.jpg" class="w-full h-full object-cover">
-          </div>
-
-          <div class="p-4 space-y-2">
-            <div class="text-gray-800 font-semibold text-lg">Tech Conference 2024</div>
-
-            <div class="flex items-center text-gray-600 text-sm">
-              📅 <span class="ml-2">2024-03-15</span>
-            </div>
-
-            <div class="flex items-center text-gray-600 text-sm">
-              📍 <span class="ml-2">San Francisco, CA</span>
-            </div>
-
-            <div class="flex items-center text-gray-600 text-sm">
-              👥 <span class="ml-2">450 / 500 attendees</span>
-            </div>
-
-            <a href="event-detail.php"
-               class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-              Lihat Detail
-            </a>
-
-            <a href="event-diikuti.php"
-              class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
-              Daftar Acara
-            </a>
-
-          </div>
+      <?php if (empty($filteredEvents)): ?>
+        <div class="text-center text-gray-500 py-20">
+          Event tidak ditemukan
         </div>
+      <?php else: ?>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
-        <!-- CARD 2 -->
-        <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
-          <div class="h-40 overflow-hidden">
-            <img src="../assets/img/poster2.jpg" class="w-full h-full object-cover">
-          </div>
-          <div class="p-4 space-y-2">
-            <div class="text-gray-800 font-semibold text-lg">Summer Music Festival</div>
+          <?php foreach ($filteredEvents as $e): ?>
+            <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
 
-            <div class="flex items-center text-gray-600 text-sm">
-              📅 <span class="ml-2">2024-06-20</span>
+              <div class="h-40 overflow-hidden relative">
+                <img src="../assets/img/<?= htmlspecialchars($e['poster']) ?>"
+                     class="w-full h-full object-cover">
+
+                <span class="absolute top-3 left-3 bg-blue-100 text-blue-700
+                             px-3 py-1 text-xs rounded-full">
+                  <?= htmlspecialchars($e['kategori']) ?>
+                </span>
+              </div>
+
+              <div class="p-4 space-y-2">
+                <div class="text-gray-800 font-semibold text-lg">
+                  <?= htmlspecialchars($e['nama_event']) ?>
+                </div>
+
+                <div class="text-sm text-gray-600">📅 <?= $e['tanggal_event'] ?></div>
+                <div class="text-sm text-gray-600">📍 <?= htmlspecialchars($e['lokasi']) ?></div>
+                <div class="text-sm text-gray-600">
+                  👥 <?= $e['terdaftar'] ?> / <?= $e['kuota'] ?> peserta
+                </div>
+
+                <a href="event-detail.php?id=<?= $e['id_event'] ?>"
+                   class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                  Lihat Detail
+                </a>
+              </div>
+
             </div>
+          <?php endforeach; ?>
 
-            <div class="flex items-center text-gray-600 text-sm">
-              📍 <span class="ml-2">Austin, TX</span>
-            </div>
-
-            <div class="flex items-center text-gray-600 text-sm">
-              👥 <span class="ml-2">2800 / 3000 attendees</span>
-            </div>
-
-            <a href="event-detail.php"
-               class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-              Lihat Detail
-            </a>
-
-            <a href="event-diikuti.php"
-              class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
-              Daftar Acara
-            </a>
-
-          </div>
         </div>
-
-        <!-- CARD 3 -->
-        <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
-          <div class="h-40 overflow-hidden">
-            <img src="../assets/img/poster3.jpg" class="w-full h-full object-cover">
-          </div>
-
-          <div class="p-4 space-y-2">
-            <div class="text-gray-800 font-semibold text-lg">Marketing Workshop</div>
-
-            <div class="flex items-center text-gray-600 text-sm">
-              📅 <span class="ml-2">2024-02-10</span>
-            </div>
-
-            <div class="flex items-center text-gray-600 text-sm">
-              📍 <span class="ml-2">New York, NY</span>
-            </div>
-
-            <div class="flex items-center text-gray-600 text-sm">
-              👥 <span class="ml-2">120 / 150 attendees</span>
-            </div>
-
-            <a href="event-detail.php"
-               class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-              Lihat Detail
-            </a>
-
-            <a href="event-diikuti.php"
-              class="block mt-2 text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
-              Daftar Acara
-            </a>
-
-          </div>
-        </div>
-
-      </div>
+      <?php endif; ?>
     </section>
 
   </main>
