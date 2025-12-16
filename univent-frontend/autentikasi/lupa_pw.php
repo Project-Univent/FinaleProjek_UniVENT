@@ -6,7 +6,6 @@
   <title>Lupa Password - Univent</title>
 
   <link rel="stylesheet" href="../assets/css/output.css">
-
 </head>
 
 <body class="bg-white text-gray-800">
@@ -27,10 +26,14 @@
         </h2>
 
         <!-- FORM -->
-        <form id="forgotForm" action="reset_pw.html" class="space-y-4">
+        <form id="forgotForm"
+              action="lupa_pw_proses.php"
+              method="POST"
+              class="space-y-4">
 
           <div>
             <input id="forgot_email"
+              name="email"
               type="email"
               placeholder="Masukkan email Anda"
               class="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-700
@@ -47,7 +50,7 @@
           </button>
 
           <p class="text-center mt-2">
-            <a href="login.html" class="text-sm text-blue-300 hover:underline">
+            <a href="login.php" class="text-sm text-blue-300 hover:underline">
               Kembali ke Login
             </a>
           </p>

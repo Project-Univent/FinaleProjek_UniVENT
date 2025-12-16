@@ -131,8 +131,6 @@ require "../autentikasi/cek_login.php";
         <div class="card-radius shadow overflow-hidden relative">
           <div id="hero-slider"
             class="relative bg-gradient-to-r from-[#0F4A85] to-[#145AAD] text-white p-6 flex items-center gap-6">
-
-
           </div>
 
           <button id="hero-prev"
