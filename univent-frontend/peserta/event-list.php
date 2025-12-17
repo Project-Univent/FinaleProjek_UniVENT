@@ -1,72 +1,69 @@
 <?php
 $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
-
-/*
-  DUMMY DATA SEMENTARA
-  Backend nanti TINGGAL ganti $events dari query database
-*/
-$events = [
-  [
-    'id_event' => 1,
-    'nama_event' => 'Tech Conference 2024',
-    'tanggal_event' => '2024-03-15',
-    'lokasi' => 'San Francisco, CA',
-    'kuota' => 500,
-    'terdaftar' => 450,
-    'kategori' => 'Seminar',
-    'poster' => 'poster1.jpg',
-    'status' => 'verified'
-  ],
-  [
-    'id_event' => 2,
-    'nama_event' => 'Internal Panitia Meeting',
-    'tanggal_event' => '2024-02-01',
-    'lokasi' => 'Ruang Rapat',
-    'kuota' => 30,
-    'terdaftar' => 10,
-    'kategori' => 'Internal',
-    'poster' => 'poster2.jpg',
-    'status' => 'pending'
-  ],
-  [
-    'id_event' => 3,
-    'nama_event' => 'Marketing Workshop',
-    'tanggal_event' => '2024-02-10',
-    'lokasi' => 'New York, NY',
-    'kuota' => 150,
-    'terdaftar' => 120,
-    'kategori' => 'Workshop',
-    'poster' => 'poster3.jpg',
-    'status' => 'verified'
-  ]
-];
+require "../config/koneksi.php";
 
 /* =========================
-   SEARCH + FILTER
+   AMBIL PARAMETER
 ========================= */
 $q = trim($_GET['q'] ?? '');
 $kategori = $_GET['kategori'] ?? '';
 
-$filteredEvents = array_filter($events, function ($e) use ($q, $kategori) {
-  if ($e['status'] !== 'verified') return false;
+/* =========================
+   QUERY EVENT APPROVED
+========================= */
+$sql = "
+  SELECT
+    e.id_event,
+    e.nama_event,
+    e.tanggal_event,
+    e.lokasi,
+    e.kuota,
+    e.poster,
+    k.nama_kategori AS kategori
+  FROM event e
+  JOIN kategori_event k ON e.id_kategori = k.id_kategori
+  WHERE e.status = 'approved'
+";
 
-  if ($q) {
-    $q = strtolower($q);
-    if (
-      strpos(strtolower($e['nama_event']), $q) === false &&
-      strpos(strtolower($e['lokasi']), $q) === false
-    ) return false;
-  }
+$params = [];
+$types  = "";
 
-  if ($kategori && $e['kategori'] !== $kategori) return false;
+if ($q !== '') {
+  $sql .= " AND (e.nama_event LIKE ? OR e.lokasi LIKE ?)";
+  $like = "%$q%";
+  $params[] = $like;
+  $params[] = $like;
+  $types .= "ss";
+}
 
-  return true;
-});
+if ($kategori !== '') {
+  $sql .= " AND k.nama_kategori = ?";
+  $params[] = $kategori;
+  $types .= "s";
+}
 
-// list kategori unik
-$kategoriList = array_unique(array_map(fn($e) => $e['kategori'], $events));
-sort($kategoriList);
+$sql .= " ORDER BY e.tanggal_event ASC";
+
+$stmt = mysqli_prepare($conn, $sql);
+
+if (!empty($params)) {
+  mysqli_stmt_bind_param($stmt, $types, ...$params);
+}
+
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$events = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+/* =========================
+   LIST KATEGORI (DARI DB)
+========================= */
+$kategoriRes = mysqli_query($conn, "
+  SELECT DISTINCT nama_kategori
+  FROM kategori_event
+  ORDER BY nama_kategori
+");
+$kategoriList = mysqli_fetch_all($kategoriRes, MYSQLI_ASSOC);
 ?>
 
 <!doctype html>
@@ -117,9 +114,10 @@ sort($kategoriList);
         class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
       >
         <option value="">Semua Kategori</option>
-        <?php foreach ($kategoriList as $k): ?>
-          <option value="<?= $k ?>" <?= $kategori === $k ? 'selected' : '' ?>>
-            <?= $k ?>
+        <?php foreach ($kategoriList as $row): ?>
+          <option value="<?= $row['nama_kategori'] ?>"
+            <?= $kategori === $row['nama_kategori'] ? 'selected' : '' ?>>
+            <?= htmlspecialchars($row['nama_kategori']) ?>
           </option>
         <?php endforeach; ?>
       </select>
@@ -139,19 +137,21 @@ sort($kategoriList);
 
     <!-- EVENT LIST -->
     <section>
-      <?php if (empty($filteredEvents)): ?>
+      <?php if (empty($events)): ?>
         <div class="text-center text-gray-500 py-20">
           Event tidak ditemukan
         </div>
       <?php else: ?>
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
-          <?php foreach ($filteredEvents as $e): ?>
+          <?php foreach ($events as $e): ?>
             <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
 
               <div class="h-40 overflow-hidden relative">
-                <img src="../assets/img/<?= htmlspecialchars($e['poster']) ?>"
-                     class="w-full h-full object-cover">
+                <img
+                  src="../assets/img/<?= htmlspecialchars($e['poster'] ?? 'default.jpg') ?>"
+                  class="w-full h-full object-cover"
+                >
 
                 <span class="absolute top-3 left-3 bg-blue-100 text-blue-700
                              px-3 py-1 text-xs rounded-full">
@@ -164,14 +164,21 @@ sort($kategoriList);
                   <?= htmlspecialchars($e['nama_event']) ?>
                 </div>
 
-                <div class="text-sm text-gray-600">📅 <?= $e['tanggal_event'] ?></div>
-                <div class="text-sm text-gray-600">📍 <?= htmlspecialchars($e['lokasi']) ?></div>
                 <div class="text-sm text-gray-600">
-                  👥 <?= $e['terdaftar'] ?> / <?= $e['kuota'] ?> peserta
+                  📅 <?= htmlspecialchars($e['tanggal_event']) ?>
                 </div>
 
-                <a href="event-detail.php?id=<?= $e['id_event'] ?>"
-                   class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                <div class="text-sm text-gray-600">
+                  📍 <?= htmlspecialchars($e['lokasi']) ?>
+                </div>
+
+                <div class="text-sm text-gray-600">
+                  👥 Kuota: <?= (int)$e['kuota'] ?> peserta
+                </div>
+
+                <a
+                  href="event-detail.php?id=<?= $e['id_event'] ?>"
+                  class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
                   Lihat Detail
                 </a>
               </div>

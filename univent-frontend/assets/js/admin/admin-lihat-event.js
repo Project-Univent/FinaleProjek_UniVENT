@@ -1,13 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  // Dummy event list (hanya event yang SUDAH diverifikasi)
-    const dummyEvents = [
-    { id: 1, nama: "Workshop Cybersecurity", tanggal: "2025-12-10", lokasi: "Aula FTI" }, // BERJALAN (hari ini)
-    { id: 2, nama: "UI/UX Bootcamp", tanggal: "2025-12-15", lokasi: "Lab Multimedia" },   // UPCOMING
-    { id: 3, nama: "Expo Kewirausahaan", tanggal: "2026-01-02", lokasi: "Hall Utama" },   // UPCOMING
-    { id: 4, nama: "Webinar Data Science", tanggal: "2025-11-20", lokasi: "Online" }       // SELESAI
-    ];
-
+document.addEventListener("DOMContentLoaded", async () => {
 
   const today = new Date();
   const tbody = document.getElementById("table-event");
@@ -31,6 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderTable(data) {
     tbody.innerHTML = "";
 
+    if (!data.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="p-4 text-center text-gray-500">
+            Belum ada event aktif
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     data.forEach((event, i) => {
       const status = getStatus(event.tanggal);
 
@@ -40,38 +42,38 @@ document.addEventListener("DOMContentLoaded", () => {
           <td class="p-2">${event.nama}</td>
           <td class="p-2">${event.tanggal}</td>
           <td class="p-2">${event.lokasi}</td>
-
           <td class="p-2">${statusBadge(status)}</td>
-
           <td class="p-2 flex gap-2">
-
-            <!-- DETAIL SELALU ADA -->
             <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
               onclick="lihatDetail(${event.id})">
               Detail
             </button>
 
-            <!-- HAPUS SELALU ADA -->
             <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
               onclick="hapusEvent(${event.id})">
               Hapus
             </button>
-
           </td>
         </tr>
       `;
     });
   }
 
-  renderTable(dummyEvents);
+  try {
+    const res = await fetch("data/get-approved-events.php");
+    const events = await res.json();
+    renderTable(events);
+  } catch (err) {
+    console.error(err);
+    alert("Gagal memuat data event");
+  }
 
-  // Event Handlers
   window.lihatDetail = (id) =>
     (location.href = "event-detail.php?id=" + id);
 
   window.hapusEvent = (id) => {
     if (confirm("Yakin ingin menghapus event ini?")) {
-      alert("Event dihapus (dummy). ID: " + id);
+      alert("Hapus event belum diaktifkan. ID: " + id);
     }
   };
 });

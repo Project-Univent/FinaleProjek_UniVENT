@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const eventId = params.get("event") || 1;
 
   // Dummy event name
-  const dummyEventName = "Tech Conference 2024";
+  const dummyEventName = "Tech Conference 2025";
 
   // Dummy daftar peserta — nanti diganti API
   const dummyPeserta = [

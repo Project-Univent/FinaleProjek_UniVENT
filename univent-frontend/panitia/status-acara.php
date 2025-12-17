@@ -1,32 +1,23 @@
 <?php
 $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
+require "../config/koneksi.php";
 
-/*
-  DUMMY DATA STATUS ACARA PANITIA
-  Backend nanti:
-  SELECT event.*, catatan_admin FROM event WHERE id_panitia = session
-*/
-$statusAcara = [
-  [
-    'id_event' => 1,
-    'nama_event' => 'Workshop UI/UX 2024',
-    'status' => 'tertunda',
-    'catatan' => 'Menunggu verifikasi admin'
-  ],
-  [
-    'id_event' => 2,
-    'nama_event' => 'Seminar Cybersecurity',
-    'status' => 'rejected',
-    'catatan' => 'Poster tidak sesuai ketentuan'
-  ],
-  [
-    'id_event' => 3,
-    'nama_event' => 'Tech Conference 2024',
-    'status' => 'verified',
-    'catatan' => 'Acara telah disetujui admin'
-  ]
-];
+$id_panitia = $_SESSION['user_id'];
+
+$sql = "
+  SELECT id_event, nama_event, status, catatan_admin
+  FROM event
+  WHERE id_panitia = ?
+";
+
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $id_panitia);
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+$statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
 ?>
 
 <!doctype html>
@@ -110,7 +101,7 @@ $statusAcara = [
                 </p>
 
                 <p class="text-sm text-gray-600">
-                  <?= htmlspecialchars($e['catatan']) ?>
+                  <?= htmlspecialchars($e['catatan_admin']) ?>
                 </p>
 
                 <?php if ($e['status'] === 'tertunda'): ?>

@@ -43,7 +43,7 @@ require "../autentikasi/cek_login.php";
 
       <!-- FORM -->
       <form
-        action="../api/panitia/simpan-acara.php"
+        action="simpan-acara.php"
         method="POST"
         enctype="multipart/form-data"
         class="bg-white rounded-xl shadow p-6 space-y-6"
@@ -62,6 +62,30 @@ require "../autentikasi/cek_login.php";
                    file:hover:bg-[#2566B8]"
           >
         </div>
+
+
+        <!-- KATEGORI -->
+          <div>
+            <label class="block font-medium mb-2">Kategori Event Mahasiswa</label>
+            <select
+              name="id_kategori"
+              required
+              class="w-full border rounded-lg px-4 py-3
+                    focus:ring-2 focus:ring-[#2B77D1] outline-none"
+            >
+              <option value="">-- Pilih Kategori --</option>
+              <?php
+              require "../config/koneksi.php";
+              $kat = $conn->query("SELECT id_kategori, nama_kategori FROM kategori_event");
+              while ($k = $kat->fetch_assoc()):
+              ?>
+                <option value="<?= $k['id_kategori'] ?>">
+                  <?= htmlspecialchars($k['nama_kategori']) ?>
+                </option>
+              <?php endwhile; ?>
+            </select>
+          </div>
+
 
         <!-- NAMA -->
         <div>

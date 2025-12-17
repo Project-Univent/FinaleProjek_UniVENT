@@ -38,7 +38,7 @@ session_start();
 
         <form id="registerForm"
               method="post"
-              action="register_process.php"
+              action="register_proses.php"
               class="space-y-4"
               novalidate>
 

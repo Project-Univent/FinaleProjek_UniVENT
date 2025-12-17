@@ -1,2 +1,4 @@
 node_modules/
 assets/css/output.css
+package-lock.json
+package.json

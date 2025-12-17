@@ -1,34 +1,53 @@
 <?php
 $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
+require "../config/koneksi.php";
 
-/*
-  DUMMY DATA DETAIL EVENT
-  Backend nanti TINGGAL ganti query berdasarkan $_GET['id']
-*/
-$event = [
-  'id_event' => $_GET['id'] ?? 1,
-  'nama_event' => 'Tech Conference 2024',
-  'tanggal_event' => '2024-03-15',
-  'waktu_mulai' => '09:00',
-  'waktu_selesai' => '12:00',
-  'lokasi' => 'Aula FTI Universitas',
-  'kategori' => 'Seminar / Teknologi',
-  'kuota' => 500,
-  'terdaftar' => 450,
-  'poster' => 'poster1.jpg',
-  'deskripsi' => '
-    Tech Conference 2024 adalah acara tahunan yang menghadirkan para ahli industri
-    teknologi untuk membahas inovasi terbaru di bidang artificial intelligence,
-    cybersecurity, software development, dan berbagai topik teknologi lainnya.
-    <br><br>
-    Acara ini bertujuan memberikan wawasan mendalam kepada mahasiswa dan profesional
-    agar dapat meningkatkan pemahaman serta mengembangkan kemampuan di bidang teknologi.
-  '
-];
+/* =========================
+   VALIDASI ID EVENT
+========================= */
+$id = $_GET['id'] ?? null;
 
-// simulasi kuota penuh
-$isFull = $event['terdaftar'] >= $event['kuota'];
+if (!$id || !is_numeric($id)) {
+  die("Event tidak ditemukan.");
+}
+
+/* =========================
+   AMBIL DETAIL EVENT (APPROVED)
+========================= */
+$sql = "
+  SELECT
+    e.id_event,
+    e.nama_event,
+    e.tanggal_event,
+    e.waktu_mulai,
+    e.lokasi,
+    e.kuota,
+    e.poster,
+    e.deskripsi,
+    k.nama_kategori AS kategori
+  FROM event e
+  JOIN kategori_event k ON e.id_kategori = k.id_kategori
+  WHERE e.id_event = ? AND e.status = 'approved'
+  LIMIT 1
+";
+
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$event = mysqli_fetch_assoc($result);
+
+if (!$event) {
+  die("Event tidak ditemukan atau belum disetujui.");
+}
+
+/* =========================
+   HITUNG KUOTA (AMAN DULU)
+   NOTE: tabel peserta belum dibahas
+========================= */
+$terdaftar = 0; // sementara
+$isFull = $terdaftar >= $event['kuota'];
 ?>
 
 <!doctype html>
@@ -38,10 +57,8 @@ $isFull = $event['terdaftar'] >= $event['kuota'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Detail Event - UniVENT</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- AUTH USER -->
   <script>
     window.AUTH_USER = {
       nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
@@ -49,17 +66,14 @@ $isFull = $event['terdaftar'] >= $event['kuota'];
     };
   </script>
 
-  <!-- Shell Peserta -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- injected by shell -->
   <div id="sidebar-container"></div>
   <header id="peserta-topbar"></header>
 
-  <!-- MAIN -->
   <main id="peserta-main"
         class="p-6 max-w-4xl mx-auto space-y-10 transition-all duration-300">
 
@@ -70,8 +84,10 @@ $isFull = $event['terdaftar'] >= $event['kuota'];
 
     <!-- POSTER -->
     <div class="w-full h-64 rounded-xl overflow-hidden shadow">
-      <img src="../assets/img/<?= htmlspecialchars($event['poster']) ?>"
-           class="w-full h-full object-cover" />
+      <img
+        src="../assets/img/<?= htmlspecialchars($event['poster'] ?? 'default.jpg') ?>"
+        class="w-full h-full object-cover"
+      />
     </div>
 
     <!-- TITLE + INFO -->
@@ -81,14 +97,13 @@ $isFull = $event['terdaftar'] >= $event['kuota'];
         <?= htmlspecialchars($event['nama_event']) ?>
       </h2>
 
-      <!-- INFO GRID -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
         <div class="flex items-center space-x-3">
           <span class="text-xl">📅</span>
           <div>
             <p class="font-medium">Tanggal</p>
-            <p class="text-gray-600"><?= $event['tanggal_event'] ?></p>
+            <p class="text-gray-600"><?= htmlspecialchars($event['tanggal_event']) ?></p>
           </div>
         </div>
 
@@ -97,7 +112,7 @@ $isFull = $event['terdaftar'] >= $event['kuota'];
           <div>
             <p class="font-medium">Waktu</p>
             <p class="text-gray-600">
-              <?= $event['waktu_mulai'] ?> - <?= $event['waktu_selesai'] ?>
+              <?= htmlspecialchars($event['waktu_mulai'] ?? '-') ?>
             </p>
           </div>
         </div>
@@ -123,7 +138,7 @@ $isFull = $event['terdaftar'] >= $event['kuota'];
           <div>
             <p class="font-medium">Kuota</p>
             <p class="text-gray-600">
-              <?= $event['terdaftar'] ?> / <?= $event['kuota'] ?> Peserta
+              <?= $terdaftar ?> / <?= (int)$event['kuota'] ?> peserta
             </p>
           </div>
         </div>
@@ -145,23 +160,13 @@ $isFull = $event['terdaftar'] >= $event['kuota'];
           Daftar Event
         </a>
       <?php endif; ?>
-
-      <a
-        href="../api/google-calendar/create-event.php?id=<?= $event['id_event'] ?>"
-        class="block w-full border border-blue-600 text-blue-600
-              py-3 rounded-xl hover:bg-blue-50 text-center text-sm"
-      >
-        📅 Tambahkan ke Google Calendar
-      </a>
-
     </section>
 
     <!-- DESKRIPSI -->
     <section class="space-y-3">
       <h3 class="font-semibold text-lg">Deskripsi Event</h3>
-
       <p class="text-gray-700 leading-relaxed">
-        <?= $event['deskripsi'] ?>
+        <?= nl2br(htmlspecialchars($event['deskripsi'])) ?>
       </p>
     </section>
 

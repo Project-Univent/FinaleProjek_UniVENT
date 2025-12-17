@@ -1,30 +1,24 @@
 <?php
 $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
+require "../config/koneksi.php";
 
-/*
-  DUMMY DATA ACARA PANITIA
-  Backend nanti:
-  SELECT * FROM event WHERE id_panitia = session
-*/
-$eventsPanitia = [
-  [
-    'id_event' => 1,
-    'nama_event' => 'Tech Conference 2024',
-    'tanggal_event' => '2024-03-11',
-    'lokasi' => 'Aula FTI',
-    'poster' => 'poster1.jpg',
-    'status' => 'verified'
-  ],
-  [
-    'id_event' => 2,
-    'nama_event' => 'Workshop UI/UX',
-    'tanggal_event' => '2024-04-02',
-    'lokasi' => 'Lab Multimedia',
-    'poster' => 'poster2.jpg',
-    'status' => 'pending'
-  ]
-];
+$id_panitia = $_SESSION['user_id'];
+
+$sql = "
+  SELECT id_event, nama_event, tanggal_event, lokasi, poster, status
+  FROM event
+  WHERE id_panitia = ?
+  ORDER BY tanggal_event DESC
+";
+
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $id_panitia);
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+$eventsPanitia = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
 ?>
 
 <!doctype html>
@@ -78,7 +72,7 @@ $eventsPanitia = [
           <?php
             // badge status
             $statusClass = match ($e['status']) {
-              'verified' => 'text-green-600',
+              'approved ' => 'text-green-600',
               'pending'  => 'text-yellow-600',
               'rejected' => 'text-red-600',
               default    => 'text-gray-500'

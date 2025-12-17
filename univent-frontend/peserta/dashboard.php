@@ -1,6 +1,46 @@
 <?php
 $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
+require "../config/koneksi.php";
+
+/* =========================
+   EVENT TERDEKAT (1 EVENT)
+========================= */
+$highlightSql = "
+  SELECT
+    e.id_event,
+    e.nama_event,
+    e.tanggal_event,
+    e.lokasi,
+    e.poster,
+    k.nama_kategori AS kategori
+  FROM event e
+  JOIN kategori_event k ON e.id_kategori = k.id_kategori
+  WHERE e.status = 'approved'
+    AND e.tanggal_event >= CURDATE()
+  ORDER BY e.tanggal_event ASC
+  LIMIT 1
+";
+$highlightRes = mysqli_query($conn, $highlightSql);
+$highlightEvent = mysqli_fetch_assoc($highlightRes);
+
+/* =========================
+   EVENT REKOMENDASI
+========================= */
+$rekomendasiSql = "
+  SELECT
+    e.id_event,
+    e.nama_event,
+    e.tanggal_event,
+    e.lokasi,
+    e.poster
+  FROM event e
+  WHERE e.status = 'approved'
+  ORDER BY e.tanggal_event ASC
+  LIMIT 6
+";
+$rekomendasiRes = mysqli_query($conn, $rekomendasiSql);
+$rekomendasiEvents = mysqli_fetch_all($rekomendasiRes, MYSQLI_ASSOC);
 ?>
 
 <!doctype html>
@@ -8,11 +48,10 @@ require "../autentikasi/cek_login.php";
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Peserta - Univent</title>
+  <title>Dashboard Peserta - UniVENT</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  
+
   <script>
     window.AUTH_USER = {
       nama: "<?= htmlspecialchars($_SESSION['nama']) ?>",
@@ -20,80 +59,97 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- Inject sidebar + topbar + layout offset -->
   <script src="../assets/js/peserta/peserta-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- INJEK otomatis oleh JS -->
   <div id="sidebar-container"></div>
   <header id="peserta-topbar"></header>
 
-  <!-- MAIN CONTENT -->
   <main id="peserta-main" class="p-6 space-y-10 transition-all duration-300">
 
-    <!-- HIGHLIGHT EVENT -->
-         <!-- HEADER -->
+    <!-- EVENT TERDEKAT -->
     <section>
       <h1 class="text-2xl font-bold">Event Terdekat</h1>
-      <p class="text-gray-500 text-sm">Event yang akan mulai. Ayo dapatkan tiketnya!!!.</p>
+      <p class="text-gray-500 text-sm">
+        Event yang akan segera berlangsung. Jangan sampai ketinggalan!
+      </p>
     </section>
-    
-    <section>
-      <h2 class="text-lg font-semibold mb-4"></h2>
 
-      <div class="relative w-full h-56 rounded-xl shadow overflow-hidden">
-        <img src="../assets/img/poster1.jpg"
-             class="w-full h-full object-cover">
+    <?php if ($highlightEvent): ?>
+      <section>
+        <a href="event-detail.php?id=<?= $highlightEvent['id_event'] ?>">
+          <div class="relative w-full h-56 rounded-xl shadow overflow-hidden">
 
-        <div class="absolute top-3 left-3 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-          Seminar
-        </div>
+            <img
+              src="../assets/img/<?= htmlspecialchars($highlightEvent['poster'] ?? 'default.jpg') ?>"
+              class="w-full h-full object-cover"
+            >
 
-        <div class="absolute bottom-4 left-4 text-white text-xl font-semibold drop-shadow-lg">
-          Tech Conference 2024
-        </div>
+            <div class="absolute top-3 left-3 bg-blue-100 text-blue-700
+                        px-3 py-1 rounded-full text-sm">
+              <?= htmlspecialchars($highlightEvent['kategori']) ?>
+            </div>
+
+            <div class="absolute bottom-4 left-4 text-white text-xl
+                        font-semibold drop-shadow-lg">
+              <?= htmlspecialchars($highlightEvent['nama_event']) ?>
+            </div>
+
+          </div>
+        </a>
+      </section>
+    <?php else: ?>
+      <div class="text-gray-500 text-center py-10">
+        Belum ada event terdekat
       </div>
-    </section>
+    <?php endif; ?>
 
     <!-- EVENT REKOMENDASI -->
     <section>
       <h2 class="text-lg font-semibold mb-4">Rekomendasi Event</h2>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-
-        <!-- KARTU EVENT -->
-        <div class="bg-white rounded-xl border shadow overflow-hidden">
-          <img src="../assets/img/poster2.jpg" class="h-40 w-full object-cover">
-
-          <div class="p-4 space-y-2">
-            <div class="font-semibold text-lg">Marketing Workshop</div>
-            <div class="text-sm text-gray-600">📅 10 Februari 2024</div>
-            <div class="text-sm text-gray-600">📍 Gedung FTI Lt. 3</div>
-
-            <a href="event-detail.php"
-               class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-              Lihat Detail
-            </a>
-          </div>
+      <?php if (empty($rekomendasiEvents)): ?>
+        <div class="text-gray-500 text-center py-10">
+          Belum ada event tersedia
         </div>
+      <?php else: ?>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
-        <!-- COPY KARTU LAINNYA -->
-        <div class="bg-white rounded-xl border shadow overflow-hidden">
-          <img src="../assets/img/poster3.jpg" class="h-40 w-full object-cover">
-          <div class="p-4 space-y-2">
-            <div class="font-semibold text-lg">UI/UX Seminar 2024</div>
-            <div class="text-sm text-gray-600">📅 21 Mei 2024</div>
-            <div class="text-sm text-gray-600">📍 Aula Perpustakaan</div>
-            <a href="event-detail.php"
-               class="block mt-3 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-              Lihat Detail
-            </a>
-          </div>
+          <?php foreach ($rekomendasiEvents as $e): ?>
+            <div class="bg-white rounded-xl border shadow overflow-hidden">
+
+              <img
+                src="../assets/img/<?= htmlspecialchars($e['poster'] ?? 'default.jpg') ?>"
+                class="h-40 w-full object-cover"
+              >
+
+              <div class="p-4 space-y-2">
+                <div class="font-semibold text-lg">
+                  <?= htmlspecialchars($e['nama_event']) ?>
+                </div>
+
+                <div class="text-sm text-gray-600">
+                  📅 <?= htmlspecialchars($e['tanggal_event']) ?>
+                </div>
+
+                <div class="text-sm text-gray-600">
+                  📍 <?= htmlspecialchars($e['lokasi']) ?>
+                </div>
+
+                <a
+                  href="event-detail.php?id=<?= $e['id_event'] ?>"
+                  class="block mt-3 text-center bg-blue-600 text-white py-2
+                         rounded-lg hover:bg-blue-700">
+                  Lihat Detail
+                </a>
+              </div>
+            </div>
+          <?php endforeach; ?>
+
         </div>
-
-      </div>
+      <?php endif; ?>
     </section>
 
   </main>
