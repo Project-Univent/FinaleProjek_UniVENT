@@ -1,16 +1,10 @@
 // panitia-shell.js
-// inject SIDEBAR + TOPBAR + offset layout panitia
+// inject SIDEBAR + TOPBAR + offset layout panitia (RESPONSIF + NOTIF)
 
 document.addEventListener("DOMContentLoaded", () => {
   // ===== USER DARI PHP =====
   const user = window.AUTH_USER;
-
-  // if (!user || user.role !== "panitia") {
-  //   document.body.innerHTML = "";
-  //   return;
-  // }
-
-  const namaPanitia = user.nama || "Panitia";
+  const namaPanitia = user?.nama || "Panitia";
 
   const SIDEBAR_W = "w-64";
   const MAIN_ML = "ml-64";
@@ -22,7 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sidebarContainer || !topbar || !main) return;
 
-  const currentPage = window.location.pathname.split("/").pop().split("?")[0];
+  const currentPage =
+    window.location.pathname.split("/").pop().split("?")[0];
 
   function isActive(page) {
     return currentPage === page
@@ -30,9 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
       : "hover:bg-white/10 text-white/90";
   }
 
+  // ===== SIDEBAR =====
   sidebarContainer.innerHTML = `
-    <aside class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#145AAD]
-           text-white flex flex-col shadow-lg z-50">
+    <aside id="panitia-sidebar"
+      class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#145AAD]
+      text-white flex flex-col shadow-lg z-50
+      transform -translate-x-full md:translate-x-0
+      transition-transform duration-300">
 
       <div class="px-5 py-4 border-b border-white/20">
         <div class="flex items-center gap-3">
@@ -83,26 +82,120 @@ document.addEventListener("DOMContentLoaded", () => {
     </aside>
   `;
 
-  // ===== TOPBAR =====
   topbar.innerHTML = `
-    <div class="fixed top-0 ${TOP_LEFT} right-0 h-16 bg-[#145AAD] text-white shadow
-         flex items-center justify-between px-6 z-40">
+    <div class="fixed top-0 left-0 md:${TOP_LEFT} right-0 h-16 bg-[#145AAD]
+      text-white shadow flex items-center justify-between px-4 md:px-6 z-40">
 
-      <div>
-        <div class="text-lg font-semibold">
-          Selamat Datang, ${namaPanitia} 👋
-        </div>
-        <div class="text-xs text-white/80">
-          Kelola acara & peserta event
+      <!-- KIRI -->
+      <div class="flex items-center gap-3">
+        <button id="panitia-toggle"
+          class="md:hidden p-2 rounded hover:bg-white/10 text-xl">
+          ☰
+        </button>
+
+        <div>
+          <div class="text-lg font-semibold">
+            Selamat Datang, ${namaPanitia} 👋
+          </div>
+          <div class="text-xs text-white/80 hidden sm:block">
+            Kelola acara & peserta event
+          </div>
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
+      <!-- KANAN (BELL + PROFILE) -->
+      <div class="flex items-center gap-3 relative">
+        <!-- NOTIF BELL -->
+        <button id="notif-btn" class="relative p-2 rounded hover:bg-white/10">
+          🔔
+          <span id="notif-dot"
+            class="hidden absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+
+        <!-- DROPDOWN -->
+        <div id="notif-dropdown"
+          class="hidden absolute right-0 top-full mt-2 w-80 bg-white text-black
+          rounded shadow-lg overflow-hidden z-50">
+        </div>
+
+        <!-- AVATAR -->
         <img src="../assets/img/avatar-placeholder.png"
-          class="w-9 h-9 rounded-full border bg-white/10" />
+          class="w-9 h-9 rounded-full border bg-white/10 cursor-pointer" />
       </div>
     </div>
   `;
 
-  main.classList.add(MAIN_ML, "pt-20");
+
+  // ===== MAIN OFFSET =====
+  main.classList.add("pt-20");
+  main.classList.add("md:" + MAIN_ML);
+
+  // ===== TOGGLE SIDEBAR (HP) =====
+  const sidebar = document.getElementById("panitia-sidebar");
+  const toggleBtn = document.getElementById("panitia-toggle");
+
+  toggleBtn?.addEventListener("click", () => {
+    sidebar.classList.toggle("-translate-x-full");
+  });
+
+  // ===== NOTIFIKASI LOGIC =====
+  const notifBtn = document.getElementById("notif-btn");
+  const notifDropdown = document.getElementById("notif-dropdown");
+  const notifDot = document.getElementById("notif-dot");
+
+  notifBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+
+    if (!notifDropdown.classList.contains("hidden")) {
+      notifDropdown.classList.add("hidden");
+      return;
+    }
+
+    const res = await fetch("data/get-notifikasi.php", {
+      cache: "no-store"
+    });
+    const data = await res.json();
+
+    notifDropdown.innerHTML = "";
+
+    if (!data.length) {
+      notifDropdown.innerHTML = `
+        <div class="p-4 text-sm text-gray-500">
+          Tidak ada notifikasi
+        </div>
+      `;
+    } else {
+      data.forEach(n => {
+        notifDropdown.innerHTML += `
+          <div class="p-3 border-b text-sm">
+            <div class="font-semibold">${n.title}</div>
+            <div class="text-gray-600">${n.message}</div>
+            <div class="text-xs text-gray-400 mt-1">
+              ${n.created_at}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    notifDropdown.classList.remove("hidden");
+    notifDot.classList.add("hidden");
+  });
+
+  // klik di luar dropdown → tutup
+  document.addEventListener("click", () => {
+    notifDropdown.classList.add("hidden");
+  });
+
+  // ===== CEK ADA NOTIF ATAU TIDAK (DOT MERAH) =====
+  (async function checkNotif() {
+    const res = await fetch("data/get-notifikasi.php", {
+      cache: "no-store"
+    });
+    const data = await res.json();
+
+    if (data.length) {
+      notifDot.classList.remove("hidden");
+    }
+  })();
 });

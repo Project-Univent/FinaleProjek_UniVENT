@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadEvents() {
     try {
-      const res = await fetch("data/get-pending-events.php");
+      const res = await fetch("data/get-pending-events.php", {
+        cache: "no-store"
+      });
       const events = await res.json();
 
       tbody.innerHTML = "";
@@ -36,26 +38,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             <td class="p-2 flex flex-wrap gap-2">
               <button
                 onclick="lihatDetail(${e.id_event})"
-                class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                class="px-3 py-1 bg-blue-600 text-white text-sm rounded">
                 Lihat Detail
               </button>
-
               <button
                 onclick="verifikasiEvent(${e.id_event})"
-                class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                class="px-3 py-1 bg-green-600 text-white text-sm rounded">
                 Verifikasi
               </button>
-
               <button
                 onclick="tolakEvent(${e.id_event})"
-                class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                class="px-3 py-1 bg-red-600 text-white text-sm rounded">
                 Tolak
               </button>
             </td>
           </tr>
         `;
       });
-
     } catch (err) {
       console.error(err);
       alert("Gagal memuat data event");
@@ -64,7 +63,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   loadEvents();
 
-  // ===== ACTIONS =====
   window.lihatDetail = (id) => {
     window.location.href = "event-detail.php?id=" + id;
   };
@@ -78,10 +76,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const res = await fetch("data/update-event-status.php", {
       method: "POST",
-      body: form
+      body: form,
+      cache: "no-store"
     });
 
-    const result = await res.json();
+    let result;
+    try {
+      result = await res.json();
+    } catch {
+      alert("Response server tidak valid");
+      return;
+    }
 
     if (result.success) {
       loadEvents();
@@ -101,10 +106,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const res = await fetch("data/update-event-status.php", {
       method: "POST",
-      body: form
+      body: form,
+      cache: "no-store"
     });
 
-    const result = await res.json();
+    let result;
+    try {
+      result = await res.json();
+    } catch {
+      alert("Response server tidak valid");
+      return;
+    }
 
     if (result.success) {
       loadEvents();

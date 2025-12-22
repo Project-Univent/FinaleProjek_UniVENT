@@ -2,7 +2,6 @@
 $required_role = 'admin';
 require "../autentikasi/cek_login.php";
 ?>
-
 <!doctype html>
 <html lang="id">
 <head>
@@ -13,7 +12,7 @@ require "../autentikasi/cek_login.php";
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Material Icons (standalone) -->
+  <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Chart.js -->
@@ -25,28 +24,25 @@ require "../autentikasi/cek_login.php";
       role: "<?= $_SESSION['role'] ?>"
     };
   </script>
-  
-  <!-- Admin Shell + Dashboard Logic -->
+
+  <!-- Shell & Logic -->
   <script src="../assets/js/admin/admin-shell.js" defer></script>
   <script src="../assets/js/admin/admin-dashboard.js" defer></script>
 
   <style>
     .card-radius { border-radius: .75rem; }
-    .slide-enter { opacity: 0; transform: translateX(10px); }
-    .slide-active { opacity: 1; transform: none; transition: all .5s ease; }
   </style>
 </head>
 
 <body class="bg-gray-100">
 
-  <!-- injected by JS -->
+  <!-- injected -->
   <div id="sidebar-container"></div>
   <header id="admin-topbar"></header>
 
-  <!-- MAIN CONTENT (NO ml-64 / pt-20 manual) -->
   <main id="admin-main" class="p-6 transition-all duration-300">
 
-    <!-- SUMMARY CARDS -->
+    <!-- SUMMARY -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
       <div class="bg-white card-radius shadow p-5">
         <div class="text-sm text-gray-500">Total Event</div>
@@ -62,118 +58,65 @@ require "../autentikasi/cek_login.php";
       </div>
     </div>
 
-    <!-- CATEGORY LIST + HERO SLIDER -->
+    <!-- KATEGORI + HERO -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
 
-      <!-- Categories -->
+      <!-- KATEGORI -->
       <div class="bg-white card-radius shadow p-6">
-        <h3 class="font-semibold mb-4">Kategori Acara Yang Tersedia</h3>
-
+        <h3 class="font-semibold mb-4">Kategori Event</h3>
         <div id="kategori-list" class="space-y-3">
-
-          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
-                <span class="material-icons">school</span>
-              </div>
-              <div>
-                <div class="font-semibold">Seminar</div>
-                <div class="text-sm text-gray-500"><span id="sem-count">3</span> event</div>
-              </div>
-            </div>
-            <div class="text-gray-400 text-xl">›</div>
-          </div>
-
-          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
-                <span class="material-icons">handyman</span>
-              </div>
-              <div>
-                <div class="font-semibold">Workshop</div>
-                <div class="text-sm text-gray-500"><span id="ws-count">2</span> event</div>
-              </div>
-            </div>
-            <div class="text-gray-400 text-xl">›</div>
-          </div>
-
-          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center">
-                <span class="material-icons">videocam</span>
-              </div>
-              <div>
-                <div class="font-semibold">Webinar</div>
-                <div class="text-sm text-gray-500"><span id="wb-count">5</span> event</div>
-              </div>
-            </div>
-            <div class="text-gray-400 text-xl">›</div>
-          </div>
-
-          <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center">
-                <span class="material-icons">emoji_events</span>
-              </div>
-              <div>
-                <div class="font-semibold">Kompetisi</div>
-                <div class="text-sm text-gray-500"><span id="cp-count">1</span> event</div>
-              </div>
-            </div>
-            <div class="text-gray-400 text-xl">›</div>
-          </div>
-
+          <!-- diisi JS -->
         </div>
       </div>
 
-      <!-- HERO SLIDER -->
+      <!-- HERO ANALITIK -->
       <div class="lg:col-span-2">
-        <div class="card-radius shadow overflow-hidden relative">
-          <div id="hero-slider"
-            class="relative bg-gradient-to-r from-[#0F4A85] to-[#145AAD] text-white p-6 flex items-center gap-6">
+        <div class="bg-white card-radius shadow p-6 h-full">
+
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold">
+                Analitik: Jenis Event Paling Diminati
+              </h2>
+              <p class="text-sm text-gray-500">
+                Berdasarkan jumlah peserta terdaftar
+              </p>
+            </div>
+
+            <a href="export-analytics.php"
+              class="text-sm bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+              ⬇️ CSV
+            </a>
           </div>
 
-          <button id="hero-prev"
-                  class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-2 rounded-full">
-            ◀
-          </button>
+          <div id="hero-analytics"
+              class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- diisi JS -->
+          </div>
 
-          <button id="hero-next"
-                  class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-2 rounded-full">
-            ▶
-          </button>
-
-          <div id="hero-indicators"
-               class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
         </div>
       </div>
+
     </div>
 
-    <!-- CHARTS ROW -->
+    <!-- CHARTS -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-      <div class="bg-white card-radius shadow p-6">
-        <h3 class="font-semibold mb-4">Registrasi Peserta (Time-series)</h3>
-        <canvas id="chart-registrasi"></canvas>
+
+      <div class="bg-white card-radius shadow p-6 h-72 flex flex-col">
+        <h3 class="font-semibold mb-4">Jumlah Event per Tanggal</h3>
+        <div class="flex-1">
+          <canvas id="chart-event-tanggal"></canvas>
+        </div>
       </div>
 
-      <div class="bg-white card-radius shadow p-6">
-        <h3 class="font-semibold mb-4">Jumlah Peserta per Kategori</h3>
-        <canvas id="chart-kategori"></canvas>
+      <div class="bg-white card-radius shadow p-6 h-72 flex flex-col">
+        <h3 class="font-semibold mb-4">Jumlah Event per Kategori</h3>
+        <div class="flex-1">
+          <canvas id="chart-kategori"></canvas>
+        </div>
       </div>
+
     </div>
-
-    <!-- FOOTER ACTIONS -->
-    <div class="bg-white card-radius shadow p-4 mt-6 flex items-center justify-between">
-      <div class="text-sm text-gray-600">Data saat ini: dummy. Nanti tinggal ganti fetch ke API.</div>
-
-      <div class="flex items-center gap-3">
-        <button id="refresh-dashboard"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Refresh</button>
-        <button id="download-csv"
-                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Download CSV</button>
-      </div>
-    </div>
-
   </main>
 
 </body>

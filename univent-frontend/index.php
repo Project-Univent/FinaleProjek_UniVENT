@@ -28,14 +28,14 @@
 
       <nav class="space-x-6 text-sm">
         <a href="#home" class="hover:text-blue-500">Home</a>
-        <a href="#about" class="hover:text-blue-500">About</a>
-        <a href="#category" class="hover:text-blue-500">Category</a>
-        <a href="#events" class="hover:text-blue-500">Events</a>
+        <a href="#about" class="hover:text-blue-500">Tentang</a>
+        <a href="#category" class="hover:text-blue-500">Kategori</a>
+        <a href="#events" class="hover:text-blue-500">Acara</a>
       </nav>
 
       <a href="autentikasi/login.php"
         class="px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm transition">
-        Login
+        Masuk
       </a>
 
     </div>
@@ -60,11 +60,11 @@
       <div class="space-x-4">
         <a href="#category"
            class="inline-block px-7 py-3 bg-blue-600 hover:bg-blue-700 rounded-full">
-          Explore Event
+          Jelajahi Acara
         </a>
         <a href="#about"
            class="inline-block px-7 py-3 border border-white rounded-full">
-          About Us
+          Tentang Kita
         </a>
       </div>
     </div>

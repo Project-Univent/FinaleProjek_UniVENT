@@ -1,67 +1,23 @@
 <?php
 session_start();
 require "../config/koneksi.php";
+require "../classes/auth.php"; // sesuaikan nama file (lowercase)
 
 $email    = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if ($email === '' || $password === '') {
-    header("Location: login.php?error=1");
-    exit;
+  header("Location: login.php?error=1");
+  exit;
 }
 
-/* ================= ADMIN ================= */
-$stmt = $conn->prepare(
-    "SELECT id_admin AS id, username AS nama, password
-     FROM admin WHERE email = ?"
-);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
+$auth = new Auth($conn);
 
-if ($user && password_verify($password, $user['password'])) {
-    $_SESSION['admin_id']   = $user['id'];
-    $_SESSION['admin_nama'] = $user['nama'];
+// coba login berurutan: admin → panitia → peserta
+$auth->login($email, $password, "admin",   "id_admin",   "../admin/dashboard.php",   "admin")
+|| $auth->login($email, $password, "panitia","id_panitia","../panitia/dashboard.php", "panitia")
+|| $auth->login($email, $password, "peserta","id_peserta","../peserta/dashboard.php", "peserta");
 
-    header("Location: ../admin/dashboard.php");
-    exit;
-}
-
-/* ================= PANITIA ================= */
-$stmt = $conn->prepare(
-    "SELECT id_panitia AS id, username AS nama, password
-     FROM panitia WHERE email = ?"
-);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
-
-if ($user && password_verify($password, $user['password'])) {
-    $_SESSION['panitia_id']   = $user['id'];
-    $_SESSION['panitia_nama'] = $user['nama'];
-
-    header("Location: ../panitia/dashboard.php");
-    exit;
-}
-
-/* ================= PESERTA ================= */
-$stmt = $conn->prepare(
-    "SELECT id_peserta AS id, username AS nama, password
-     FROM peserta WHERE email = ?"
-);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
-
-if ($user && password_verify($password, $user['password'])) {
-    $_SESSION['peserta_id']   = $user['id'];
-    $_SESSION['peserta_nama'] = $user['nama'];
-
-    header("Location: ../peserta/dashboard.php");
-    exit;
-}
-
-/* ================= GAGAL ================= */
+// kalau semua gagal
 header("Location: login.php?error=1");
 exit;
-

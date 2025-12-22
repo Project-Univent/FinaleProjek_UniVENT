@@ -1,50 +1,67 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const eventId = params.get("event") || 1;
-
-  // Dummy event name
-  const dummyEventName = "Tech Conference 2025";
-
-  // Dummy daftar peserta — nanti diganti API
-  const dummyPeserta = [
-    { id: 1, nama: "Reza Ardian", email: "reza@mail.com" },
-    { id: 2, nama: "Siska Lestari", email: "siska@mail.com" },
-    { id: 3, nama: "Fadhil Ramadhan", email: "fadhil@mail.com" },
-    { id: 4, nama: "Maulida Putri", email: "maulida@mail.com" },
-  ];
-
-  // Set event name
-  document.getElementById("event-name").innerText = dummyEventName;
-
-  // Render table
   const tbody = document.getElementById("table-peserta");
 
-  function renderTable(peserta) {
-    tbody.innerHTML = "";
+  fetch(`data/get-peserta-event.php?event=${EVENT_ID}`)
+    .then(res => res.json())
+    .then(data => {
+      tbody.innerHTML = "";
 
-    peserta.forEach((p, i) => {
-      tbody.innerHTML += `
-        <tr class="border-b hover:bg-gray-50">
-          <td class="p-2">${i + 1}</td>
-          <td class="p-2">${p.nama}</td>
-          <td class="p-2">${p.email}</td>
-          <td class="p-2">
-            <button 
-              class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
-              onclick="lihatDetailPeserta(${p.id})">
-              Detail
-            </button>
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="p-6 text-center text-gray-500">
+              Belum ada peserta terdaftar
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      data.forEach((p, i) => {
+        tbody.innerHTML += `
+          <tr class="border-b hover:bg-gray-50">
+            <td class="p-2">${i + 1}</td>
+            <td class="p-2">${p.nama}</td>
+            <td class="p-2">${p.email}</td>
+            <td class="p-2">
+              <button
+                class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                onclick="hapusPeserta(${p.id_peserta})">
+                Hapus
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    })
+    .catch(() => {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" class="p-6 text-center text-red-500">
+            Gagal memuat data peserta
           </td>
         </tr>
       `;
     });
-  }
-
-  renderTable(dummyPeserta);
-
-  // Handler klik detail
-  window.lihatDetailPeserta = function(id) {
-    alert("Detail peserta ID: " + id + " (dummy)");
-
-  };
 });
+
+function hapusPeserta(idPeserta) {
+  if (!confirm("Yakin mau menghapus peserta ini dari event?")) return;
+
+  fetch("data/hapus-peserta-event.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id_event: EVENT_ID,
+      id_peserta: idPeserta
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      location.reload();
+    } else {
+      alert(res.message || "Gagal menghapus peserta");
+    }
+  });
+}

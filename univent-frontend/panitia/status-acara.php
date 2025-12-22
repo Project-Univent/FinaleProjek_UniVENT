@@ -3,12 +3,27 @@ $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-$id_panitia = $_SESSION['user_id'];
+/* =========================
+   VALIDASI SESSION PANITIA
+========================= */
+$id_panitia = $_SESSION['user_id'] ?? null;
 
+if (!$id_panitia) {
+  die("Panitia tidak valid");
+}
+
+/* =========================
+   AMBIL STATUS ACARA
+========================= */
 $sql = "
-  SELECT id_event, nama_event, status, catatan_admin
+  SELECT
+    id_event,
+    nama_event,
+    status,
+    catatan_admin
   FROM event
   WHERE id_panitia = ?
+  ORDER BY id_event DESC
 ";
 
 $stmt = mysqli_prepare($conn, $sql);
@@ -17,7 +32,6 @@ mysqli_stmt_execute($stmt);
 
 $result = mysqli_stmt_get_result($stmt);
 $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 ?>
 
 <!doctype html>
@@ -27,7 +41,6 @@ $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Status Acara - Panitia</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -37,22 +50,18 @@ $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
     };
   </script>
 
-  <!-- Shell Panitia -->
   <script src="../assets/js/panitia/panitia-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- injected by shell -->
   <div id="sidebar-container"></div>
   <header id="panitia-topbar"></header>
 
-  <!-- MAIN -->
   <main id="panitia-main" class="p-6 transition-all duration-300">
 
     <section class="space-y-6">
 
-      <!-- HEADER -->
       <div>
         <h1 class="text-2xl font-semibold">Status Acara</h1>
         <p class="text-sm text-gray-500">
@@ -60,7 +69,6 @@ $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
         </p>
       </div>
 
-      <!-- GRID -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
         <?php if (empty($statusAcara)): ?>
@@ -72,16 +80,16 @@ $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
             <?php
               $badgeClass = match ($e['status']) {
-                'tertunda'  => 'bg-yellow-400',
+                'pending'  => 'bg-yellow-400',
                 'rejected' => 'bg-red-500',
-                'verified' => 'bg-green-600',
+                'approved' => 'bg-green-600',
                 default    => 'bg-gray-400'
               };
 
               $labelStatus = match ($e['status']) {
-                'tertunda'  => 'Tertunda',
+                'pending'  => 'Menunggu Verifikasi',
                 'rejected' => 'Ditolak',
-                'verified' => 'Diterima',
+                'approved' => 'Disetujui',
                 default    => 'Unknown'
               };
             ?>
@@ -91,8 +99,7 @@ $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
               <div class="p-4 space-y-2">
 
-                <span class="inline-block px-3 py-1 text-sm rounded-full
-                             text-white <?= $badgeClass ?>">
+                <span class="inline-block px-3 py-1 text-sm rounded-full text-white <?= $badgeClass ?>">
                   <?= $labelStatus ?>
                 </span>
 
@@ -100,11 +107,13 @@ $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
                   <?= htmlspecialchars($e['nama_event']) ?>
                 </p>
 
-                <p class="text-sm text-gray-600">
-                  <?= htmlspecialchars($e['catatan_admin']) ?>
-                </p>
+                <?php if (!empty($e['catatan_admin'])): ?>
+                  <p class="text-sm text-gray-600">
+                    <?= htmlspecialchars($e['catatan_admin']) ?>
+                  </p>
+                <?php endif; ?>
 
-                <?php if ($e['status'] === 'tertunda'): ?>
+                <?php if ($e['status'] === 'pending'): ?>
                   <a href="edit-acara.php?id=<?= $e['id_event'] ?>"
                      class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
                     Edit Acara
@@ -116,7 +125,7 @@ $statusAcara = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     Revisi Acara
                   </a>
 
-                <?php elseif ($e['status'] === 'verified'): ?>
+                <?php elseif ($e['status'] === 'approved'): ?>
                   <a href="acara-saya.php"
                      class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
                     Lihat di Acara Saya

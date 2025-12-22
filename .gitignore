@@ -1,4 +1,7 @@
 node_modules/
+vendor/
+
+.env
+google/credentials.json
+
 assets/css/output.css
-package-lock.json
-package.json

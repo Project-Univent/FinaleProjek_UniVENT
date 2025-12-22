@@ -71,9 +71,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.lihatDetail = (id) =>
     (location.href = "event-detail.php?id=" + id);
 
-  window.hapusEvent = (id) => {
-    if (confirm("Yakin ingin menghapus event ini?")) {
-      alert("Hapus event belum diaktifkan. ID: " + id);
+  window.hapusEvent = async (id) => {
+    if (!confirm("Yakin ingin menghapus event ini?")) return;
+
+    try {
+      const res = await fetch("data/hapus-event.php?id=" + id);
+      const text = await res.text();
+
+      if (text === "OK") {
+        alert("Event berhasil dihapus");
+        location.reload();
+      } else {
+        alert(text);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Gagal menghapus event");
     }
   };
+
 });

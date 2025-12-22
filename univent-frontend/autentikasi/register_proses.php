@@ -10,6 +10,20 @@ if ($fullname === '' || $email === '' || $password === '') {
     exit;
 }
 
+/* === CEK DUPLIKAT USERNAME / EMAIL === */
+$cek = $conn->prepare(
+    "SELECT id_peserta FROM peserta WHERE username = ? OR email = ?"
+);
+$cek->bind_param("ss", $fullname, $email);
+$cek->execute();
+$cek->store_result();
+
+if ($cek->num_rows > 0) {
+    header("Location: register.php?error=duplicate");
+    exit;
+}
+
+/* === INSERT DATA === */
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn->prepare(
@@ -19,6 +33,5 @@ $stmt = $conn->prepare(
 $stmt->bind_param("sss", $fullname, $email, $hash);
 $stmt->execute();
 
-header("Location: ../autentikasi/login.php");
+header("Location: ../autentikasi/login.php?register=success");
 exit;
-

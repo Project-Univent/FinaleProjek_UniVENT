@@ -1,26 +1,61 @@
 <?php
 $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
+require "../config/koneksi.php";
 
-/*
-  DUMMY DATA
-  Backend nanti:
-  - ambil event by id_event + id_panitia
-  - ambil peserta JOIN user
-*/
+/* =========================
+   VALIDASI SESSION PANITIA
+========================= */
+$id_panitia = $_SESSION['user_id'] ?? null;
+if (!$id_panitia) {
+  die("Panitia tidak valid");
+}
 
-$id_event = $_GET['id'] ?? 1;
+/* =========================
+   VALIDASI ID EVENT
+========================= */
+$id_event = $_GET['id'] ?? null;
+if (!$id_event || !is_numeric($id_event)) {
+  die("Event tidak valid");
+}
 
-$event = [
-  'id_event' => $id_event,
-  'nama_event' => 'Tech Conference 2024'
-];
+/* =========================
+   CEK EVENT MILIK PANITIA
+========================= */
+$sqlEvent = "
+  SELECT id_event, nama_event
+  FROM event
+  WHERE id_event = ? AND id_panitia = ?
+  LIMIT 1
+";
 
-$peserta = [
-  ['nama' => 'Andi Pratama', 'email' => 'andi@example.com'],
-  ['nama' => 'Bunga Sari', 'email' => 'bunga@example.com'],
-  ['nama' => 'Dewi Lestari', 'email' => 'dewi@example.com'],
-];
+$stmt = mysqli_prepare($conn, $sqlEvent);
+mysqli_stmt_bind_param($stmt, "ii", $id_event, $id_panitia);
+mysqli_stmt_execute($stmt);
+$event = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+
+if (!$event) {
+  die("Event tidak ditemukan atau bukan milik kamu");
+}
+
+/* =========================
+   AMBIL PESERTA EVENT
+========================= */
+$sqlPeserta = "
+  SELECT
+    p.username AS nama,
+    p.email
+  FROM tiket t
+  JOIN peserta p ON t.id_peserta = p.id_peserta
+  WHERE t.id_event = ?
+  ORDER BY p.username ASC
+";
+
+$stmt = mysqli_prepare($conn, $sqlPeserta);
+mysqli_stmt_bind_param($stmt, "i", $id_event);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$peserta = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
 
 <!doctype html>
@@ -39,7 +74,6 @@ $peserta = [
     };
   </script>
 
-  <!-- Shell -->
   <script src="../assets/js/panitia/panitia-shell.js" defer></script>
 </head>
 
@@ -58,14 +92,6 @@ $peserta = [
         <p class="text-sm text-gray-500">
           <?= htmlspecialchars($event['nama_event']) ?> · Total <?= count($peserta) ?> peserta
         </p>
-      </div>
-
-      <!-- SEARCH (UI ONLY) -->
-      <div>
-        <input
-          type="text"
-          placeholder="Cari peserta berdasarkan nama atau email..."
-          class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none">
       </div>
 
       <!-- TABLE -->

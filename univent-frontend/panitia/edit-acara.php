@@ -1,25 +1,44 @@
 <?php
 $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
+require "../config/koneksi.php";
 
-/*
-  DUMMY DATA EVENT
-  Backend nanti:
-  SELECT * FROM event WHERE id_event = $_GET['id'] AND id_panitia = session
-*/
+/* ======================
+   VALIDASI PANITIA
+====================== */
+$id_panitia = $_SESSION['user_id'] ?? null;
+if (!$id_panitia) {
+  die("Panitia tidak valid");
+}
 
-$id_event = $_GET['id'] ?? 1;
+/* ======================
+   VALIDASI ID EVENT
+====================== */
+$id_event = $_GET['id'] ?? null;
+if (!$id_event || !is_numeric($id_event)) {
+  die("Event tidak ditemukan");
+}
 
-$event = [
-  'id_event' => $id_event,
-  'nama_event' => 'Tech Conference 2024',
-  'deskripsi' => 'Acara tahunan yang membahas perkembangan teknologi terkini.',
-  'tanggal' => '2024-03-15',
-  'waktu' => '09:00',
-  'lokasi' => 'Aula FTI Universitas',
-  'kuota' => 150,
-  'poster' => '../assets/img/poster1.jpg'
-];
+/* ======================
+   AMBIL DATA EVENT
+====================== */
+$sql = "
+  SELECT id_event, nama_event, deskripsi, tanggal_event, waktu_mulai,
+         lokasi, kuota, poster
+  FROM event
+  WHERE id_event = ? AND id_panitia = ?
+  LIMIT 1
+";
+
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "ii", $id_event, $id_panitia);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$event = mysqli_fetch_assoc($result);
+
+if (!$event) {
+  die("Event tidak ditemukan atau bukan milik kamu");
+}
 ?>
 
 <!doctype html>
@@ -29,7 +48,6 @@ $event = [
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Acara - Panitia</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -39,7 +57,6 @@ $event = [
     };
   </script>
 
-  <!-- Shell -->
   <script src="../assets/js/panitia/panitia-shell.js" defer></script>
 </head>
 
@@ -53,16 +70,12 @@ $event = [
     <section class="max-w-3xl mx-auto space-y-6">
 
       <a href="status-acara.php"
-        class="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline">
+        class="text-sm text-blue-600 hover:underline">
         ← Kembali ke Status Acara
       </a>
 
-      <div>
-        <h1 class="text-2xl font-semibold">Edit Acara</h1>
-        <p class="text-sm text-gray-500">Perbarui detail acara</p>
-      </div>
+      <h1 class="text-2xl font-semibold">Edit Acara</h1>
 
-      <!-- FORM -->
       <form
         action="edit-acara_proses.php"
         method="POST"
@@ -75,54 +88,53 @@ $event = [
         <div>
           <label class="block font-medium mb-2">Poster Acara</label>
           <input type="file" name="poster"
-            class="w-full border rounded-lg px-4 py-2
-                   file:bg-blue-600 file:text-white file:px-4 file:py-2 file:rounded-lg">
+            class="w-full border rounded-lg px-4 py-2">
           <p class="text-sm text-gray-500 mt-1">
-            Biarkan kosong jika tidak ingin mengganti poster
+            Kosongkan jika tidak ingin mengganti poster
           </p>
         </div>
 
         <div>
           <label class="block font-medium mb-2">Nama Acara</label>
           <input type="text" name="nama_event"
-            class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
+            class="w-full border rounded-lg px-4 py-3"
             value="<?= htmlspecialchars($event['nama_event']) ?>" required>
         </div>
 
         <div>
-          <label class="block font-medium mb-2">Deskripsi Acara</label>
+          <label class="block font-medium mb-2">Deskripsi</label>
           <textarea name="deskripsi"
-            class="w-full border rounded-lg px-4 py-3 h-32 focus:ring-2 focus:ring-blue-600 outline-none"
+            class="w-full border rounded-lg px-4 py-3 h-32"
             required><?= htmlspecialchars($event['deskripsi']) ?></textarea>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block font-medium mb-2">Tanggal</label>
-            <input type="date" name="tanggal"
-              class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
-              value="<?= $event['tanggal'] ?>" required>
+            <input type="date" name="tanggal_event"
+              class="w-full border rounded-lg px-4 py-3"
+              value="<?= $event['tanggal_event'] ?>" required>
           </div>
 
           <div>
             <label class="block font-medium mb-2">Waktu Mulai</label>
-            <input type="time" name="waktu"
-              class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
-              value="<?= $event['waktu'] ?>" required>
+            <input type="time" name="waktu_mulai"
+              class="w-full border rounded-lg px-4 py-3"
+              value="<?= $event['waktu_mulai'] ?>" required>
           </div>
         </div>
 
         <div>
-          <label class="block font-medium mb-2">Lokasi Acara</label>
+          <label class="block font-medium mb-2">Lokasi</label>
           <input type="text" name="lokasi"
-            class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
+            class="w-full border rounded-lg px-4 py-3"
             value="<?= htmlspecialchars($event['lokasi']) ?>" required>
         </div>
 
         <div>
-          <label class="block font-medium mb-2">Kuota Peserta</label>
+          <label class="block font-medium mb-2">Kuota</label>
           <input type="number" name="kuota" min="1"
-            class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-600 outline-none"
+            class="w-full border rounded-lg px-4 py-3"
             value="<?= $event['kuota'] ?>" required>
         </div>
 

@@ -2,23 +2,22 @@
 $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
+require "../classes/panitia.php";
 
-$id_panitia = $_SESSION['user_id'];
+/* =========================
+   VALIDASI SESSION PANITIA
+========================= */
+$id_panitia = $_SESSION['user_id'] ?? null;
 
-$sql = "
-  SELECT id_event, nama_event, tanggal_event, lokasi, poster, status
-  FROM event
-  WHERE id_panitia = ?
-  ORDER BY tanggal_event DESC
-";
+if (!$id_panitia) {
+  die("Panitia tidak valid");
+}
 
-$stmt = mysqli_prepare($conn, $sql);
-mysqli_stmt_bind_param($stmt, "i", $id_panitia);
-mysqli_stmt_execute($stmt);
-
-$result = mysqli_stmt_get_result($stmt);
-$eventsPanitia = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
+/* =========================
+   OOP: AMBIL EVENT PANITIA
+========================= */
+$panitia = new Panitia($conn, $id_panitia);
+$eventsPanitia = $panitia->getEventSaya();
 ?>
 
 <!doctype html>
@@ -28,7 +27,6 @@ $eventsPanitia = mysqli_fetch_all($result, MYSQLI_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Acara Saya - Panitia</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -38,17 +36,14 @@ $eventsPanitia = mysqli_fetch_all($result, MYSQLI_ASSOC);
     };
   </script>
 
-  <!-- Shell Panitia -->
   <script src="../assets/js/panitia/panitia-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- injected by shell -->
   <div id="sidebar-container"></div>
   <header id="panitia-topbar"></header>
 
-  <!-- MAIN -->
   <main id="panitia-main" class="p-6 space-y-6 transition-all duration-300">
 
     <!-- HEADER -->
@@ -59,7 +54,7 @@ $eventsPanitia = mysqli_fetch_all($result, MYSQLI_ASSOC);
       </p>
     </section>
 
-    <!-- EVENT GRID -->
+    <!-- GRID EVENT -->
     <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
       <?php if (empty($eventsPanitia)): ?>
@@ -70,50 +65,75 @@ $eventsPanitia = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <?php foreach ($eventsPanitia as $e): ?>
 
           <?php
-            // badge status
-            $statusClass = match ($e['status']) {
-              'approved ' => 'text-green-600',
-              'pending'  => 'text-yellow-600',
-              'rejected' => 'text-red-600',
-              default    => 'text-gray-500'
+            $statusBadge = match ($e['status']) {
+              'approved' => 'bg-green-600',
+              'pending'  => 'bg-yellow-400',
+              'rejected' => 'bg-red-500',
+              default    => 'bg-gray-400'
+            };
+
+            $statusLabel = match ($e['status']) {
+              'approved' => 'Disetujui',
+              'pending'  => 'Menunggu Verifikasi',
+              'rejected' => 'Ditolak',
+              default    => 'Unknown'
             };
           ?>
 
           <div class="bg-white rounded-xl shadow border overflow-hidden">
 
             <!-- POSTER -->
-            <img src="../assets/img/<?= htmlspecialchars($e['poster']) ?>"
-                 class="h-40 w-full object-cover">
+            <div class="h-40 bg-gray-200 overflow-hidden">
+              <img
+                src="../assets/img/<?= htmlspecialchars($e['poster'] ?? 'default.jpg') ?>"
+                class="w-full h-full object-cover"
+              >
+            </div>
 
             <!-- CONTENT -->
             <div class="p-4 space-y-2">
+
+              <span class="inline-block px-3 py-1 text-sm rounded-full text-white <?= $statusBadge ?>">
+                <?= $statusLabel ?>
+              </span>
+
               <p class="text-lg font-semibold">
                 <?= htmlspecialchars($e['nama_event']) ?>
               </p>
 
               <p class="text-sm text-gray-600">
-                📅 <?= $e['tanggal_event'] ?>
+                📅 <?= htmlspecialchars($e['tanggal_event']) ?>
               </p>
 
               <p class="text-sm text-gray-600">
                 📍 <?= htmlspecialchars($e['lokasi']) ?>
               </p>
 
-              <p class="text-sm font-semibold <?= $statusClass ?>">
-                Status: <?= ucfirst($e['status']) ?>
-              </p>
+              <!-- BUTTON LOGIC -->
+              <?php if ($e['status'] === 'approved'): ?>
 
-              <a href="edit-acara.php?id=<?= $e['id_event'] ?>"
-                 class="block text-center bg-yellow-500 text-white py-2
-                        rounded-lg hover:bg-yellow-600 transition">
-                Edit Acara
-              </a>
+                <a href="peserta-acara.php?id=<?= $e['id_event'] ?>"
+                   class="block text-center bg-green-600 text-white py-2
+                          rounded-lg hover:bg-green-700 transition">
+                  Lihat Peserta
+                </a>
 
-              <a href="peserta-acara.php?id=<?= $e['id_event'] ?>"
-                 class="block text-center bg-[#2B77D1] text-white py-2
-                        rounded-lg hover:bg-[#2566B8] transition">
-                Lihat Peserta
-              </a>
+                <a href="edit-acara.php?id=<?= $e['id_event'] ?>"
+                   class="block text-center bg-blue-600 text-white py-2
+                          rounded-lg hover:bg-blue-700 transition">
+                  Edit Acara
+                </a>
+
+              <?php else: ?>
+
+                <a href="edit-acara.php?id=<?= $e['id_event'] ?>"
+                   class="block text-center bg-yellow-500 text-white py-2
+                          rounded-lg hover:bg-yellow-600 transition">
+                  Edit / Revisi Acara
+                </a>
+
+              <?php endif; ?>
+
             </div>
           </div>
 

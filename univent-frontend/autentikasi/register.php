@@ -32,7 +32,7 @@ session_start();
         <!-- ERROR BACKEND -->
         <?php if (isset($_GET['error'])): ?>
           <p class="text-sm text-red-500 text-center mb-4">
-            Email sudah terdaftar
+            Email / Nama Lengkap sudah terdaftar
           </p>
         <?php endif; ?>
 

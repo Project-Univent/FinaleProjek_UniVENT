@@ -26,6 +26,7 @@ $sql = "
     e.poster,
     e.deskripsi,
     k.nama_kategori AS kategori
+
   FROM event e
   JOIN kategori_event k ON e.id_kategori = k.id_kategori
   WHERE e.id_event = ? AND e.status = 'approved'
@@ -154,7 +155,7 @@ $isFull = $terdaftar >= $event['kuota'];
           Kuota sudah penuh
         </div>
       <?php else: ?>
-        <a href="event-diikuti.php?id=<?= $event['id_event'] ?>"
+        <a href="daftar-event.php?id=<?= $event['id_event'] ?>"
            class="block text-center bg-blue-600 text-white py-3 rounded-xl
                   text-lg font-semibold hover:bg-blue-700">
           Daftar Event

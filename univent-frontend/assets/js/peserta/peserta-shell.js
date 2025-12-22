@@ -1,5 +1,5 @@
 // peserta-shell.js
-// inject SIDEBAR + TOPBAR + offset layout peserta
+// inject SIDEBAR + TOPBAR + offset layout peserta (RESPONSIF)
 
 document.addEventListener("DOMContentLoaded", () => {
   // ===== USER DARI PHP =====
@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sidebarContainer || !topbar || !main) return;
 
-  const currentPage = window.location.pathname.split("/").pop().split("?")[0];
+  const currentPage =
+    window.location.pathname.split("/").pop().split("?")[0];
 
   function isActive(page) {
     return currentPage === page
@@ -32,8 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== SIDEBAR =====
   sidebarContainer.innerHTML = `
-    <aside class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#265DD5]
-           text-white flex flex-col shadow-lg z-50">
+    <aside id="peserta-sidebar"
+      class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#265DD5]
+      text-white flex flex-col shadow-lg z-50
+      transform -translate-x-full md:translate-x-0
+      transition-transform duration-300">
 
       <div class="px-5 py-4 border-b border-white/20">
         <div class="flex items-center gap-3">
@@ -80,15 +84,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== TOPBAR =====
   topbar.innerHTML = `
-    <div class="fixed top-0 ${TOP_LEFT} right-0 h-16 bg-[#255FE0] text-white shadow
-         flex items-center justify-between px-6 z-40">
+    <div class="fixed top-0 left-0 md:${TOP_LEFT} right-0 h-16 bg-[#255FE0]
+      text-white shadow flex items-center justify-between px-4 md:px-6 z-40">
 
-      <div>
-        <div class="text-lg font-semibold">
-          Selamat Datang, ${namaPeserta} 👋
-        </div>
-        <div class="text-xs text-white/80">
-          Temukan dan daftarkan dirimu ke berbagai event kampus.
+      <div class="flex items-center gap-3">
+        <!-- TOGGLE SIDEBAR (HP) -->
+        <button id="peserta-toggle"
+          class="md:hidden p-2 rounded hover:bg-white/10 text-xl">
+          ☰
+        </button>
+
+        <div>
+          <div class="text-lg font-semibold">
+            Selamat Datang, ${namaPeserta} 👋
+          </div>
+          <div class="text-xs text-white/80 hidden sm:block">
+            Temukan dan daftarkan dirimu ke berbagai event kampus.
+          </div>
         </div>
       </div>
 
@@ -99,5 +111,15 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `;
 
-  main.classList.add(MAIN_ML, "pt-20");
+  // ===== MAIN OFFSET =====
+  main.classList.add("pt-20");
+  main.classList.add("md:" + MAIN_ML);
+
+  // ===== TOGGLE LOGIC =====
+  const sidebar = document.getElementById("peserta-sidebar");
+  const toggleBtn = document.getElementById("peserta-toggle");
+
+  toggleBtn?.addEventListener("click", () => {
+    sidebar.classList.toggle("-translate-x-full");
+  });
 });

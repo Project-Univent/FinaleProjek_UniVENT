@@ -46,5 +46,5 @@ resetForm.addEventListener("submit", function (e) {
   if (!valid) return;
 
   alert("Password berhasil direset!");
-  window.location.href = "login.html";
+  window.location.href = "login.php";
 });
