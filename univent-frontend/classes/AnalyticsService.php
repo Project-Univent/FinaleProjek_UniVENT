@@ -9,9 +9,7 @@ class AnalyticsService
         $this->conn = $conn;
     }
 
-    /* ===============================
-       JENIS EVENT PALING DIMINATI
-    ================================ */
+    // function event diminati
     public function getEventPalingDiminati()
     {
         $sql = "
@@ -29,9 +27,7 @@ class AnalyticsService
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    /* ===============================
-       EXPORT CSV
-    ================================ */
+    // csv
     public function exportCSV()
     {
         $data = $this->getEventPalingDiminati();

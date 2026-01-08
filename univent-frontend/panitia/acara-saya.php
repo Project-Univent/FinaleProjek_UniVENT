@@ -4,9 +4,6 @@ require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 require "../classes/panitia.php";
 
-/* =========================
-   VALIDASI SESSION PANITIA
-========================= */
 $id_panitia = $_SESSION['user_id'] ?? null;
 
 if (!$id_panitia) {
@@ -46,7 +43,6 @@ $eventsPanitia = $panitia->getEventSaya();
 
   <main id="panitia-main" class="p-6 space-y-6 transition-all duration-300">
 
-    <!-- HEADER -->
     <section>
       <h1 class="text-2xl font-semibold">Acara Saya</h1>
       <p class="text-sm text-gray-500">
@@ -54,7 +50,6 @@ $eventsPanitia = $panitia->getEventSaya();
       </p>
     </section>
 
-    <!-- GRID EVENT -->
     <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
       <?php if (empty($eventsPanitia)): ?>
@@ -82,7 +77,6 @@ $eventsPanitia = $panitia->getEventSaya();
 
           <div class="bg-white rounded-xl shadow border overflow-hidden">
 
-            <!-- POSTER -->
             <div class="h-40 bg-gray-200 overflow-hidden">
               <img
                 src="../assets/img/<?= htmlspecialchars($e['poster'] ?? 'default.jpg') ?>"
@@ -90,7 +84,6 @@ $eventsPanitia = $panitia->getEventSaya();
               >
             </div>
 
-            <!-- CONTENT -->
             <div class="p-4 space-y-2">
 
               <span class="inline-block px-3 py-1 text-sm rounded-full text-white <?= $statusBadge ?>">
@@ -109,7 +102,6 @@ $eventsPanitia = $panitia->getEventSaya();
                 📍 <?= htmlspecialchars($e['lokasi']) ?>
               </p>
 
-              <!-- BUTTON LOGIC -->
               <?php if ($e['status'] === 'approved'): ?>
 
                 <a href="peserta-acara.php?id=<?= $e['id_event'] ?>"

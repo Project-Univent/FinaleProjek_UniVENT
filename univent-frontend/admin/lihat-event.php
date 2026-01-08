@@ -10,7 +10,6 @@ require "../autentikasi/cek_login.php";
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lihat Event — Admin</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -20,26 +19,21 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- Admin Shell -->
   <script src="../assets/js/admin/admin-shell.js" defer></script>
 
-  <!-- Halaman Logic -->
   <script src="../assets/js/admin/admin-lihat-event.js" defer></script>
 </head>
 
 <body class="bg-gray-100">
 
-  <!-- Injected by JS -->
   <div id="sidebar-container"></div>
   <header id="admin-topbar"></header>
 
-  <!-- MAIN CONTENT -->
   <main id="admin-main" class="p-6 transition-all duration-300">
 
     <h1 class="text-2xl font-semibold mb-2">Lihat Event</h1>
     <p class="text-gray-600 mb-6">Daftar event yang sudah diverifikasi dan aktif.</p>
 
-    <!-- TABLE WRAPPER -->
     <div class="bg-white rounded-lg shadow p-4 overflow-x-auto">
 
       <table class="w-full text-sm">
@@ -55,7 +49,6 @@ require "../autentikasi/cek_login.php";
         </thead>
 
         <tbody id="table-event">
-          <!-- rows injected by JS -->
         </tbody>
       </table>
 

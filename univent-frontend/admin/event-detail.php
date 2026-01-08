@@ -10,7 +10,6 @@ require "../autentikasi/cek_login.php";
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Detail Event — Admin</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -20,20 +19,17 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- Shell -->
   <script src="../assets/js/admin/admin-shell.js" defer></script>
+
   <script src="../assets/js/admin/admin-event-detail.js" defer></script>
 </head>
 
 <body class="bg-gray-100">
 
-  <!-- INJECTED SIDEBAR -->
   <div id="sidebar-container"></div>
 
-  <!-- INJECTED TOPBAR -->
   <header id="admin-topbar"></header>
 
-  <!-- MAIN WRAPPER HARUS ADA -->
   <main id="admin-main" class="ml-64 pt-20 p-8 transition-all duration-300">
 
     <a href="verifikasi-event.php" class="text-blue-600 underline text-sm">
@@ -44,19 +40,16 @@ require "../autentikasi/cek_login.php";
 
     <div id="event-container" class="space-y-6">
 
-      <!-- Informasi Event -->
       <div class="bg-white rounded shadow p-4">
         <h2 class="text-lg font-semibold mb-3">Informasi Event</h2>
         <div id="event-info" class="text-sm space-y-1"></div>
       </div>
 
-      <!-- Info Panitia -->
       <div class="bg-white rounded shadow p-4">
         <h2 class="text-lg font-semibold mb-3">Panitia Penyelenggara</h2>
         <div id="panitia-info" class="text-sm"></div>
       </div>
 
-      <!-- Tombol Aksi -->
       <div class="bg-white rounded shadow p-4 flex flex-wrap gap-3">
         <button id="btn-lihat-peserta"
           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">

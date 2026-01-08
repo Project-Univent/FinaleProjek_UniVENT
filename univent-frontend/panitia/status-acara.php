@@ -3,18 +3,13 @@ $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   VALIDASI SESSION PANITIA
-========================= */
 $id_panitia = $_SESSION['user_id'] ?? null;
 
 if (!$id_panitia) {
   die("Panitia tidak valid");
 }
 
-/* =========================
-   AMBIL STATUS ACARA
-========================= */
+// status event
 $sql = "
   SELECT
     id_event,

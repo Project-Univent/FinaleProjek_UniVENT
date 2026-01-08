@@ -1,4 +1,3 @@
-// admin-shell.js
 document.addEventListener("DOMContentLoaded", () => {
   const user = window.AUTH_USER;
   if (!user || user.role !== "admin") {
@@ -28,9 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       : "hover:bg-white/10 text-white/90";
   }
 
-  // =====================
   // SIDEBAR
-  // =====================
   sidebarContainer.innerHTML = `
     <aside id="admin-sidebar"
       class="fixed top-0 left-0 h-screen ${SIDEBAR_W}
@@ -86,9 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </aside>
   `;
 
-  // =====================
   // TOPBAR
-  // =====================
   topbar.innerHTML = `
     <div id="topbar-inner"
       class="fixed top-0 left-0 md:${TOP_LEFT} right-0 h-16
@@ -120,15 +115,11 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `;
 
-  // =====================
   // MAIN OFFSET
-  // =====================
   main.classList.add("pt-20");
   main.classList.add("md:" + MAIN_ML);
 
-  // =====================
   // TOGGLE LOGIC
-  // =====================
   const sidebar = document.getElementById("admin-sidebar");
   const toggleBtn = document.getElementById("sidebar-toggle");
 

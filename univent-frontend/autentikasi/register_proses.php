@@ -10,7 +10,7 @@ if ($fullname === '' || $email === '' || $password === '') {
     exit;
 }
 
-/* === CEK DUPLIKAT USERNAME / EMAIL === */
+/* CEK DUPLIKAT USERNAME / EMAIL */
 $cek = $conn->prepare(
     "SELECT id_peserta FROM peserta WHERE username = ? OR email = ?"
 );
@@ -23,7 +23,7 @@ if ($cek->num_rows > 0) {
     exit;
 }
 
-/* === INSERT DATA === */
+/* INSERT DATA */
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn->prepare(

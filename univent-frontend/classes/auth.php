@@ -6,7 +6,6 @@ class Auth {
     $this->conn = $conn;
   }
 
-  // ===== LOGIN (ADMIN / PANITIA / PESERTA)
   public function login($email, $password, $table, $idField, $redirect, $role) {
     $stmt = $this->conn->prepare(
       "SELECT $idField AS id, username AS nama, password
@@ -28,7 +27,6 @@ class Auth {
     return false;
   }
 
-  // ===== REGISTER PESERTA
   public function registerPeserta($nama, $email, $password) {
     $hash = password_hash($password, PASSWORD_DEFAULT);
 

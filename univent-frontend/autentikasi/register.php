@@ -8,7 +8,6 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register - Univent</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -42,7 +41,6 @@ session_start();
               class="space-y-4"
               novalidate>
 
-          <!-- Nama -->
           <div>
             <input id="fullname" name="fullname" type="text"
               placeholder="Nama Lengkap"
@@ -53,7 +51,6 @@ session_start();
             </p>
           </div>
 
-          <!-- Email -->
           <div>
             <input id="email" name="email" type="text"
               placeholder="Email"
@@ -64,7 +61,6 @@ session_start();
             </p>
           </div>
 
-          <!-- Password -->
           <div>
             <div class="relative">
               <input id="password" name="password" type="password"
@@ -77,7 +73,6 @@ session_start();
                 class="absolute right-3 top-1/2 -translate-y-1/2
                        w-8 h-8 flex items-center justify-center text-gray-500">
 
-                <!-- EYE CLOSED -->
                 <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5"
                   fill="none" viewBox="0 0 24 24"
@@ -91,7 +86,6 @@ session_start();
                        a9.96 9.96 0 003.94-.8"/>
                 </svg>
 
-                <!-- EYE OPEN -->
                 <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5 hidden"
                   fill="none" viewBox="0 0 24 24"
@@ -112,7 +106,6 @@ session_start();
             </p>
           </div>
 
-          <!-- Confirm Password -->
           <div>
             <div class="relative">
               <input id="confirmPassword" name="confirm_password"
@@ -126,7 +119,6 @@ session_start();
                 class="absolute right-3 top-1/2 -translate-y-1/2
                        w-8 h-8 flex items-center justify-center text-gray-500">
 
-                <!-- EYE CLOSED -->
                 <svg id="eyeClosed2" xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5"
                   fill="none" viewBox="0 0 24 24"
@@ -140,7 +132,6 @@ session_start();
                        a9.96 9.96 0 003.94-.8"/>
                 </svg>
 
-                <!-- EYE OPEN -->
                 <svg id="eyeOpen2" xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5 hidden"
                   fill="none" viewBox="0 0 24 24"

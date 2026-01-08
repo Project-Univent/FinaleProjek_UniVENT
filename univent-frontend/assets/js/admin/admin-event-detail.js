@@ -4,7 +4,7 @@ const STATUS_LABEL = {
   rejected: "ditolak"
 };
 
-let eventId = null; // ✅ GLOBAL
+let eventId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-// ================= ACTIONS =================
+// ACTIONS
 const postStatus = async (status, catatan = null) => {
   const form = new FormData();
-  form.append("id_event", eventId); // ✅ sekarang valid
+  form.append("id_event", eventId);
   form.append("status", status);
   if (catatan) form.append("catatan", catatan);
 

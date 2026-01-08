@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
 
-            /* ================= ANALITIK HERO ================= */
+            /* ANALITIK HERO */
       const heroContainer = document.getElementById("hero-analytics");
 
       if (heroContainer && data.analytics && data.analytics.length > 0) {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      /* ================= SUMMARY ================= */
+      /* SUMMARY */
       document.getElementById("stat-total-event").textContent =
         data.stats.totalEvent;
 
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data.stats.totalVerified;
 
 
-      /* ================= KATEGORI LIST ================= */
+      /* KATEGORI LIST */
       const kategoriContainer = document.getElementById("kategori-list");
       kategoriContainer.innerHTML = "";
 
@@ -63,12 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
 
-      /* ================= CHART EVENT PER TANGGAL ================= */
+      /* CHART EVENT PER TANGGAL */
       const ctxTime = document.getElementById("chart-event-tanggal");
 
       if (ctxTime && data.time_series && data.time_series.length > 0) {
 
-        // hancurkan chart lama (penting biar ga conflict)
+        // hancurkan chart lama
         if (window.chartEventTanggal) {
           window.chartEventTanggal.destroy();
         }
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           options: {
             responsive: true,
-            maintainAspectRatio: false,   // 🔑 KUNCI
+            maintainAspectRatio: false,
             scales: {
               y: {
                 beginAtZero: true,
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
 
-      /* ================= CHART EVENT PER KATEGORI ================= */
+      /* CHART EVENT PER KATEGORI */
       const ctxKat = document.getElementById("chart-kategori");
 
       if (ctxKat && data.kategori && data.kategori.length > 0) {

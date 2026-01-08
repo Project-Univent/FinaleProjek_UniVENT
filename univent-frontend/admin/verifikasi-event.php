@@ -10,7 +10,6 @@ require "../autentikasi/cek_login.php";
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Verifikasi Event — Admin</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -20,20 +19,16 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- shell -->
   <script src="../assets/js/admin/admin-shell.js" defer></script>
 
-  <!-- logic halaman -->
   <script src="../assets/js/admin/admin-verifikasi.js" defer></script>
 </head>
 
 <body class="bg-gray-100">
 
-  <!-- Sidebar + Topbar -->
   <div id="sidebar-container"></div>
   <header id="admin-topbar"></header>
 
-  <!-- MAIN -->
   <main id="admin-main" class="p-6 transition-all duration-300">
 
     <h1 class="text-2xl font-semibold mb-2">Verifikasi Event</h1>
@@ -53,7 +48,6 @@ require "../autentikasi/cek_login.php";
         </thead>
 
         <tbody id="table-verifikasi">
-          <!-- Baris event di-load dari admin-verifikasi.js -->
         </tbody>
       </table>
     </div>

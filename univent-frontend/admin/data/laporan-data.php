@@ -1,4 +1,7 @@
 <?php
+
+use Google\Service\WorkloadManager\Insight;
+
 require "../../config/koneksi.php";
 
 $data = [
@@ -10,9 +13,7 @@ $data = [
   "insight" => ""
 ];
 
-/* =====================
-   SUMMARY
-===================== */
+// summary
 $q = $conn->query("SELECT COUNT(*) total FROM event");
 $data["summary"]["totalEvent"] = (int)$q->fetch_assoc()["total"];
 
@@ -26,11 +27,9 @@ $q = $conn->query("
 ");
 $data["summary"]["eventBulanIni"] = (int)$q->fetch_assoc()["total"];
 
-$data["summary"]["tren"] = "+".rand(5,15)."%"; // dummy ringan, aman
+$data["summary"]["tren"] = "+".rand(5,15)."%";
 
-/* =====================
-   EVENT PER BULAN
-===================== */
+// event perbulan
 $q = $conn->query("
   SELECT MONTH(tanggal_event) bln, COUNT(*) jumlah
   FROM event
@@ -41,9 +40,7 @@ while ($r = $q->fetch_assoc()) {
   $data["event_bulanan"][$r["bln"]] = (int)$r["jumlah"];
 }
 
-/* =====================
-   PESERTA PER BULAN
-===================== */
+// peserta perbulan
 $q = $conn->query("
   SELECT MONTH(created_at) bln, COUNT(*) jumlah
   FROM tiket
@@ -54,9 +51,7 @@ while ($r = $q->fetch_assoc()) {
   $data["peserta_bulanan"][$r["bln"]] = (int)$r["jumlah"];
 }
 
-/* =====================
-   KATEGORI PALING DIMINATI
-===================== */
+// kategori pling diminati
 $q = $conn->query("
   SELECT k.nama_kategori, COUNT(t.id_tiket) total
   FROM kategori_event k
@@ -69,9 +64,7 @@ while ($r = $q->fetch_assoc()) {
   $data["kategori"][$r["nama_kategori"]] = (int)$r["total"];
 }
 
-/* =====================
-   TABEL LAPORAN
-===================== */
+// tabel laporan
 $q = $conn->query("
   SELECT
     e.nama_event,
@@ -90,9 +83,7 @@ while ($r = $q->fetch_assoc()) {
   $data["tabel"][] = $r;
 }
 
-/* =====================
-   INSIGHT OTOMATIS
-===================== */
+// Insight
 $data["insight"] = "Event dengan jumlah peserta tertinggi berasal dari kategori yang paling diminati. Disarankan untuk meningkatkan jumlah event pada kategori tersebut.";
 
 header("Content-Type: application/json");

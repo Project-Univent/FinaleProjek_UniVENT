@@ -2,9 +2,6 @@
 require "../../config/koneksi.php";
 require "../../classes/AnalyticsService.php";
 
-/* =====================
-   INIT RESPONSE
-===================== */
 $data = [
   "stats" => [
     "totalEvent" => 0,
@@ -16,10 +13,7 @@ $data = [
   "analytics" => []
 ];
 
-/* =====================
-   SUMMARY
-===================== */
-
+// summary
 // total event
 $q = $conn->query("SELECT COUNT(*) AS total FROM event");
 $data["stats"]["totalEvent"] = (int) $q->fetch_assoc()["total"];
@@ -28,14 +22,11 @@ $data["stats"]["totalEvent"] = (int) $q->fetch_assoc()["total"];
 $q = $conn->query("SELECT COUNT(*) AS total FROM event WHERE status = 'approved'");
 $data["stats"]["totalVerified"] = (int) $q->fetch_assoc()["total"];
 
-// total peserta (dari tiket)
+// total peserta
 $q = $conn->query("SELECT COUNT(*) AS total FROM tiket");
 $data["stats"]["totalPeserta"] = (int) $q->fetch_assoc()["total"];
 
-
-/* =====================
-   EVENT PER KATEGORI
-===================== */
+// event per kategori
 $q = $conn->query("
   SELECT 
     k.nama_kategori,
@@ -50,19 +41,11 @@ while ($row = $q->fetch_assoc()) {
   $data["kategori"][] = $row;
 }
 
-
-/* =====================
-   ANALITIK:
-   EVENT PALING DIMINATI
-===================== */
+// analitik event pling diminati
 $analyticsService = new AnalyticsService($conn);
 $data["analytics"] = $analyticsService->getEventPalingDiminati();
 
-
-/* =====================
-   REGISTRASI PESERTA PER TANGGAL
-   (BERDASARKAN TIKET)
-===================== */
+// registrasi peserta berdasrakan tanggal
 $q = $conn->query("
   SELECT 
     DATE(created_at) AS tanggal,
@@ -76,9 +59,5 @@ while ($row = $q->fetch_assoc()) {
   $data["time_series"][] = $row;
 }
 
-
-/* =====================
-   OUTPUT JSON
-===================== */
 header("Content-Type: application/json");
 echo json_encode($data);

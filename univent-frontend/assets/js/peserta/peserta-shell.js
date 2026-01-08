@@ -1,8 +1,4 @@
-// peserta-shell.js
-// inject SIDEBAR + TOPBAR + offset layout peserta (RESPONSIF)
-
 document.addEventListener("DOMContentLoaded", () => {
-  // ===== USER DARI PHP =====
   const user = window.AUTH_USER;
 
   if (!user || user.role !== "peserta") {
@@ -31,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       : "hover:bg-white/15 text-white/90";
   }
 
-  // ===== SIDEBAR =====
+  // SIDEBAR
   sidebarContainer.innerHTML = `
     <aside id="peserta-sidebar"
       class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#265DD5]
@@ -82,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </aside>
   `;
 
-  // ===== TOPBAR =====
+  // TOPBAR
   topbar.innerHTML = `
     <div class="fixed top-0 left-0 md:${TOP_LEFT} right-0 h-16 bg-[#255FE0]
       text-white shadow flex items-center justify-between px-4 md:px-6 z-40">
@@ -111,11 +107,11 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `;
 
-  // ===== MAIN OFFSET =====
+  // MAIN OFFSET
   main.classList.add("pt-20");
   main.classList.add("md:" + MAIN_ML);
 
-  // ===== TOGGLE LOGIC =====
+  // TOGGLE LOGIC
   const sidebar = document.getElementById("peserta-sidebar");
   const toggleBtn = document.getElementById("peserta-toggle");
 

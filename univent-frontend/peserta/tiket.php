@@ -3,9 +3,6 @@ $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   VALIDASI SESSION
-========================= */
 $id_peserta = $_SESSION['user_id'] ?? null;
 $id_event   = $_GET['id'] ?? null;
 
@@ -13,9 +10,7 @@ if (!$id_peserta || !$id_event || !is_numeric($id_event)) {
   die("Akses tidak valid");
 }
 
-/* =========================
-   AMBIL DATA TIKET MILIK PESERTA
-========================= */
+// ambil tiket peserta
 $sql = "
   SELECT
     t.kode_tiket,

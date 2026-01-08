@@ -10,7 +10,6 @@ require "../autentikasi/cek_login.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Buat Acara - Panitia</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -20,17 +19,14 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- Shell Panitia -->
   <script src="../assets/js/panitia/panitia-shell.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- injected by shell -->
   <div id="sidebar-container"></div>
   <header id="panitia-topbar"></header>
 
-  <!-- MAIN -->
   <main id="panitia-main" class="p-6 transition-all duration-300">
 
     <section class="max-w-3xl mx-auto space-y-6">
@@ -41,15 +37,12 @@ require "../autentikasi/cek_login.php";
         </p>
       </div>
 
-      <!-- FORM -->
       <form
         action="simpan-acara.php"
         method="POST"
         enctype="multipart/form-data"
-        class="bg-white rounded-xl shadow p-6 space-y-6"
-      >
+        class="bg-white rounded-xl shadow p-6 space-y-6">
 
-        <!-- POSTER -->
         <div>
           <label class="block font-medium mb-2">Poster Acara</label>
           <input
@@ -59,20 +52,16 @@ require "../autentikasi/cek_login.php";
             class="w-full border rounded-lg px-4 py-2
                    file:bg-[#2B77D1] file:text-white
                    file:px-4 file:py-2 file:rounded-lg
-                   file:hover:bg-[#2566B8]"
-          >
+                   file:hover:bg-[#2566B8]">
         </div>
 
-
-        <!-- KATEGORI -->
           <div>
             <label class="block font-medium mb-2">Kategori Event Mahasiswa</label>
             <select
               name="id_kategori"
               required
               class="w-full border rounded-lg px-4 py-3
-                    focus:ring-2 focus:ring-[#2B77D1] outline-none"
-            >
+                    focus:ring-2 focus:ring-[#2B77D1] outline-none">
               <option value="">-- Pilih Kategori --</option>
               <?php
               require "../config/koneksi.php";
@@ -86,8 +75,6 @@ require "../autentikasi/cek_login.php";
             </select>
           </div>
 
-
-        <!-- NAMA -->
         <div>
           <label class="block font-medium mb-2">Nama Acara</label>
           <input
@@ -96,11 +83,9 @@ require "../autentikasi/cek_login.php";
             required
             class="w-full border rounded-lg px-4 py-3
                    focus:ring-2 focus:ring-[#2B77D1] outline-none"
-            placeholder="Masukkan nama acara"
-          >
+            placeholder="Masukkan nama acara">
         </div>
 
-        <!-- DESKRIPSI -->
         <div>
           <label class="block font-medium mb-2">Deskripsi Acara</label>
           <textarea
@@ -108,11 +93,10 @@ require "../autentikasi/cek_login.php";
             required
             class="w-full border rounded-lg px-4 py-3 h-32
                    focus:ring-2 focus:ring-[#2B77D1] outline-none"
-            placeholder="Tuliskan deskripsi acara..."
-          ></textarea>
+            placeholder="Tuliskan deskripsi acara...">
+          </textarea>
         </div>
 
-        <!-- TANGGAL + WAKTU -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block font-medium mb-2">Tanggal</label>
@@ -121,8 +105,7 @@ require "../autentikasi/cek_login.php";
               name="tanggal_event"
               required
               class="w-full border rounded-lg px-4 py-3
-                     focus:ring-2 focus:ring-[#2B77D1] outline-none"
-            >
+                     focus:ring-2 focus:ring-[#2B77D1] outline-none">
           </div>
 
           <div>
@@ -132,12 +115,10 @@ require "../autentikasi/cek_login.php";
               name="waktu_mulai"
               required
               class="w-full border rounded-lg px-4 py-3
-                     focus:ring-2 focus:ring-[#2B77D1] outline-none"
-            >
+                     focus:ring-2 focus:ring-[#2B77D1] outline-none">
           </div>
         </div>
 
-        <!-- LOKASI -->
         <div>
           <label class="block font-medium mb-2">Lokasi Acara</label>
           <input
@@ -145,11 +126,9 @@ require "../autentikasi/cek_login.php";
             name="lokasi"
             required
             class="w-full border rounded-lg px-4 py-3
-                   focus:ring-2 focus:ring-[#2B77D1] outline-none"
-          >
+                   focus:ring-2 focus:ring-[#2B77D1] outline-none">
         </div>
 
-        <!-- KUOTA -->
         <div>
           <label class="block font-medium mb-2">Kuota Peserta</label>
           <input
@@ -158,16 +137,13 @@ require "../autentikasi/cek_login.php";
             min="1"
             required
             class="w-full border rounded-lg px-4 py-3
-                   focus:ring-2 focus:ring-[#2B77D1] outline-none"
-          >
+                   focus:ring-2 focus:ring-[#2B77D1] outline-none">
         </div>
 
-        <!-- SUBMIT -->
         <button
           type="submit"
           class="w-full bg-[#2B77D1] text-white py-3 rounded-xl
-                 font-semibold hover:bg-[#2566B8] transition"
-        >
+                 font-semibold hover:bg-[#2566B8] transition">
           Simpan Acara
         </button>
 

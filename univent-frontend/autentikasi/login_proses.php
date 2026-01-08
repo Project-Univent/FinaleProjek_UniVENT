@@ -1,7 +1,7 @@
 <?php
 session_start();
 require "../config/koneksi.php";
-require "../classes/auth.php"; // sesuaikan nama file (lowercase)
+require "../classes/auth.php";
 
 $email    = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';

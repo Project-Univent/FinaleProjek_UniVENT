@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
 
-      /* ================= SUMMARY ================= */
+      /* SUMMARY */
       document.getElementById("summary-cards").innerHTML = `
         <div class="bg-white p-4 rounded shadow text-center">
           <p class="text-gray-500 text-sm">Total Event</p>
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      /* ================= CHART EVENT ================= */
+      /* CHART EVENT */
       new Chart(document.getElementById("chartEvent"), {
         type: "line",
         data: {
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      /* ================= CHART PESERTA ================= */
+      /* CHART PESERTA */
       new Chart(document.getElementById("chartPeserta"), {
         type: "line",
         data: {
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      /* ================= CHART KATEGORI ================= */
+      /* CHART KATEGORI */
       new Chart(document.getElementById("chartKategori"), {
         type: "bar",
         data: {
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </tr>
       `).join("");
 
-      /* ================= INSIGHT ================= */
+      /* INSIGHT */
       document.getElementById("insight-text").innerHTML = data.insight;
 
     })

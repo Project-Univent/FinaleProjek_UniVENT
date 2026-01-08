@@ -1,8 +1,4 @@
-// panitia-shell.js
-// inject SIDEBAR + TOPBAR + offset layout panitia (RESPONSIF + NOTIF)
-
 document.addEventListener("DOMContentLoaded", () => {
-  // ===== USER DARI PHP =====
   const user = window.AUTH_USER;
   const namaPanitia = user?.nama || "Panitia";
 
@@ -25,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       : "hover:bg-white/10 text-white/90";
   }
 
-  // ===== SIDEBAR =====
+  // SIDEBAR
   sidebarContainer.innerHTML = `
     <aside id="panitia-sidebar"
       class="fixed top-0 left-0 h-screen ${SIDEBAR_W} bg-[#145AAD]
@@ -126,11 +122,11 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
 
 
-  // ===== MAIN OFFSET =====
+  // MAIN OFFSET
   main.classList.add("pt-20");
   main.classList.add("md:" + MAIN_ML);
 
-  // ===== TOGGLE SIDEBAR (HP) =====
+  // TOGGLE SIDEBAR (HP)
   const sidebar = document.getElementById("panitia-sidebar");
   const toggleBtn = document.getElementById("panitia-toggle");
 
@@ -138,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.classList.toggle("-translate-x-full");
   });
 
-  // ===== NOTIFIKASI LOGIC =====
+  // NOTIFIKASI LOGIC
   const notifBtn = document.getElementById("notif-btn");
   const notifDropdown = document.getElementById("notif-dropdown");
   const notifDot = document.getElementById("notif-dot");
@@ -182,12 +178,11 @@ document.addEventListener("DOMContentLoaded", () => {
     notifDot.classList.add("hidden");
   });
 
-  // klik di luar dropdown → tutup
   document.addEventListener("click", () => {
     notifDropdown.classList.add("hidden");
   });
 
-  // ===== CEK ADA NOTIF ATAU TIDAK (DOT MERAH) =====
+  // CEK NOTIF
   (async function checkNotif() {
     const res = await fetch("data/get-notifikasi.php", {
       cache: "no-store"

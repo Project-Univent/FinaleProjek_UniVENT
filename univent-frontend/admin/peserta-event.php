@@ -6,17 +6,13 @@ $required_role = 'admin';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   VALIDASI ID EVENT
-========================= */
+// id event
 $id_event = $_GET['event'] ?? null;
 if (!$id_event || !is_numeric($id_event)) {
   die("Event tidak valid");
 }
 
-/* =========================
-   AMBIL NAMA EVENT
-========================= */
+// ambil nama event
 $stmtEvent = $conn->prepare("
   SELECT nama_event
   FROM event
@@ -30,9 +26,7 @@ if (!$event) {
   die("Event tidak ditemukan");
 }
 
-/* =========================
-   AMBIL PESERTA EVENT
-========================= */
+// peserta event
 $stmt = $conn->prepare("
   SELECT
     p.id_peserta,

@@ -1,22 +1,28 @@
 <?php
 session_start();
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../config/env.php';
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $client = new Google_Client();
+$client->setAuthConfig(__DIR__ . '/credentials.json');
+$client->setRedirectUri('https://univent.web.id/google/callback.php');
+$client->addScope(Google_Service_Calendar::CALENDAR_EVENTS);
+$client->setAccessType('offline');
+$client->setPrompt('consent');
 
-$client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
-$client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
-$client->setRedirectUri($_ENV['GOOGLE_REDIRECT_URI']);
-
+// code redirect dari Google
 if (!isset($_GET['code'])) {
-    die('Google auth gagal');
+    exit('Google auth gagal: code tidak ada');
 }
 
+// tukar code → token
 $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
 
 if (isset($token['error'])) {
-    die('Error token Google');
+    exit('Error token Google: ' . $token['error']);
 }
 
 $_SESSION['google_token'] = $token;

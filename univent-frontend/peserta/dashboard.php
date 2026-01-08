@@ -3,9 +3,7 @@ $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   EVENT TERDEKAT (1 EVENT)
-========================= */
+// event terdekat
 $highlightSql = "
   SELECT
     e.id_event,
@@ -24,9 +22,7 @@ $highlightSql = "
 $highlightRes = mysqli_query($conn, $highlightSql);
 $highlightEvent = mysqli_fetch_assoc($highlightRes);
 
-/* =========================
-   EVENT REKOMENDASI
-========================= */
+// rekomeendasievent
 $rekomendasiSql = "
   SELECT
     e.id_event,
@@ -69,7 +65,7 @@ $rekomendasiEvents = mysqli_fetch_all($rekomendasiRes, MYSQLI_ASSOC);
 
   <main id="peserta-main" class="p-6 space-y-10 transition-all duration-300">
 
-    <!-- EVENT TERDEKAT -->
+<!-- event terdekat -->
     <section>
       <h1 class="text-2xl font-bold">Event Terdekat</h1>
       <p class="text-gray-500 text-sm">
@@ -106,7 +102,7 @@ $rekomendasiEvents = mysqli_fetch_all($rekomendasiRes, MYSQLI_ASSOC);
       </div>
     <?php endif; ?>
 
-    <!-- EVENT REKOMENDASI -->
+<!-- rekomendasi -->
     <section>
       <h2 class="text-lg font-semibold mb-4">Rekomendasi Event</h2>
 

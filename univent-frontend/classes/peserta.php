@@ -8,9 +8,9 @@ class Peserta {
     $this->id_peserta = $id_peserta;
   }
 
-  // ===== DAFTAR EVENT
+  // function daftar event
   public function daftarEvent($id_event) {
-    // 1. cek event approved + ambil kuota
+    // cek event approved + ambil kuota
     $cekEvent = $this->conn->prepare("
       SELECT kuota
       FROM event
@@ -24,7 +24,7 @@ class Peserta {
       return "EVENT_TIDAK_VALID";
     }
 
-    // 2. cek sudah daftar
+    // cek sudah daftar
     $cek = $this->conn->prepare("
       SELECT 1 FROM tiket
       WHERE id_event = ? AND id_peserta = ?
@@ -37,7 +37,7 @@ class Peserta {
       return "SUDAH_DAFTAR";
     }
 
-    // 3. hitung kuota terpakai
+    // hitung kuota terpakai
     $hitung = $this->conn->prepare("
       SELECT COUNT(*) AS total
       FROM tiket
@@ -51,10 +51,10 @@ class Peserta {
       return "KUOTA_PENUH";
     }
 
-    // 4. generate tiket
+    // generate tiket
     $kode_tiket = 'TKT-' . strtoupper(bin2hex(random_bytes(4)));
 
-    // 5. insert tiket
+    // insert tiket
     $stmt = $this->conn->prepare("
       INSERT INTO tiket (id_event, id_peserta, kode_tiket)
       VALUES (?, ?, ?)
@@ -65,7 +65,7 @@ class Peserta {
     return "SUKSES";
   }
 
-  // ===== AMBIL EVENT YANG DIIKUTI
+// event diikuti
   public function getEventDiikuti() {
     $sql = "
       SELECT

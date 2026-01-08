@@ -3,25 +3,18 @@ $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   VALIDASI SESSION PANITIA
-========================= */
 $id_panitia = $_SESSION['user_id'] ?? null;
 if (!$id_panitia) {
   die("Panitia tidak valid");
 }
 
-/* =========================
-   VALIDASI ID EVENT
-========================= */
+// cek id event
 $id_event = $_GET['id'] ?? null;
 if (!$id_event || !is_numeric($id_event)) {
   die("Event tidak valid");
 }
 
-/* =========================
-   CEK EVENT MILIK PANITIA
-========================= */
+// kepemilikan event
 $sqlEvent = "
   SELECT id_event, nama_event
   FROM event
@@ -38,9 +31,6 @@ if (!$event) {
   die("Event tidak ditemukan atau bukan milik kamu");
 }
 
-/* =========================
-   AMBIL PESERTA EVENT
-========================= */
 $sqlPeserta = "
   SELECT
     p.username AS nama,
@@ -86,7 +76,6 @@ $peserta = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     <section class="max-w-4xl mx-auto space-y-6">
 
-      <!-- HEADER -->
       <div>
         <h1 class="text-2xl font-semibold">Peserta Acara</h1>
         <p class="text-sm text-gray-500">
@@ -94,7 +83,6 @@ $peserta = mysqli_fetch_all($result, MYSQLI_ASSOC);
         </p>
       </div>
 
-      <!-- TABLE -->
       <div class="bg-white shadow rounded-xl overflow-hidden border">
 
         <table class="w-full text-left">
@@ -125,7 +113,6 @@ $peserta = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
       </div>
 
-      <!-- BACK -->
       <a href="acara-saya.php"
          class="inline-block text-blue-600 hover:underline text-sm">
         ← Kembali ke Acara Saya

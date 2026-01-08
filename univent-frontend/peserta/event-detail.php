@@ -3,18 +3,14 @@ $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   VALIDASI ID EVENT
-========================= */
+// validasi id event
 $id = $_GET['id'] ?? null;
 
 if (!$id || !is_numeric($id)) {
   die("Event tidak ditemukan.");
 }
 
-/* =========================
-   AMBIL DETAIL EVENT (APPROVED)
-========================= */
+// ambil detail event diacc
 $sql = "
   SELECT
     e.id_event,
@@ -43,11 +39,7 @@ if (!$event) {
   die("Event tidak ditemukan atau belum disetujui.");
 }
 
-/* =========================
-   HITUNG KUOTA (AMAN DULU)
-   NOTE: tabel peserta belum dibahas
-========================= */
-$terdaftar = 0; // sementara
+$terdaftar = 0;
 $isFull = $terdaftar >= $event['kuota'];
 ?>
 
@@ -78,12 +70,10 @@ $isFull = $terdaftar >= $event['kuota'];
   <main id="peserta-main"
         class="p-6 max-w-4xl mx-auto space-y-10 transition-all duration-300">
 
-    <!-- HEADER -->
     <section>
       <h1 class="text-2xl font-bold">Detail Event</h1>
     </section>
 
-    <!-- POSTER -->
     <div class="w-full h-64 rounded-xl overflow-hidden shadow">
       <img
         src="../assets/img/<?= htmlspecialchars($event['poster'] ?? 'default.jpg') ?>"
@@ -91,7 +81,6 @@ $isFull = $terdaftar >= $event['kuota'];
       />
     </div>
 
-    <!-- TITLE + INFO -->
     <section class="space-y-4">
 
       <h2 class="text-2xl font-bold">
@@ -145,10 +134,8 @@ $isFull = $terdaftar >= $event['kuota'];
         </div>
 
       </div>
-
     </section>
 
-    <!-- ACTION -->
     <section class="space-y-3">
       <?php if ($isFull): ?>
         <div class="text-center bg-gray-200 text-gray-600 py-3 rounded-xl">
@@ -163,7 +150,6 @@ $isFull = $terdaftar >= $event['kuota'];
       <?php endif; ?>
     </section>
 
-    <!-- DESKRIPSI -->
     <section class="space-y-3">
       <h3 class="font-semibold text-lg">Deskripsi Event</h3>
       <p class="text-gray-700 leading-relaxed">
@@ -171,7 +157,6 @@ $isFull = $terdaftar >= $event['kuota'];
       </p>
     </section>
 
-    <!-- BACK -->
     <div class="pt-4">
       <a href="event-list.php" class="text-blue-600 hover:underline">
         ← Kembali ke Lihat Event

@@ -8,13 +8,11 @@ class Panitia {
     $this->id_panitia = $id_panitia;
   }
 
-  // =========================
-  // BUAT EVENT
-  // =========================
+  // function buat event
   public function buatEvent($data, $file) {
     $posterName = null;
 
-    // upload poster (jika ada)
+    // upload poster
     if (!empty($file['poster']['name'])) {
       $posterName = time() . '_' . $file['poster']['name'];
       $targetDir = __DIR__ . "/../assets/img/";
@@ -61,9 +59,7 @@ class Panitia {
     return $stmt->execute();
   }
 
-  // =========================
-  // AMBIL EVENT MILIK PANITIA
-  // =========================
+  // ambil event panitia
   public function getEventSaya() {
     $sql = "
       SELECT

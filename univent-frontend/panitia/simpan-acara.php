@@ -3,17 +3,12 @@ session_start();
 require "../config/koneksi.php";
 require "../classes/panitia.php";
 
-/* =========================
-   VALIDASI PANITIA
-========================= */
 $id_panitia = $_SESSION['user_id'] ?? null;
 if (!$id_panitia) {
   die("Panitia tidak valid");
 }
 
-/* =========================
-   AMBIL DATA FORM
-========================= */
+// data form
 $data = [
   'nama_event'    => $_POST['nama_event'],
   'deskripsi'     => $_POST['deskripsi'],
@@ -24,14 +19,9 @@ $data = [
   'id_kategori'   => $_POST['id_kategori']
 ];
 
-/* =========================
-   PROSES OOP
-========================= */
+// oop
 $panitia = new Panitia($conn, $id_panitia);
 $panitia->buatEvent($data, $_FILES);
 
-/* =========================
-   REDIRECT
-========================= */
 header("Location: ../panitia/status-acara.php");
 exit;

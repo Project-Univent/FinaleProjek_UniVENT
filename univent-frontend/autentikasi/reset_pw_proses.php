@@ -15,7 +15,7 @@ if ($pw1 !== $pw2) {
     exit;
 }
 
-/* === CEK TOKEN === */
+/* CEK TOKEN */
 $stmt = $conn->prepare(
     "SELECT id_peserta FROM peserta
      WHERE reset_token = ?
@@ -32,7 +32,7 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
-/* === UPDATE PASSWORD === */
+/* UPDATE PASSWORD */
 $hash = password_hash($pw1, PASSWORD_DEFAULT);
 
 $update = $conn->prepare(

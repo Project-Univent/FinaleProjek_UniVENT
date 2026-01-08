@@ -3,15 +3,11 @@ $required_role = 'peserta';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   AMBIL PARAMETER
-========================= */
+// parameter
 $q = trim($_GET['q'] ?? '');
 $kategori = $_GET['kategori'] ?? '';
 
-/* =========================
-   QUERY EVENT APPROVED
-========================= */
+// event diacc
 $sql = "
   SELECT
     e.id_event,
@@ -55,9 +51,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $events = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-/* =========================
-   LIST KATEGORI (DARI DB)
-========================= */
+// list kategori
 $kategoriRes = mysqli_query($conn, "
   SELECT DISTINCT nama_kategori
   FROM kategori_event
@@ -92,13 +86,12 @@ $kategoriList = mysqli_fetch_all($kategoriRes, MYSQLI_ASSOC);
 
   <main id="peserta-main" class="p-6 space-y-10 transition-all duration-300">
 
-    <!-- HEADER -->
     <section>
       <h1 class="text-2xl font-bold">Browse Events</h1>
       <p class="text-sm text-gray-500">Temukan berbagai event menarik</p>
     </section>
 
-    <!-- SEARCH + FILTER -->
+<!-- search dan filter -->
     <form method="GET" class="flex flex-wrap gap-4 items-center">
 
       <input
@@ -135,7 +128,7 @@ $kategoriList = mysqli_fetch_all($kategoriRes, MYSQLI_ASSOC);
 
     </form>
 
-    <!-- EVENT LIST -->
+<!-- list event -->
     <section>
       <?php if (empty($events)): ?>
         <div class="text-center text-gray-500 py-20">

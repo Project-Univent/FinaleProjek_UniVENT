@@ -10,12 +10,10 @@ if (!$id_event || !is_numeric($id_event)) {
     exit;
 }
 
-/* 1. HAPUS TIKET TERKAIT */
 $stmt = $conn->prepare("DELETE FROM tiket WHERE id_event = ?");
 $stmt->bind_param("i", $id_event);
 $stmt->execute();
 
-/* 2. HAPUS EVENT */
 $stmt = $conn->prepare("DELETE FROM event WHERE id_event = ?");
 $stmt->bind_param("i", $id_event);
 $stmt->execute();

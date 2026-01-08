@@ -3,25 +3,17 @@ $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* ======================
-   VALIDASI PANITIA
-====================== */
 $id_panitia = $_SESSION['user_id'] ?? null;
 if (!$id_panitia) {
   die("Panitia tidak valid");
 }
 
-/* ======================
-   VALIDASI ID EVENT
-====================== */
+// validasi event
 $id_event = $_GET['id'] ?? null;
 if (!$id_event || !is_numeric($id_event)) {
   die("Event tidak ditemukan");
 }
 
-/* ======================
-   AMBIL DATA EVENT
-====================== */
 $sql = "
   SELECT id_event, nama_event, deskripsi, tanggal_event, waktu_mulai,
          lokasi, kuota, poster

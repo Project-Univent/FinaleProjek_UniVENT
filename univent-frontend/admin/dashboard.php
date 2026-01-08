@@ -9,13 +9,10 @@ require "../autentikasi/cek_login.php";
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dashboard Admin — Univent</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
@@ -25,8 +22,8 @@ require "../autentikasi/cek_login.php";
     };
   </script>
 
-  <!-- Shell & Logic -->
   <script src="../assets/js/admin/admin-shell.js" defer></script>
+
   <script src="../assets/js/admin/admin-dashboard.js" defer></script>
 
   <style>
@@ -36,13 +33,11 @@ require "../autentikasi/cek_login.php";
 
 <body class="bg-gray-100">
 
-  <!-- injected -->
   <div id="sidebar-container"></div>
   <header id="admin-topbar"></header>
 
   <main id="admin-main" class="p-6 transition-all duration-300">
 
-    <!-- SUMMARY -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
       <div class="bg-white card-radius shadow p-5">
         <div class="text-sm text-gray-500">Total Event</div>
@@ -58,18 +53,14 @@ require "../autentikasi/cek_login.php";
       </div>
     </div>
 
-    <!-- KATEGORI + HERO -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
 
-      <!-- KATEGORI -->
       <div class="bg-white card-radius shadow p-6">
         <h3 class="font-semibold mb-4">Kategori Event</h3>
         <div id="kategori-list" class="space-y-3">
-          <!-- diisi JS -->
         </div>
       </div>
 
-      <!-- HERO ANALITIK -->
       <div class="lg:col-span-2">
         <div class="bg-white card-radius shadow p-6 h-full">
 
@@ -91,7 +82,6 @@ require "../autentikasi/cek_login.php";
 
           <div id="hero-analytics"
               class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- diisi JS -->
           </div>
 
         </div>
@@ -99,7 +89,6 @@ require "../autentikasi/cek_login.php";
 
     </div>
 
-    <!-- CHARTS -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
       <div class="bg-white card-radius shadow p-6 h-72 flex flex-col">

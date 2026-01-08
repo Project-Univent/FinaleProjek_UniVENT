@@ -1,11 +1,4 @@
 <?php
-/* =====================
-   INIT & CONFIG
-===================== */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-header('Content-Type: application/json');
-
 session_start();
 require "../../config/koneksi.php";
 require "../../config/env.php";
@@ -14,24 +7,16 @@ require $_SERVER['DOCUMENT_ROOT'] . "/FinalProjek/vendor/autoload.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-/* =====================
-   VALIDASI ADMIN
-===================== */
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
   echo json_encode(["success" => false, "error" => "Unauthorized"]);
   exit;
 }
 
-/* =====================
-   AMBIL DATA POST
-===================== */
 $id_event = $_POST['id_event'] ?? null;
 $status   = $_POST['status'] ?? null;
 $catatan  = $_POST['catatan'] ?? null;
 
-/* =====================
-   VALIDASI INPUT
-===================== */
+// validasi input
 if (!$id_event || !is_numeric($id_event)) {
   echo json_encode(["success" => false, "error" => "ID event tidak valid"]);
   exit;
@@ -43,9 +28,7 @@ if (!in_array($status, $allowedStatus)) {
   exit;
 }
 
-/* =====================
-   UPDATE STATUS EVENT
-===================== */
+// update status event
 $stmt = $conn->prepare("
   UPDATE event
   SET status = ?, catatan_admin = ?
@@ -58,9 +41,7 @@ if (!$stmt->execute()) {
   exit;
 }
 
-/* =====================
-   AMBIL DATA PANITIA
-===================== */
+// ambil panitia
 $q = "
   SELECT e.nama_event, p.id_panitia, p.email
   FROM event e
@@ -72,9 +53,7 @@ $st->bind_param("i", $id_event);
 $st->execute();
 $data = $st->get_result()->fetch_assoc();
 
-/* =====================
-   KIRIM EMAIL + LOG
-===================== */
+// kirim email & log
 if ($data) {
   $judul = "";
   $pesan = "";
@@ -142,8 +121,5 @@ if ($data) {
   $log->execute();
 }
 
-/* =====================
-   RESPONSE
-===================== */
 echo json_encode(["success" => true]);
 exit;

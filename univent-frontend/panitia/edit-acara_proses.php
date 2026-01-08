@@ -3,17 +3,12 @@ $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* ======================
-   VALIDASI PANITIA
-====================== */
 $id_panitia = $_SESSION['user_id'] ?? null;
 if (!$id_panitia) {
     die("Panitia tidak valid");
 }
 
-/* ======================
-   AMBIL DATA POST
-====================== */
+// data post
 $id_event      = $_POST['id_event'] ?? null;
 $nama_event    = $_POST['nama_event'] ?? '';
 $deskripsi     = $_POST['deskripsi'] ?? '';
@@ -35,9 +30,7 @@ if (
     exit;
 }
 
-/* ======================
-   CEK KEPEMILIKAN EVENT
-====================== */
+// cek kepemilikan
 $cek = $conn->prepare(
     "SELECT poster FROM event
      WHERE id_event = ? AND id_panitia = ?"
@@ -51,9 +44,6 @@ if (!$event) {
     die("Event tidak ditemukan atau bukan milik kamu");
 }
 
-/* ======================
-   HANDLE UPLOAD POSTER (OPSIONAL)
-====================== */
 $poster_baru = $event['poster'];
 
 if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
@@ -73,9 +63,7 @@ if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
     $poster_baru = $nama_file;
 }
 
-/* ======================
-   UPDATE EVENT
-====================== */
+// update event
 $update = $conn->prepare(
     "UPDATE event
      SET nama_event = ?, deskripsi = ?, tanggal_event = ?, waktu_mulai = ?,

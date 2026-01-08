@@ -2,15 +2,15 @@
 class ApiClientCalendar {
   private $service;
   private $cacheFile;
-  private $ttl = 600; // 10 menit
+  private $ttl = 600;
 
   public function __construct($googleService) {
     $this->service = $googleService;
-    $this->cacheFile = __DIR__ . '/../cache/calendar.json';
+    $this->cacheFile = __DIR__ . '/../admin/data/calendar.json';
   }
 
   public function fetchEvents() {
-    // === CACHE ===
+    // cache
     if (file_exists($this->cacheFile)) {
       $age = time() - filemtime($this->cacheFile);
       if ($age < $this->ttl) {
@@ -18,7 +18,7 @@ class ApiClientCalendar {
       }
     }
 
-    // === FETCH API ===
+    // fetch api
     $events = $this->service->events->listEvents(
       'primary',
       [
@@ -35,7 +35,7 @@ class ApiClientCalendar {
       ];
     }
 
-    // === SAVE CACHE ===
+    // simpan cache
     file_put_contents($this->cacheFile, json_encode($data));
 
     return $data;

@@ -3,20 +3,13 @@ $required_role = 'panitia';
 require "../autentikasi/cek_login.php";
 require "../config/koneksi.php";
 
-/* =========================
-   VALIDASI SESSION PANITIA
-========================= */
 $id_panitia = $_SESSION['user_id'] ?? null;
 
 if (!$id_panitia) {
   die("Panitia tidak valid");
 }
 
-/* =========================
-   STATISTIK
-========================= */
-
-/* Total acara */
+// total acara
 $qTotal = $conn->prepare("
   SELECT COUNT(*) AS total
   FROM event
@@ -26,7 +19,7 @@ $qTotal->bind_param("i", $id_panitia);
 $qTotal->execute();
 $totalAcara = $qTotal->get_result()->fetch_assoc()['total'] ?? 0;
 
-/* Acara berjalan (approved & belum lewat) */
+// acara berjalan
 $qAktif = $conn->prepare("
   SELECT COUNT(*) AS aktif
   FROM event
@@ -38,7 +31,7 @@ $qAktif->bind_param("i", $id_panitia);
 $qAktif->execute();
 $acaraAktif = $qAktif->get_result()->fetch_assoc()['aktif'] ?? 0;
 
-/* Total peserta */
+// total peserta
 $qPeserta = $conn->prepare("
   SELECT COUNT(t.id_tiket) AS peserta
   FROM tiket t
@@ -49,9 +42,7 @@ $qPeserta->bind_param("i", $id_panitia);
 $qPeserta->execute();
 $totalPeserta = $qPeserta->get_result()->fetch_assoc()['peserta'] ?? 0;
 
-/* =========================
-   ACARA TERBARU (MAX 3)
-========================= */
+// acara terbaru
 $qEvent = $conn->prepare("
   SELECT id_event, nama_event, tanggal_event, lokasi, poster
   FROM event
@@ -90,7 +81,6 @@ $acaraTerbaru = $qEvent->get_result()->fetch_all(MYSQLI_ASSOC);
 
   <main id="panitia-main" class="p-6 space-y-10 transition-all duration-300">
 
-    <!-- STATISTIK -->
     <section>
       <h2 class="text-lg font-semibold mb-3">Statistik Acara</h2>
 
@@ -112,7 +102,6 @@ $acaraTerbaru = $qEvent->get_result()->fetch_all(MYSQLI_ASSOC);
       </div>
     </section>
 
-    <!-- BUTTON -->
     <section>
       <a href="buat-acara.php"
         class="inline-block bg-[#2B77D1] text-white px-6 py-3 rounded-xl font-semibold
@@ -121,7 +110,6 @@ $acaraTerbaru = $qEvent->get_result()->fetch_all(MYSQLI_ASSOC);
       </a>
     </section>
 
-    <!-- ACARA TERBARU -->
     <section>
       <h2 class="text-lg font-semibold mb-3">Acara Terbaru</h2>
 

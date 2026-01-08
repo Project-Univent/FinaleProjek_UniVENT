@@ -1,9 +1,7 @@
 <?php
 require "config/koneksi.php";
 
-/* =========================
-   AMBIL KATEGORI TRENDING
-========================= */
+// kategori trending
 $q = $conn->query("
   SELECT
     k.nama_kategori,
@@ -25,13 +23,11 @@ $kategoriTrending = mysqli_fetch_all($q, MYSQLI_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UniVENT</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="text-gray-800">
-
-  <!-- ================= NAVBAR ================= -->
+<!-- navbar -->
   <header class="fixed top-0 w-full bg-white shadow z-50">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-10 h-16">
       <a href="#home" class="flex items-center gap-2">
@@ -53,7 +49,6 @@ $kategoriTrending = mysqli_fetch_all($q, MYSQLI_ASSOC);
     </div>
   </header>
 
-  <!-- ================= HERO ================= -->
   <section id="home"
     class="h-screen bg-cover bg-center flex items-center"
     style="background-image: linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
@@ -65,8 +60,7 @@ $kategoriTrending = mysqli_fetch_all($q, MYSQLI_ASSOC);
       </h1>
 
       <p class="text-lg mb-8 opacity-90">
-        Platform event mahasiswa untuk daftar, kelola,
-        dan mengikuti acara kampus dengan mudah.
+        Platform event mahasiswa untuk daftar, kelola, dan mengikuti acara kampus dengan mudah.
       </p>
 
       <div class="space-x-4">
@@ -82,7 +76,7 @@ $kategoriTrending = mysqli_fetch_all($q, MYSQLI_ASSOC);
     </div>
   </section>
 
-  <!-- ================= TENTANG ================= -->
+<!-- tentang -->
   <section id="about" class="py-24 bg-white">
     <div class="max-w-6xl mx-auto text-center px-6">
       <h2 class="text-3xl font-bold mb-4">Kenapa UniVENT?</h2>
@@ -115,7 +109,7 @@ $kategoriTrending = mysqli_fetch_all($q, MYSQLI_ASSOC);
     </div>
   </section>
 
-  <!-- ================= KATEGORI (DINAMIS) ================= -->
+<!-- kategori -->
   <section id="category" class="py-24 bg-gray-900 text-white">
 
     <div class="max-w-6xl mx-auto px-6 text-center">
@@ -158,7 +152,6 @@ $kategoriTrending = mysqli_fetch_all($q, MYSQLI_ASSOC);
     </div>
   </section>
 
-  <!-- ================= CTA ================= -->
   <section id="events" class="py-24 bg-gray-50 text-center">
     <h2 class="text-3xl font-bold mb-4">
       Siap Ikut Event Kampus?
@@ -175,7 +168,6 @@ $kategoriTrending = mysqli_fetch_all($q, MYSQLI_ASSOC);
     </a>
   </section>
 
-  <!-- ================= FOOTER ================= -->
   <footer class="bg-black text-gray-400 py-6 text-center text-sm">
     © 2025 UniVENT. All rights reserved.
   </footer>

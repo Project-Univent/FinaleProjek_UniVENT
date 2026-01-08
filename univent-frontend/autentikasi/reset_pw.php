@@ -15,24 +15,20 @@
     <div class="w-full max-w-sm">
       <div class="rounded-3xl p-10 bg-white border border-gray-200 shadow-lg">
 
-        <!-- Logo -->
         <div class="flex justify-center mb-2 mt-2">
           <img src="../assets/img/logo.png" class="w-16 h-16">
         </div>
 
-        <!-- Title -->
         <h2 class="text-center text-xl font-semibold mb-6">
           Reset Password
         </h2>
 
-        <!-- FORM -->
         <form id="resetForm"
               action="reset_pw_proses.php"
               method="POST"
               class="space-y-4"
               novalidate>
 
-          <!-- Password Baru -->
           <div>
             <input id="pw1"
               name="password"
@@ -42,7 +38,6 @@
                      focus:outline-none focus:ring-2 focus:ring-blue-300 transition">
           </div>
 
-          <!-- Konfirmasi Password -->
           <div>
             <input id="pw2"
               name="password_confirm"
