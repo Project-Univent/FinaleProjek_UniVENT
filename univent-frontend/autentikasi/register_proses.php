@@ -1,37 +1,33 @@
 <?php
-require_once __DIR__ . "/../config/koneksi.php";
+session_start();
+
+require "../config/koneksi.php";
+require "../classes/auth.php";
 
 $fullname = $_POST['fullname'] ?? '';
 $email    = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if ($fullname === '' || $email === '' || $password === '') {
-    header("Location: register.php?error=1");
-    exit;
+  header("Location: register.php?error=1");
+  exit;
 }
 
-/* CEK DUPLIKAT USERNAME / EMAIL */
+// cek duplikat username / email
 $cek = $conn->prepare(
-    "SELECT id_peserta FROM peserta WHERE username = ? OR email = ?"
+  "SELECT id_peserta FROM peserta WHERE username = ? OR email = ?"
 );
 $cek->bind_param("ss", $fullname, $email);
 $cek->execute();
 $cek->store_result();
 
 if ($cek->num_rows > 0) {
-    header("Location: register.php?error=duplicate");
-    exit;
+  header("Location: register.php?error=duplicate");
+  exit;
 }
 
-/* INSERT DATA */
-$hash = password_hash($password, PASSWORD_DEFAULT);
+$auth = new Auth($conn);
+$auth->registerPeserta($fullname, $email, $password);
 
-$stmt = $conn->prepare(
-    "INSERT INTO peserta (username, email, password)
-     VALUES (?, ?, ?)"
-);
-$stmt->bind_param("sss", $fullname, $email, $hash);
-$stmt->execute();
-
-header("Location: ../autentikasi/login.php?register=success");
+header("Location: login.php?register=success");
 exit;

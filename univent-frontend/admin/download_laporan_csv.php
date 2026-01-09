@@ -1,7 +1,8 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL); 
+error_reporting(E_ALL);
+
 session_start();
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -10,36 +11,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 }
 
 require '../config/koneksi.php';
+require '../classes/AnalyticsService.php';
 
-header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename="laporan_event.csv"');
+$analytics = new AnalyticsService($conn);
 
-$output = fopen('php://output', 'w');
-
-fputcsv($output, ['Nama Event', 'Tanggal', 'Kategori', 'Peserta', 'Status']);
-
-$query = "
-SELECT
-  e.nama_event,
-  e.tanggal_event,
-  k.nama_kategori,
-  COUNT(t.id_tiket) AS peserta,
-  e.status
-FROM event e
-LEFT JOIN kategori_event k
-  ON e.id_kategori = k.id_kategori
-LEFT JOIN tiket t
-  ON t.id_event = e.id_event
-GROUP BY e.id_event
-ORDER BY e.tanggal_event DESC
-";
-
-
-$result = mysqli_query($conn, $query);
-
-while ($row = mysqli_fetch_assoc($result)) {
-    fputcsv($output, $row);
-}
-
-fclose($output);
-exit;
+$analytics->exportCSV();

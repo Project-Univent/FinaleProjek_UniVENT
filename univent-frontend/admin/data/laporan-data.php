@@ -1,8 +1,7 @@
 <?php
 
-use Google\Service\WorkloadManager\Insight;
-
 require "../../config/koneksi.php";
+require "../../classes/AnalyticsService.php";
 
 $data = [
   "summary" => [],
@@ -52,17 +51,8 @@ while ($r = $q->fetch_assoc()) {
 }
 
 // kategori pling diminati
-$q = $conn->query("
-  SELECT k.nama_kategori, COUNT(t.id_tiket) total
-  FROM kategori_event k
-  JOIN event e ON e.id_kategori = k.id_kategori
-  LEFT JOIN tiket t ON t.id_event = e.id_event
-  GROUP BY k.id_kategori
-");
-
-while ($r = $q->fetch_assoc()) {
-  $data["kategori"][$r["nama_kategori"]] = (int)$r["total"];
-}
+$analytics = new AnalyticsService($conn);
+$data["kategori"] = $analytics->getEventPalingDiminati();
 
 // tabel laporan
 $q = $conn->query("

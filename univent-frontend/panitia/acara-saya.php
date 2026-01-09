@@ -10,9 +10,7 @@ if (!$id_panitia) {
   die("Panitia tidak valid");
 }
 
-/* =========================
-   OOP: AMBIL EVENT PANITIA
-========================= */
+/* ambil data pantitia */
 $panitia = new Panitia($conn, $id_panitia);
 $eventsPanitia = $panitia->getEventSaya();
 ?>
